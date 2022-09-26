@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 
 namespace ApiDemo.Authors
 {
+    [RemoteService(false)]
     public class AuthorService : ApiDemoAppService, IAuthorService
     {
         private readonly IAuthorRepository _authorRepository;

@@ -136,16 +136,23 @@ public class ApiDemoHttpApiHostModule : AbpModule
 
     private static void ConfigureSwaggerServices(ServiceConfigurationContext context, IConfiguration configuration)
     {
-        context.Services.AddAbpSwaggerGenWithOAuth(
-            configuration["AuthServer:Authority"],
-            new Dictionary<string, string>
-            {
-                    {"ApiDemo", "ApiDemo API"}
-            },
+        // context.Services.AddAbpSwaggerGenWithOAuth(
+        //     configuration["AuthServer:Authority"],
+        //     new Dictionary<string, string>
+        //     {
+        //             {"ApiDemo", "ApiDemo API"}
+        //     },
+        //     options =>
+        //     {
+        //         options.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiDemo API", Version = "v1" });
+        //         // options.DocInclusionPredicate((docName, description) => true);
+        //         options.CustomSchemaIds(type => type.FullName);
+        //     });
+        context.Services.AddAbpSwaggerGen(
             options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiDemo API", Version = "v1" });
-                options.DocInclusionPredicate((docName, description) => true);
+                // options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
             });
     }

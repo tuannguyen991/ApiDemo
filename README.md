@@ -5,9 +5,12 @@ Prerequisite:
 - Download Docker: https://docs.docker.com/desktop/install/windows-install/
 - Download MSSM Studio 18 (optional): https://aka.ms/ssmsfullsetup
 - To install tye, run command in terminal: dotnet tool install -g Microsoft.Tye --version "0.11.0-alpha.22111.1"
+- Git bash: https://github.com/git-for-windows/git/releases/download/v2.37.3.windows.1/Git-2.37.3-64-bit.exe
 
 Perform the following steps to run the application:
-- In directory root, run: dotnet build
-- In directory build/docker-dev, run: docker compose up -d
-- In directory src/ApiDemo.DbMigrator, run: dotnet run
-- In direcotry build/tye, run: tye run --watch
+- Open git bash at directory build
+- Run: bash 1.1.run-docker-infrastructure.sh
+- Run: bash 1.2.run-migrations.sh 
+- Run: bash 1.3.run-tye.sh
+
+Note: Just run files 1.1 and 1.2 the first time to configure the base of the application. From the 2nd time onwards, to run the application just run 1.3

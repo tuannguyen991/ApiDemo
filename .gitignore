@@ -263,3 +263,6 @@ src/ApiDemo.Blazor.Server.Tiered/Logs/*
 
 # Use abp install-libs to restore.
 **/wwwroot/libs/*
+
+# Ignore files in directory /.vscode
+/.vscode/*

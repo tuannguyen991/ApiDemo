@@ -4,6 +4,6 @@
     "Menu:Home": "Home",
     "Welcome": "Welcome",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io.",
-    "BookStore:00001": "There is already an author with the same name: {name}"
+    "ApiDemo:00001": "There is already an author with the same name: {name}"
   }
 }

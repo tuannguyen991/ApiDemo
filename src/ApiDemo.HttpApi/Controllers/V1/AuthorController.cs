@@ -8,7 +8,7 @@ namespace ApiDemo.Controllers
 {
     [ApiController]
     [Route("api/v1/authors")]
-    public class AuthorController : ControllerBase
+    public class AuthorController : ApiDemoController
     {
         private readonly IAuthorService _authorService;
         public AuthorController(IAuthorService authorService)

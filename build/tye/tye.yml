@@ -1,0 +1,7 @@
+name: Api Demo Application
+services:
+  - name: backend
+    project: ../../src/ApiDemo.HttpApi.Host/ApiDemo.HttpApi.Host.csproj
+    bindings:
+      - protocol: https
+        port: 44393

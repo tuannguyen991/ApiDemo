@@ -1,2 +1,7 @@
 #! usr/bin/bash
-tye run ./tye --watch
+
+# Redirect to tye folder
+cd tye
+
+# Excute
+tye run --watch

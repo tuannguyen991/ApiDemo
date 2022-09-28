@@ -11,7 +11,10 @@ namespace ApiDemo.Authors
 
         [Required]
         public DateTime BirthDate { get; set; }
-        
+        /// <summary>
+        /// Tên người nhận.
+        /// </summary>
+        /// <example>Lê Minh T</example>
         public string ShortBio { get; set; }
     }
 }

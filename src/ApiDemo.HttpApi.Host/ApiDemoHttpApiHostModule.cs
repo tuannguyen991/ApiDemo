@@ -154,6 +154,14 @@ public class ApiDemoHttpApiHostModule : AbpModule
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiDemo API", Version = "v1" });
                 // options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
+
+                // options.DocInclusionPredicate((docName, description) => true);
+                var httpApiXml = Path.Combine(AppContext.BaseDirectory, "HttpApi.xml");
+                options.IncludeXmlComments(httpApiXml);
+                var applicationContractsXml = Path.Combine(AppContext.BaseDirectory, "Application.Contracts.xml");
+                options.IncludeXmlComments(applicationContractsXml);
+                var domainSharedXml = Path.Combine(AppContext.BaseDirectory, "Domain.Shared.xml");
+                options.IncludeXmlComments(domainSharedXml);
             });
     }
 
@@ -189,19 +197,19 @@ public class ApiDemoHttpApiHostModule : AbpModule
         {
             options.AddDefaultPolicy(builder =>
                {
-                builder
-                    .WithOrigins(
-                        configuration["App:CorsOrigins"]
-                            .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                            .Select(o => o.RemovePostFix("/"))
-                            .ToArray()
-                    )
-                    .WithAbpExposedHeaders()
-                    .SetIsOriginAllowedToAllowWildcardSubdomains()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });
+                   builder
+                       .WithOrigins(
+                           configuration["App:CorsOrigins"]
+                               .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                               .Select(o => o.RemovePostFix("/"))
+                               .ToArray()
+                       )
+                       .WithAbpExposedHeaders()
+                       .SetIsOriginAllowedToAllowWildcardSubdomains()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowCredentials();
+               });
         });
     }
 
@@ -247,6 +255,11 @@ public class ApiDemoHttpApiHostModule : AbpModule
             c.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
             c.OAuthClientSecret(configuration["AuthServer:SwaggerClientSecret"]);
             c.OAuthScopes("ApiDemo");
+        });
+        app.UseReDoc(c =>
+        {
+            c.DocumentTitle = "ApiDemo API";
+            c.SpecUrl = "/swagger/v1/swagger.json";
         });
 
         app.UseAuditing();

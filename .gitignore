@@ -266,3 +266,6 @@ src/ApiDemo.Blazor.Server.Tiered/Logs/*
 
 # Ignore files in directory /.vscode
 /.vscode/*
+
+# Ignore .xml file generated from ReDoc
+src/*/*.xml

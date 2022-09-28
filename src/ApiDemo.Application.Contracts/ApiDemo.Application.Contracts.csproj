@@ -5,6 +5,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>ApiDemo</RootNamespace>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>Application.Contracts.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +21,12 @@
     <PackageReference Include="Volo.Abp.TenantManagement.Application.Contracts" Version="5.3.4" />
     <PackageReference Include="Volo.Abp.FeatureManagement.Application.Contracts" Version="5.3.4" />
     <PackageReference Include="Volo.Abp.SettingManagement.Application.Contracts" Version="5.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Application.Contracts.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

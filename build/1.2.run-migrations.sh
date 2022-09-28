@@ -1,9 +1,22 @@
 #! usr/bin/bash
 
+# Go to root
+source ./utils.sh
+to-root 
+
 # First build whole project
-dotnet build ..
+dotnet build
 
 # First migrations
-dotnet run --project ../src/ApiDemo.DbMigrator
-rm tempkey.jwk
-rm -rfv Logs
+cd src/ApiDemo.DbMigrator
+dotnet run
+
+# # # Remove redundant files 
+# cd -
+
+
+# cd build
+
+
+# rm tempkey.jwk
+# rm -rfv Logs

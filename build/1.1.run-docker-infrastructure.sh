@@ -1,7 +1,11 @@
 #! usr/bin/bash
 
-# Redirect to docker-dev folder
-cd ./docker-dev
+# Go to root
+source ./utils.sh
+to-root 
+
+# Go to docker-dev folder
+cd build/docker-dev
 
 # Excute
 docker compose up -d

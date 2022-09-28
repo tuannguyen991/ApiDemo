@@ -10,13 +10,3 @@ dotnet build
 # First migrations
 cd src/ApiDemo.DbMigrator
 dotnet run
-
-# # # Remove redundant files 
-# cd -
-
-
-# cd build
-
-
-# rm tempkey.jwk
-# rm -rfv Logs

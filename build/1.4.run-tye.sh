@@ -1,11 +1,11 @@
-# #! usr/bin/bash
+#! usr/bin/bash
 
-# # Redirect to tye folder
-# cd tye
-
-# # Excute
-# tye run --watch
-
-source ./to-root.sh
+# Go to root
+source ./utils.sh
 to-root 
-pwd
+
+# Redirect to tye folder
+cd build/tye
+
+# Excute
+tye run --watch

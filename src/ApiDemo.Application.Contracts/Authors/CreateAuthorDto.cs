@@ -5,16 +5,23 @@ namespace ApiDemo.Authors
 {
     public class CreateAuthorDto
     {
+        /// <summary>
+        /// Author Name.
+        /// </summary>
+        /// <example>J.K. Rowling</example>
         [Required]
         [StringLength(AuthorConsts.MaxNameLength)]
         public string Name { get; set; }
-
+        /// <summary>
+        /// Birthday.
+        /// </summary>
+        /// <example>1965-07-31</example>
         [Required]
         public DateTime BirthDate { get; set; }
         /// <summary>
-        /// Tên người nhận.
+        /// Short biography of Author.
         /// </summary>
-        /// <example>Lê Minh T</example>
+        /// <example>Joanne Rowling was born on 31st July 1965 at Yate General Hospital near Bristol</example>
         public string ShortBio { get; set; }
     }
 }

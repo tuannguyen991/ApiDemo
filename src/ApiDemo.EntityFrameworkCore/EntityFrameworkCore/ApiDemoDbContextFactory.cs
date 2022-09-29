@@ -12,12 +12,14 @@ public class ApiDemoDbContextFactory : IDesignTimeDbContextFactory<ApiDemoDbCont
 {
     public ApiDemoDbContext CreateDbContext(string[] args)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        
         ApiDemoEfCoreEntityExtensionMappings.Configure();
 
         var configuration = BuildConfiguration();
 
         var builder = new DbContextOptionsBuilder<ApiDemoDbContext>()
-            .UseSqlServer(configuration.GetConnectionString("Default"));
+            .UseNpgsql(configuration.GetConnectionString("Default"));
 
         return new ApiDemoDbContext(builder.Options);
     }

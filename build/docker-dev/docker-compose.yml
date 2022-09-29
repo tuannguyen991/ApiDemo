@@ -1,11 +1,9 @@
 version: "3.9"
 
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-latest 
+  postgres:
+    image: postgres
     environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: "Abcd@1234"
-      MSSQL_PID: "Express"
+      POSTGRES_PASSWORD: "Abcd@1234"
     ports:
-      - "1433:1433"
+      - "5432:5432"

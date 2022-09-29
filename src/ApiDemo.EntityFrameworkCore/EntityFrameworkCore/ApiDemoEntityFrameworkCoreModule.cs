@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.SqlServer;
+using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.IdentityServer.EntityFrameworkCore;
@@ -20,7 +20,7 @@ namespace ApiDemo.EntityFrameworkCore;
     typeof(AbpIdentityServerEntityFrameworkCoreModule),
     typeof(AbpPermissionManagementEntityFrameworkCoreModule),
     typeof(AbpSettingManagementEntityFrameworkCoreModule),
-    typeof(AbpEntityFrameworkCoreSqlServerModule),
+    typeof(AbpEntityFrameworkCorePostgreSqlModule),
     typeof(AbpBackgroundJobsEntityFrameworkCoreModule),
     typeof(AbpAuditLoggingEntityFrameworkCoreModule),
     typeof(AbpTenantManagementEntityFrameworkCoreModule),
@@ -30,6 +30,8 @@ public class ApiDemoEntityFrameworkCoreModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        
         ApiDemoEfCoreEntityExtensionMappings.Configure();
     }
 
@@ -46,7 +48,7 @@ public class ApiDemoEntityFrameworkCoreModule : AbpModule
         {
                 /* The main point to change your DBMS.
                  * See also ApiDemoMigrationsDbContextFactory for EF Core tooling. */
-            options.UseSqlServer();
+            options.UseNpgsql();
         });
     }
 }

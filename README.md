@@ -3,7 +3,6 @@ Prerequisite:
 - Visual Studio 2022: https://visualstudio.microsoft.com/fr/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030&passive=false
 - To install ABP CLI, run command in terminal: dotnet tool install -g Volo.Abp.Cli
 - Download Docker: https://docs.docker.com/desktop/install/windows-install/
-- Download MSSM Studio 18 (optional): https://aka.ms/ssmsfullsetup
 - To install tye, run command in terminal: dotnet tool install -g Microsoft.Tye --version "0.11.0-alpha.22111.1"
 - Git bash: https://github.com/git-for-windows/git/releases/download/v2.37.3.windows.1/Git-2.37.3-64-bit.exe
 

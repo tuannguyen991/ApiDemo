@@ -1,4 +1,5 @@
 ﻿using ApiDemo.Authors;
+using ApiDemo.Books;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -55,6 +56,7 @@ public class ApiDemoDbContext :
     #endregion
 
     public DbSet<Author> Authors { get; set; }
+    public DbSet<Book> Books { get; set; }
 
     public ApiDemoDbContext(DbContextOptions<ApiDemoDbContext> options)
         : base(options)
@@ -96,6 +98,19 @@ public class ApiDemoDbContext :
             b.Property(x => x.Name)
                 .IsRequired()
                 .HasMaxLength(AuthorConsts.MaxNameLength);
+
+            b.HasIndex(x => x.Name);
+        });
+        builder.Entity<Book>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "Books",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+
+            b.Property(x => x.Name)
+                .IsRequired()
+                .HasMaxLength(BookConsts.MaxNameLength);
 
             b.HasIndex(x => x.Name);
         });

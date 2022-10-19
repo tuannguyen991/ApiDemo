@@ -269,3 +269,7 @@ src/ApiDemo.Blazor.Server.Tiered/Logs/*
 
 # Ignore .xml file generated from ReDoc
 src/*/*.xml
+
+# Process
+/build/tye/.tye
+ApiDemo.sln

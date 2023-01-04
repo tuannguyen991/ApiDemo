@@ -29,6 +29,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
+using Microsoft.OpenApi.Any;
 
 namespace ApiDemo;
 
@@ -210,6 +211,15 @@ public class ApiDemoHttpApiHostModule : AbpModule
                        .AllowAnyMethod()
                        .AllowCredentials();
                });
+        });
+
+        context.Services.AddSwaggerGen(options =>
+        {
+            options.MapType<TimeSpan>(() => new OpenApiSchema
+            {
+                Type = "string",
+                Example = new OpenApiString("000.00:00:00.000")
+            });
         });
     }
 

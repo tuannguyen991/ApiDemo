@@ -1,4 +1,8 @@
 ﻿using ApiDemo.Authors;
+using ApiDemo.Books;
+using ApiDemo.Categories;
+using ApiDemo.ReadingPackages;
+using ApiDemo.Users;
 using AutoMapper;
 
 namespace ApiDemo;
@@ -11,5 +15,9 @@ public class ApiDemoApplicationAutoMapperProfile : Profile
          * Alternatively, you can split your mapping configurations
          * into multiple profile classes for a better organization. */
         CreateMap<Author, AuthorDto>();
+        CreateMap<User, UserDto>();
+        CreateMap<ReadingPackage, ReadingPackageDto>();
+        CreateMap<Category, CategoryDto>();
+        CreateMap<Book, BookDto>();
     }
 }

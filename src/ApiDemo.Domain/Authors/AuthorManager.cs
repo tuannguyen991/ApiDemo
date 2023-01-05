@@ -18,7 +18,9 @@ namespace ApiDemo.Authors
         public async Task<Author> CreateAsync(
             [NotNull] string name,
             DateTime birthDate,
-            [CanBeNull] string shortBio = null)
+            [CanBeNull] string shortBio,
+            string imageLink
+        )
         {
             Check.NotNullOrWhiteSpace(name, nameof(name));
 
@@ -32,7 +34,8 @@ namespace ApiDemo.Authors
                 GuidGenerator.Create(),
                 name,
                 birthDate,
-                shortBio
+                shortBio,
+                imageLink
             );
         }
 

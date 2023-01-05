@@ -1,6 +1,7 @@
 using ApiDemo.Authors;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
@@ -24,7 +25,7 @@ namespace ApiDemo.Controllers
         /// <param name="input">Paged Condition</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PagedResultDto<AuthorDto>> GetListAsync([FromQuery] GetAuthorListDto input)
+        public async Task<List<AuthorDto>> GetListAsync([FromQuery] GetAuthorListDto input)
         {
             return await _authorService.GetListAsync(input);
         }

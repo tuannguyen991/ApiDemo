@@ -10,6 +10,7 @@ namespace ApiDemo.Authors
         public string Name { get; private set; }
         public DateTime BirthDate { get; set; }
         public string ShortBio { get; set; }
+        public string ImageLink { get; set; }
 
         private Author()
         {
@@ -20,12 +21,15 @@ namespace ApiDemo.Authors
             Guid id,
             [NotNull] string name,
             DateTime birthDate,
-            [CanBeNull] string shortBio = null)
+            [CanBeNull] string shortBio,
+            string imageLink
+        )
             : base(id)
         {
             SetName(name);
             BirthDate = birthDate;
             ShortBio = shortBio;
+            ImageLink = imageLink;
         }
 
         internal Author ChangeName([NotNull] string name)

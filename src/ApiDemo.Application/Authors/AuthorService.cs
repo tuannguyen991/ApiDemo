@@ -27,7 +27,7 @@ namespace ApiDemo.Authors
             return ObjectMapper.Map<Author, AuthorDto>(author);
         }
 
-        public async Task<PagedResultDto<AuthorDto>> GetListAsync(GetAuthorListDto input)
+        public async Task<List<AuthorDto>> GetListAsync(GetAuthorListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {
@@ -46,10 +46,11 @@ namespace ApiDemo.Authors
                 : await _authorRepository.CountAsync(
                     author => author.Name.Contains(input.Filter));
 
-            return new PagedResultDto<AuthorDto>(
-                totalCount,
-                ObjectMapper.Map<List<Author>, List<AuthorDto>>(authors)
-            );
+            // return new PagedResultDto<AuthorDto>(
+            //     totalCount,
+            //     ObjectMapper.Map<List<Author>, List<AuthorDto>>(authors)
+            // );
+            return ObjectMapper.Map<List<Author>, List<AuthorDto>>(authors);
         }
 
         public async Task<AuthorDto> CreateAsync(CreateAuthorDto input)
@@ -57,7 +58,8 @@ namespace ApiDemo.Authors
             var author = await _authorManager.CreateAsync(
                 input.Name,
                 input.BirthDate,
-                input.ShortBio
+                input.ShortBio,
+                input.ImageLink
             );
 
             await _authorRepository.InsertAsync(author);
@@ -76,6 +78,7 @@ namespace ApiDemo.Authors
 
             author.BirthDate = input.BirthDate;
             author.ShortBio = input.ShortBio;
+            author.ImageLink = input.ImageLink;
 
             await _authorRepository.UpdateAsync(author);
         }

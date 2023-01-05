@@ -1,0 +1,33 @@
+using System;
+
+namespace ApiDemo.Users
+{
+    public class UpdateUserDto
+    {
+        /// <summary>
+        /// Password.
+        /// </summary>
+        /// <example>123456</example>
+        public string Password { get; set; }
+        /// <summary>
+        /// Full name.
+        /// </summary>
+        /// <example>Nguyễn Kiều Anh Tuấn</example>
+        public string Name { get; set; }
+        /// <summary>
+        /// Email.
+        /// </summary>
+        /// <example>tuan.nguyen991@hcmut.edu.vn</example>
+        public string Email { get; set; }
+        /// <summary>
+        /// Birthday.
+        /// </summary>
+        /// <example>2001-02-28</example>
+        public DateTime BirthDate { get; set; }
+        /// <summary>
+        /// Avatar.
+        /// </summary>
+        /// <example></example>
+        public string ImageLink { get; set; }
+    }
+}

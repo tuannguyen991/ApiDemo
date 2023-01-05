@@ -1,4 +1,8 @@
 ﻿using ApiDemo.Authors;
+using ApiDemo.Books;
+using ApiDemo.Categories;
+using ApiDemo.ReadingPackages;
+using ApiDemo.Users;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -17,13 +21,13 @@ using Volo.Abp.TenantManagement.EntityFrameworkCore;
 
 namespace ApiDemo.EntityFrameworkCore;
 
-[ReplaceDbContext(typeof(IIdentityDbContext))]
-[ReplaceDbContext(typeof(ITenantManagementDbContext))]
+// [ReplaceDbContext(typeof(IIdentityDbContext))]
+// [ReplaceDbContext(typeof(ITenantManagementDbContext))]
 [ConnectionStringName("Default")]
 public class ApiDemoDbContext :
-    AbpDbContext<ApiDemoDbContext>,
-    IIdentityDbContext,
-    ITenantManagementDbContext
+    AbpDbContext<ApiDemoDbContext>
+// IIdentityDbContext,
+// ITenantManagementDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
@@ -41,20 +45,28 @@ public class ApiDemoDbContext :
      */
 
     //Identity
-    public DbSet<IdentityUser> Users { get; set; }
-    public DbSet<IdentityRole> Roles { get; set; }
-    public DbSet<IdentityClaimType> ClaimTypes { get; set; }
-    public DbSet<OrganizationUnit> OrganizationUnits { get; set; }
-    public DbSet<IdentitySecurityLog> SecurityLogs { get; set; }
-    public DbSet<IdentityLinkUser> LinkUsers { get; set; }
+    // public DbSet<IdentityUser> Users { get; set; }
+    // public DbSet<IdentityRole> Roles { get; set; }
+    // public DbSet<IdentityClaimType> ClaimTypes { get; set; }
+    // public DbSet<OrganizationUnit> OrganizationUnits { get; set; }
+    // public DbSet<IdentitySecurityLog> SecurityLogs { get; set; }
+    // public DbSet<IdentityLinkUser> LinkUsers { get; set; }
 
-    // Tenant Management
-    public DbSet<Tenant> Tenants { get; set; }
-    public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
+    // // Tenant Management
+    // public DbSet<Tenant> Tenants { get; set; }
+    // public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
 
     #endregion
 
     public DbSet<Author> Authors { get; set; }
+
+    public DbSet<User> Users { get; set; }
+
+    public DbSet<ReadingPackage> ReadingPackages { get; set; }
+
+    public DbSet<Category> Categories { get; set; }
+
+    public DbSet<Book> Books { get; set; }
 
     public ApiDemoDbContext(DbContextOptions<ApiDemoDbContext> options)
         : base(options)
@@ -98,6 +110,38 @@ public class ApiDemoDbContext :
                 .HasMaxLength(AuthorConsts.MaxNameLength);
 
             b.HasIndex(x => x.Name);
+        });
+
+        builder.Entity<User>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "Users",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+        });
+
+        builder.Entity<ReadingPackage>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "ReadingPackages",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+        });
+
+        builder.Entity<Category>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "Categories",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+        });
+
+        builder.Entity<Book>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "Books",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
         });
     }
 }

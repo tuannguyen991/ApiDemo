@@ -4,10 +4,8 @@
 source ./utils.sh
 to-root 
 
-# Redirect to tye folder
-pwd
+# Redirect to HttpApi.Host folder
 cd src/ApiDemo.HttpApi.Host
-pwd
 
 # Excute
 dotnet add package Swashbuckle.AspNetCore.ReDoc --version 6.4.0

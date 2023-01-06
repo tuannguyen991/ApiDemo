@@ -58,15 +58,26 @@ public class ApiDemoDbContext :
 
     #endregion
 
-    public DbSet<Author> Authors { get; set; }
+    public DbSet<ReadingPackage> ReadingPackages { get; set; }
 
     public DbSet<User> Users { get; set; }
 
-    public DbSet<ReadingPackage> ReadingPackages { get; set; }
+    public DbSet<UserReadingPackage> UserReadingPackages { get; set; }
+
+    public DbSet<UserHistory> UserHistories { get; set; }
+
+    public DbSet<Author> Authors { get; set; }
 
     public DbSet<Category> Categories { get; set; }
 
     public DbSet<Book> Books { get; set; }
+
+    public DbSet<BookWithAuthor> BookWithAuthors { get; set; }
+
+    public DbSet<BookWithCategory> BookWithCategorys { get; set; }
+
+    public DbSet<UserLibrary> UserLibraries { get; set; }
+    public DbSet<Highlight> Highlights { get; set; }
 
     public ApiDemoDbContext(DbContextOptions<ApiDemoDbContext> options)
         : base(options)
@@ -98,6 +109,62 @@ public class ApiDemoDbContext :
         //    //...
         //});
 
+        builder.Entity<ReadingPackage>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "ReadingPackages",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+
+            b.HasMany<UserReadingPackage>()
+                .WithOne()
+                .HasForeignKey(p => p.ReadingPackageId);
+        });
+
+        builder.Entity<User>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "Users",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+
+            b.HasMany<UserReadingPackage>(u => u.Packages)
+                .WithOne()
+                .HasForeignKey(p => p.UserId);
+
+            b.HasMany<UserHistory>(u => u.Histories)
+                .WithOne()
+                .HasForeignKey(p => p.UserId);
+
+            b.HasMany<UserLibrary>(u => u.UserLibraries)
+                .WithOne()
+                .HasForeignKey(p => p.UserId);
+
+            b.HasMany<Highlight>(u => u.Highlights)
+                .WithOne()
+                .HasForeignKey(p => p.UserId);
+
+            b.Ignore(p => p.CurrentPackage);
+
+            b.Ignore(p => p.RecentlyHistories);
+        });
+
+        builder.Entity<UserReadingPackage>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "UserReadingPackages",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+        });
+
+        builder.Entity<UserHistory>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "UserHistories",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+        });
+
         builder.Entity<Author>(b =>
         {
             b.ToTable(ApiDemoConsts.DbTablePrefix + "Authors",
@@ -110,22 +177,10 @@ public class ApiDemoDbContext :
                 .HasMaxLength(AuthorConsts.MaxNameLength);
 
             b.HasIndex(x => x.Name);
-        });
 
-        builder.Entity<User>(b =>
-        {
-            b.ToTable(ApiDemoConsts.DbTablePrefix + "Users",
-                ApiDemoConsts.DbSchema);
-
-            b.ConfigureByConvention();
-        });
-
-        builder.Entity<ReadingPackage>(b =>
-        {
-            b.ToTable(ApiDemoConsts.DbTablePrefix + "ReadingPackages",
-                ApiDemoConsts.DbSchema);
-
-            b.ConfigureByConvention();
+            b.HasMany<BookWithAuthor>()
+                .WithOne()
+                .HasForeignKey(p => p.AuthorId);
         });
 
         builder.Entity<Category>(b =>
@@ -134,11 +189,63 @@ public class ApiDemoDbContext :
                 ApiDemoConsts.DbSchema);
 
             b.ConfigureByConvention();
+
+            b.HasMany<BookWithCategory>()
+                .WithOne()
+                .HasForeignKey(p => p.CategoryId);
         });
 
         builder.Entity<Book>(b =>
         {
             b.ToTable(ApiDemoConsts.DbTablePrefix + "Books",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+
+            b.HasMany<BookWithAuthor>(u => u.Authors)
+                .WithOne()
+                .HasForeignKey(p => p.BookId);
+
+            b.HasMany<BookWithCategory>(u => u.Categories)
+                .WithOne()
+                .HasForeignKey(p => p.BookId);
+
+            b.HasMany<UserLibrary>()
+                .WithOne()
+                .HasForeignKey(p => p.BookId);
+
+            b.HasMany<Highlight>()
+                .WithOne()
+                .HasForeignKey(p => p.BookId);
+        });
+
+        builder.Entity<BookWithAuthor>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "BookWithAuthors",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+        });
+
+        builder.Entity<BookWithCategory>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "BookWithCategorys",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+        });
+
+        builder.Entity<UserLibrary>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "UserLibraries",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+        });
+
+        builder.Entity<Highlight>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "Highlights",
                 ApiDemoConsts.DbSchema);
 
             b.ConfigureByConvention();

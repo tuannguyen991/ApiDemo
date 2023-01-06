@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
+
 namespace ApiDemo.Users
 {
     public class EfCoreUserRepository
@@ -22,8 +23,20 @@ namespace ApiDemo.Users
 
         public async Task<User> FindByUsernameAsync(string username)
         {
-            var dbSet = await GetDbSetAsync();
-            return await dbSet.FirstOrDefaultAsync(user => user.Username == username);
+            var queryable = await WithDetailsAsync();
+
+            var query = queryable.Where(user => user.Username == username);
+
+            return await AsyncExecuter.FirstOrDefaultAsync(query);
+        }
+
+        public async Task<User> FindAsync(Guid id)
+        {
+            var queryable = await WithDetailsAsync();
+            
+            var query = queryable.Where(user => user.Id == id);
+
+            return await AsyncExecuter.FirstOrDefaultAsync(query);
         }
 
         // public async Task<List<User>> GetListAsync(

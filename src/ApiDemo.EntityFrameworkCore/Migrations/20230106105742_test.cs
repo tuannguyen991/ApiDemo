@@ -818,6 +818,161 @@ namespace ApiDemo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AppBookWithAuthors",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    BookId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppBookWithAuthors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppBookWithAuthors_AppAuthors_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "AppAuthors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AppBookWithAuthors_AppBooks_BookId",
+                        column: x => x.BookId,
+                        principalTable: "AppBooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppBookWithCategorys",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    BookId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppBookWithCategorys", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppBookWithCategorys_AppBooks_BookId",
+                        column: x => x.BookId,
+                        principalTable: "AppBooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AppBookWithCategorys_AppCategories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "AppCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppHightlights",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    BookId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Location = table.Column<string>(type: "text", nullable: true),
+                    Color = table.Column<string>(type: "text", nullable: true),
+                    Note = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppHightlights", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppHightlights_AppBooks_BookId",
+                        column: x => x.BookId,
+                        principalTable: "AppBooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AppHightlights_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppUserHistories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ReadingTime = table.Column<TimeSpan>(type: "interval", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppUserHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppUserHistories_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppUserLibraries",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    BookId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsFavorite = table.Column<bool>(type: "boolean", nullable: false),
+                    IsReading = table.Column<bool>(type: "boolean", nullable: false),
+                    NumberOfReadPages = table.Column<int>(type: "integer", nullable: false),
+                    Rating = table.Column<double>(type: "double precision", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppUserLibraries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppUserLibraries_AppBooks_BookId",
+                        column: x => x.BookId,
+                        principalTable: "AppBooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AppUserLibraries_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppUserReadingPackages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReadingPackageId = table.Column<Guid>(type: "uuid", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppUserReadingPackages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppUserReadingPackages_AppReadingPackages_ReadingPackageId",
+                        column: x => x.ReadingPackageId,
+                        principalTable: "AppReadingPackages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AppUserReadingPackages_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IdentityServerApiResourceClaims",
                 columns: table => new
                 {
@@ -1317,6 +1472,61 @@ namespace ApiDemo.Migrations
                 column: "Name");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AppBookWithAuthors_AuthorId",
+                table: "AppBookWithAuthors",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppBookWithAuthors_BookId",
+                table: "AppBookWithAuthors",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppBookWithCategorys_BookId",
+                table: "AppBookWithCategorys",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppBookWithCategorys_CategoryId",
+                table: "AppBookWithCategorys",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppHightlights_BookId",
+                table: "AppHightlights",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppHightlights_UserId",
+                table: "AppHightlights",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppUserHistories_UserId",
+                table: "AppUserHistories",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppUserLibraries_BookId",
+                table: "AppUserLibraries",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppUserLibraries_UserId",
+                table: "AppUserLibraries",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppUserReadingPackages_ReadingPackageId",
+                table: "AppUserReadingPackages",
+                column: "ReadingPackageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppUserReadingPackages_UserId",
+                table: "AppUserReadingPackages",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_IdentityServerClients_ClientId",
                 table: "IdentityServerClients",
                 column: "ClientId");
@@ -1407,19 +1617,22 @@ namespace ApiDemo.Migrations
                 name: "AbpUserTokens");
 
             migrationBuilder.DropTable(
-                name: "AppAuthors");
+                name: "AppBookWithAuthors");
 
             migrationBuilder.DropTable(
-                name: "AppBooks");
+                name: "AppBookWithCategorys");
 
             migrationBuilder.DropTable(
-                name: "AppCategories");
+                name: "AppHightlights");
 
             migrationBuilder.DropTable(
-                name: "AppReadingPackages");
+                name: "AppUserHistories");
 
             migrationBuilder.DropTable(
-                name: "AppUsers");
+                name: "AppUserLibraries");
+
+            migrationBuilder.DropTable(
+                name: "AppUserReadingPackages");
 
             migrationBuilder.DropTable(
                 name: "IdentityServerApiResourceClaims");
@@ -1492,6 +1705,21 @@ namespace ApiDemo.Migrations
 
             migrationBuilder.DropTable(
                 name: "AbpUsers");
+
+            migrationBuilder.DropTable(
+                name: "AppAuthors");
+
+            migrationBuilder.DropTable(
+                name: "AppCategories");
+
+            migrationBuilder.DropTable(
+                name: "AppBooks");
+
+            migrationBuilder.DropTable(
+                name: "AppReadingPackages");
+
+            migrationBuilder.DropTable(
+                name: "AppUsers");
 
             migrationBuilder.DropTable(
                 name: "IdentityServerApiResources");

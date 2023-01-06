@@ -9,6 +9,8 @@ namespace ApiDemo.Users
     {
         Task<User> FindByUsernameAsync(string username);
 
+        Task<User> FindAsync(Guid id);
+
         // Task<List<User>> GetListAsync(
         //     int skipCount,
         //     int maxResultCount,

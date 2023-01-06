@@ -17,6 +17,9 @@ namespace ApiDemo.Users
 
         Task UpdateAsync(Guid id, UpdateUserDto input);
 
+        Task<UserDto> AddPackageAsync(CreateUserReadingPackageDto input);
+        Task<UserDto> AddHistoryAsync(CreateUserHistoryDto input);
+
         // Task DeleteAsync(Guid id);
     }
 }

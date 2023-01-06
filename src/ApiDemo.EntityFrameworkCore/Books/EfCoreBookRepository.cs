@@ -27,16 +27,19 @@ namespace ApiDemo.Books
             string sorting,
             string filter = null)
         {
-            var dbSet = await GetDbSetAsync();
-            return await dbSet
-                .WhereIf(
-                    !filter.IsNullOrWhiteSpace(),
-                    author => author.Name.Contains(filter)
-                 )
-                .OrderBy(sorting)
-                .Skip(skipCount)
-                .Take(maxResultCount)
-                .ToListAsync();
+            var queryable = await WithDetailsAsync();
+
+            var query = queryable.WhereIf(
+                            !filter.IsNullOrWhiteSpace(),
+                            author => author.Name.Contains(filter)
+                        )
+                        .OrderBy(sorting)
+                        .Skip(skipCount)
+                        .Take(maxResultCount);
+
+
+            // var dbSet = await GetDbSetAsync();
+            return await query.ToListAsync();
         }
     }
 }

@@ -1,8 +1,12 @@
 ﻿using System;
+using ApiDemo.Books;
+using ApiDemo.Users;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -31,7 +35,7 @@ public class ApiDemoEntityFrameworkCoreModule : AbpModule
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-        
+
         ApiDemoEfCoreEntityExtensionMappings.Configure();
     }
 
@@ -39,16 +43,36 @@ public class ApiDemoEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<ApiDemoDbContext>(options =>
         {
-                /* Remove "includeAllEntities: true" to create
-                 * default repositories only for aggregate roots */
+            /* Remove "includeAllEntities: true" to create
+             * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
         });
 
         Configure<AbpDbContextOptions>(options =>
         {
-                /* The main point to change your DBMS.
-                 * See also ApiDemoMigrationsDbContextFactory for EF Core tooling. */
+            /* The main point to change your DBMS.
+             * See also ApiDemoMigrationsDbContextFactory for EF Core tooling. */
             options.UseNpgsql();
+        });
+
+        // Config Load Related Entity
+        Configure<AbpEntityOptions>(options =>
+        {
+            options.Entity<User>(o =>
+            {
+                o.DefaultWithDetailsFunc = query => query
+                                            .Include(o => o.Packages)
+                                            .Include(o => o.Histories)
+                                            .Include(o => o.UserLibraries) // will be removed
+                                            .Include(o => o.Highlights); // will be removed
+            });
+
+            options.Entity<Book>(o =>
+            {
+                o.DefaultWithDetailsFunc = query => query
+                                            .Include(o => o.Authors)
+                                            .Include(o => o.Categories);
+            });
         });
     }
 }

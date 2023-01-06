@@ -53,5 +53,60 @@ namespace ApiDemo.Users
 
             return existingUser;
         }
+
+        public Task AddPackageAsync(
+            User user, 
+            Guid readingPackageId,
+            TimeSpan duration
+        )
+        {
+            var userReadingPackage = new UserReadingPackage(
+                GuidGenerator.Create(),
+                user.Id,
+                readingPackageId,
+                duration
+            );
+
+            user.Packages.Add(userReadingPackage);
+            return Task.CompletedTask;
+        }
+
+        public Task AddHistoryAsync(
+            User user, 
+            DateTime date,
+            TimeSpan readingTime
+        )
+        {
+            var userHistory = new UserHistory(
+                GuidGenerator.Create(),
+                user.Id,
+                date,
+                readingTime
+            );
+
+            user.Histories.Add(userHistory);
+            return Task.CompletedTask;
+        }
+
+        // public async Task<UserReadingPackage> AddUserReadingPackageAsync(
+        //     Guid userId,
+        //     Guid readingPackageId
+        // )
+        // {
+        //     var user = await _userRepository.FindAsync(userId);
+
+        //     var duration = new TimeSpan(1, 0, 0, 0);
+
+        //     var userReadingPackage = new UserReadingPackage(
+        //         GuidGenerator.Create(),
+        //         userId,
+        //         readingPackageId,
+        //         duration
+        //     );
+
+        //     user.CurrentPackage = userReadingPackage;
+
+        //     return userReadingPackage;
+        // }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
 namespace ApiDemo.Books
@@ -35,5 +36,15 @@ namespace ApiDemo.Books
         /// </summary>
         /// <example>In a brief statement on Friday night, Minister for Magic Cornelius Fudge confirmed that He Who Must Not Be Named has returned to this country and is once more active. \"It is with great regret that I must confirm that the wizard styling himself Lord - well, you know who I mean - is alive and among us again,\" said Fudge.' These dramatic words appeared in the final pages ofHarry Potter and the Order of the Phoenix. In the midst of this battle of good and evil,Harry Potter and the Half-Blood Prince takes up the story of Harry Potter's sixth year at Hogwarts School of Witchcraft and Wizardry, with Voldemort's power and followers increasing day by day ...</example>
         public string Description { get; set; }
+        /// <summary>
+        /// Author List.
+        /// </summary>
+        /// <example></example>
+        public List<BookWithAuthorDto> Authors { get; set; }
+        /// <summary>
+        /// Category List.
+        /// </summary>
+        /// <example></example>
+        public List<BookWithCategoryDto> Categories { get; set; }
     }
 }

@@ -158,6 +158,46 @@ namespace ApiDemo.Migrations
                     b.ToTable("AppBooks", (string)null);
                 });
 
+            modelBuilder.Entity("ApiDemo.Books.BookWithAuthor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("AppBookWithAuthors", (string)null);
+                });
+
+            modelBuilder.Entity("ApiDemo.Books.BookWithCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("AppBookWithCategorys", (string)null);
+                });
+
             modelBuilder.Entity("ApiDemo.Categories.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -279,6 +319,38 @@ namespace ApiDemo.Migrations
                     b.ToTable("AppReadingPackages", (string)null);
                 });
 
+            modelBuilder.Entity("ApiDemo.Users.Highlight", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AppHightlights", (string)null);
+                });
+
             modelBuilder.Entity("ApiDemo.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -348,6 +420,85 @@ namespace ApiDemo.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers", (string)null);
+                });
+
+            modelBuilder.Entity("ApiDemo.Users.UserHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<TimeSpan>("ReadingTime")
+                        .HasColumnType("interval");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AppUserHistories", (string)null);
+                });
+
+            modelBuilder.Entity("ApiDemo.Users.UserLibrary", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsReading")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("NumberOfReadPages")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AppUserLibraries", (string)null);
+                });
+
+            modelBuilder.Entity("ApiDemo.Users.UserReadingPackage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("ReadingPackageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReadingPackageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AppUserReadingPackages", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
@@ -2281,6 +2432,90 @@ namespace ApiDemo.Migrations
                     b.ToTable("AbpTenantConnectionStrings", (string)null);
                 });
 
+            modelBuilder.Entity("ApiDemo.Books.BookWithAuthor", b =>
+                {
+                    b.HasOne("ApiDemo.Authors.Author", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiDemo.Books.Book", null)
+                        .WithMany("Authors")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiDemo.Books.BookWithCategory", b =>
+                {
+                    b.HasOne("ApiDemo.Books.Book", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiDemo.Categories.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiDemo.Users.Highlight", b =>
+                {
+                    b.HasOne("ApiDemo.Books.Book", null)
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiDemo.Users.User", null)
+                        .WithMany("Highlights")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiDemo.Users.UserHistory", b =>
+                {
+                    b.HasOne("ApiDemo.Users.User", null)
+                        .WithMany("Histories")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiDemo.Users.UserLibrary", b =>
+                {
+                    b.HasOne("ApiDemo.Books.Book", null)
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiDemo.Users.User", null)
+                        .WithMany("UserLibraries")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiDemo.Users.UserReadingPackage", b =>
+                {
+                    b.HasOne("ApiDemo.ReadingPackages.ReadingPackage", null)
+                        .WithMany()
+                        .HasForeignKey("ReadingPackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiDemo.Users.User", null)
+                        .WithMany("Packages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
                 {
                     b.HasOne("Volo.Abp.AuditLogging.AuditLog", null)
@@ -2556,6 +2791,24 @@ namespace ApiDemo.Migrations
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiDemo.Books.Book", b =>
+                {
+                    b.Navigation("Authors");
+
+                    b.Navigation("Categories");
+                });
+
+            modelBuilder.Entity("ApiDemo.Users.User", b =>
+                {
+                    b.Navigation("Highlights");
+
+                    b.Navigation("Histories");
+
+                    b.Navigation("Packages");
+
+                    b.Navigation("UserLibraries");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>

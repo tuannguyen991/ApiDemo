@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ApiDemo.ReadingPackages;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
@@ -11,14 +12,17 @@ namespace ApiDemo.Users
     public class UserService : ApiDemoAppService, IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IReadingPackageRepository _readingPackageRepository;
         private readonly UserManager _userManager;
 
         public UserService(
             IUserRepository userRepository,
+            IReadingPackageRepository readingPackageRepository,
             UserManager userManager
         )
         {
             _userRepository = userRepository;
+            _readingPackageRepository = readingPackageRepository;
             _userManager = userManager;
         }
 
@@ -121,6 +125,30 @@ namespace ApiDemo.Users
 
 
             await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task<UserDto> AddPackageAsync(CreateUserReadingPackageDto input)
+        {
+            var user = await _userRepository.FindAsync(input.UserId);
+
+            var readingPackage = await _readingPackageRepository.GetAsync(input.ReadingPackageId);
+
+            await _userManager.AddPackageAsync(user, readingPackage.Id, readingPackage.Duration);
+
+            await _userRepository.UpdateAsync(user);
+
+            return ObjectMapper.Map<User, UserDto>(user);
+        }
+
+        public async Task<UserDto> AddHistoryAsync(CreateUserHistoryDto input)
+        {
+            var user = await _userRepository.FindAsync(input.UserId);
+
+            await _userManager.AddHistoryAsync(user, input.Date, input.ReadingTime);
+
+            await _userRepository.UpdateAsync(user);
+
+            return ObjectMapper.Map<User, UserDto>(user);
         }
     }
 }

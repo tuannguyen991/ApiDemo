@@ -15,45 +15,6 @@ namespace ApiDemo.Controllers
         {
             _userService = userService;
         }
-        // / <summary>
-        // / Get users list with paged result.
-        // / </summary>
-        // / <remarks>
-        // / Get users list with paged result.
-        // / </remarks>
-        // / <param name="input">Paged Condition</param>
-        // / <returns></returns>
-        // [HttpGet]
-        // public async Task<PagedResultDto<UserDto>> GetListAsync([FromQuery] GetUserListDto input)
-        // {
-        //     return await _userService.GetListAsync(input);
-        // }
-        // /// <summary>
-        // /// Get user by Id.
-        // /// </summary>
-        // /// <remarks>
-        // /// Get user by Id.
-        // /// </remarks>
-        // /// <param name="id">User Id</param>
-        // [HttpGet]
-        // [Route("{id}")]
-        // public async Task<UserDto> GetAsync([FromRoute] Guid id)
-        // {
-        //     return await _userService.GetAsync(id);
-        // }
-        // /// <summary>
-        // /// Delete user by Id.
-        // /// </summary>
-        // /// <remarks>
-        // /// Delete user by Id.
-        // /// </remarks>
-        // /// <param name="id">User Id</param>
-        // [HttpDelete]
-        // [Route("{id}")]
-        // public async Task DeleteAsync([FromRoute] Guid id)
-        // {
-        //     await _userService.DeleteAsync(id);
-        // }
         /// <summary>
         /// Create user.
         /// </summary>
@@ -93,21 +54,31 @@ namespace ApiDemo.Controllers
         {
             await _userService.UpdateAsync(id, input);
         }
-
-
-        // /// <summary>
-        // /// Update user by Id.
-        // /// </summary>
-        // /// <remarks>
-        // /// Update user.
-        // /// </remarks>
-        // /// <param name="id">User Id</param>
-        // /// <param name="input">User Infomation</param>
-        // [HttpPut]
-        // [Route("{id}")]
-        // public async Task UpdateAsync([FromRoute] Guid id, [FromBody] UpdateUserDto input)
-        // {
-        //     await _userService.UpdateAsync(id, input);
-        // }
+        /// <summary>
+        /// Add Reading Package.
+        /// </summary>
+        /// <remarks>
+        /// Add Reading Package.
+        /// </remarks>
+        /// <param name="input">Package Infomation</param>
+        [HttpPost]
+        [Route("add-reading-package")]
+        public async Task<UserDto> AddPackageAsync([FromBody] CreateUserReadingPackageDto input)
+        {
+            return await _userService.AddPackageAsync(input);
+        }
+        /// <summary>
+        /// Add History User.
+        /// </summary>
+        /// <remarks>
+        /// Add History User.
+        /// </remarks>
+        /// <param name="input">History Infomation</param>
+        [HttpPost]
+        [Route("add-history")]
+        public async Task<UserDto> AddHistoryAsync([FromBody] CreateUserHistoryDto input)
+        {
+            return await _userService.AddHistoryAsync(input);
+        }
     }
 }

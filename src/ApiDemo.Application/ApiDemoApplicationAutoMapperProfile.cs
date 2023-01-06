@@ -19,5 +19,11 @@ public class ApiDemoApplicationAutoMapperProfile : Profile
         CreateMap<ReadingPackage, ReadingPackageDto>();
         CreateMap<Category, CategoryDto>();
         CreateMap<Book, BookDto>();
+        CreateMap<UserReadingPackage, UserReadingPackageDto>();
+        CreateMap<UserHistory, UserHistoryDto>();
+        CreateMap<BookWithAuthor, BookWithAuthorDto>();
+        CreateMap<BookWithCategory, BookWithCategoryDto>();
+        CreateMap<UserLibrary, UserLibraryDto>();
+        CreateMap<Highlight, HighlightDto>();
     }
 }

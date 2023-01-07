@@ -8,8 +8,8 @@ Prerequisite:
 
 Perform the following steps to run the application:
 - Open git bash at directory build
-- Run: bash 1.1.run-docker-infrastructure.sh
-- Run: bash 1.2.run-migrations.sh 
-- Run: bash 1.3.run-tye.sh
+- Run: bash 1.1.run-docker-infrastructure.sh (create an instance of PosgreSQL)
+- Run: bash 1.2.run-migrations.sh (build whole solution, create database in PosgreSQL and seed initial data)
+- Run: bash 1.3.run-tye.sh (run solution)
 
 Note: Just run files 1.1 and 1.2 the first time to configure the base of the application. From the 2nd time onwards, to run the application just run 1.3

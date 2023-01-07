@@ -74,7 +74,7 @@ public class ApiDemoDbContext :
 
     public DbSet<BookWithAuthor> BookWithAuthors { get; set; }
 
-    public DbSet<BookWithCategory> BookWithCategorys { get; set; }
+    public DbSet<BookWithCategory> BookWithCategories { get; set; }
 
     public DbSet<UserLibrary> UserLibraries { get; set; }
     public DbSet<Highlight> Highlights { get; set; }
@@ -229,7 +229,7 @@ public class ApiDemoDbContext :
 
         builder.Entity<BookWithCategory>(b =>
         {
-            b.ToTable(ApiDemoConsts.DbTablePrefix + "BookWithCategorys",
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "BookWithCategories",
                 ApiDemoConsts.DbSchema);
 
             b.ConfigureByConvention();

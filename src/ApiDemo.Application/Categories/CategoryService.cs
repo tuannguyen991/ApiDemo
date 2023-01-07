@@ -34,7 +34,7 @@ namespace ApiDemo.Categories
                 input.Sorting = nameof(Category.Name);
             }
 
-            var categorys = await _categoryRepository.GetListAsync(
+            var categories = await _categoryRepository.GetListAsync(
                 input.SkipCount,
                 input.MaxResultCount,
                 input.Sorting,
@@ -46,7 +46,7 @@ namespace ApiDemo.Categories
                 : await _categoryRepository.CountAsync(
                     category => category.Name.Contains(input.Filter));
 
-            return ObjectMapper.Map<List<Category>, List<CategoryDto>>(categorys);
+            return ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories);
         }
 
         public async Task<CategoryDto> CreateAsync(CreateCategoryDto input)

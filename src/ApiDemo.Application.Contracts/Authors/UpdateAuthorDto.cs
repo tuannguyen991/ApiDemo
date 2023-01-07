@@ -26,7 +26,7 @@ namespace ApiDemo.Authors
         /// <summary>
         /// Image Link of Author.
         /// </summary>
-        /// <example>https://www.shutterstock.com/image-photo/jk-rowling-arriving-world-premiere-600w-89959006.jpg</example>
+        /// <example>https://www.dropbox.com/s/wholj2q1o8floky/rowling.jpg?raw=1</example>
         public string ImageLink { get; set; }
     }
 }

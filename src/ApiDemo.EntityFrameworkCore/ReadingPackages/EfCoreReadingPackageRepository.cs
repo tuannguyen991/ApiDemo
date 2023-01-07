@@ -20,6 +20,15 @@ namespace ApiDemo.ReadingPackages
         {
         }
 
+        public async Task<ReadingPackage> FindByNameAsync(string name)
+        {
+            var queryable = await WithDetailsAsync();
+
+            var query = queryable.Where(readingPackage => readingPackage.Name == name);
+
+            return await AsyncExecuter.FirstOrDefaultAsync(query);
+        }
+
         public async Task<List<ReadingPackage>> GetListAsync(
             int skipCount,
             int maxResultCount,

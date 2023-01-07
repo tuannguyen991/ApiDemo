@@ -21,6 +21,15 @@ namespace ApiDemo.Categories
         {
         }
 
+        public async Task<Category> FindByNameAsync(string name)
+        {
+            var queryable = await WithDetailsAsync();
+
+            var query = queryable.Where(category => category.Name == name);
+
+            return await AsyncExecuter.FirstOrDefaultAsync(query);
+        }
+
         public async Task<List<Category>> GetListAsync(
             int skipCount,
             int maxResultCount,

@@ -7,10 +7,15 @@ namespace ApiDemo.Books
     public class BookDto : EntityDto<Guid>
     {
         /// <summary>
-        /// Book Name.
+        /// Book Title.
         /// </summary>
         /// <example>Harry Potter and the Half-blood Prince</example>
-        public string Name { get; set; }
+        public string Title { get; set; }
+        /// <summary>
+        /// Book Subtitle.
+        /// </summary>
+        /// <example></example>
+        public string Subtitle { get; set; }
         /// <summary>
         /// Number of Pages.
         /// </summary>
@@ -24,10 +29,10 @@ namespace ApiDemo.Books
         /// <summary>
         /// Image Link of Book.
         /// </summary>
-        /// <example>http://books.google.com/books/content?id=Pac4vgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api</example>
+        /// <example>https://www.dropbox.com/s/37skw74bz3gys9a/prince.jpg?raw=1</example>
         public string ImageLink { get; set; }
         /// <summary>
-        /// Image Link of Book.
+        /// Average Rating of Book.
         /// </summary>
         /// <example>4.1</example>
         public double AverageRating { get; set; }

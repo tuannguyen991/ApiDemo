@@ -31,7 +31,7 @@ namespace ApiDemo.Books
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {
-                input.Sorting = nameof(Book.Name);
+                input.Sorting = nameof(Book.Title);
             }
 
             var books = await _bookRepository.GetListAsync(
@@ -44,7 +44,7 @@ namespace ApiDemo.Books
             var totalCount = input.Filter == null
                 ? await _bookRepository.CountAsync()
                 : await _bookRepository.CountAsync(
-                    book => book.Name.Contains(input.Filter));
+                    book => book.Title.Contains(input.Filter));
 
             return ObjectMapper.Map<List<Book>, List<BookDto>>(books);
         }
@@ -52,7 +52,8 @@ namespace ApiDemo.Books
         public async Task<BookDto> CreateAsync(CreateBookDto input)
         {
             var book = await _bookManager.CreateAsync(
-                input.Name,
+                input.Title,
+                input.Subtitle,
                 input.NumberOfPages,
                 input.EpubLink,
                 input.ImageLink,
@@ -73,7 +74,9 @@ namespace ApiDemo.Books
             //     await _bookManager.ChangeNameAsync(book, input.Name);
             // }
 
-            book.Name = input.Name;
+            book.Title = input.Title;
+
+            book.Subtitle = input.Subtitle;
 
             book.NumberOfPages = input.NumberOfPages;
 

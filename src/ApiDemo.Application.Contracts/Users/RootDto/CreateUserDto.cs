@@ -33,7 +33,7 @@ namespace ApiDemo.Users
         /// <summary>
         /// Avatar.
         /// </summary>
-        /// <example></example>
+        /// <example>https://www.dropbox.com/s/jseijks3wxb1jmp/avatarTuan.jpg?raw=1</example>
         public string ImageLink { get; set; }
     }
 }

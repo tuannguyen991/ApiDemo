@@ -7,6 +7,8 @@ namespace ApiDemo.Categories
 {
     public interface ICategoryRepository : IRepository<Category, Guid>
     {
+        Task<Category> FindByNameAsync(string name);
+
         Task<List<Category>> GetListAsync(
             int skipCount,
             int maxResultCount,

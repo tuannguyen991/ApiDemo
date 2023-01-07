@@ -16,7 +16,8 @@ namespace ApiDemo.Books
         }
 
         public Task<Book> CreateAsync(
-            string name,
+            string title,
+            string subtitle,
             int numberOfPages,
             string epubLink,
             string imageLink,
@@ -26,7 +27,8 @@ namespace ApiDemo.Books
             return Task.FromResult(
                 new Book(
                     GuidGenerator.Create(),
-                    name,
+                    title,
+                    subtitle,
                     numberOfPages,
                     epubLink,
                     imageLink,

@@ -21,6 +21,15 @@ namespace ApiDemo.Books
         {
         }
 
+        public async Task<Book> FindByTitleAsync(string title)
+        {
+            var queryable = await WithDetailsAsync();
+
+            var query = queryable.Where(book => book.Title == title);
+
+            return await AsyncExecuter.FirstOrDefaultAsync(query);
+        }
+
         public async Task<List<Book>> GetListAsync(
             int skipCount,
             int maxResultCount,
@@ -31,7 +40,7 @@ namespace ApiDemo.Books
 
             var query = queryable.WhereIf(
                             !filter.IsNullOrWhiteSpace(),
-                            author => author.Name.Contains(filter)
+                            author => author.Title.Contains(filter)
                         )
                         .OrderBy(sorting)
                         .Skip(skipCount)

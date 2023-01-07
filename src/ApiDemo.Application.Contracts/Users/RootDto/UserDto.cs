@@ -24,7 +24,7 @@ namespace ApiDemo.Users
         /// <summary>
         /// Avatar.
         /// </summary>
-        /// <example>https://thumbs.dreamstime.com/b/portrait-young-man-beautiful-handsome-boy-avatar-portrait-young-man-beautiful-handsome-boy-avatar-guy-dirty-hair-male-131435304.jpg</example>
+        /// <example>https://www.dropbox.com/s/jseijks3wxb1jmp/avatarTuan.jpg?raw=1</example>
         public string ImageLink { get; set; }
         /// <summary>
         /// Total Reading Time.

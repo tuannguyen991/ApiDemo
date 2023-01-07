@@ -7,6 +7,8 @@ namespace ApiDemo.ReadingPackages
 {
     public interface IReadingPackageRepository : IRepository<ReadingPackage, Guid>
     {
+        Task<ReadingPackage> FindByNameAsync(string name);
+
         Task<List<ReadingPackage>> GetListAsync(
             int skipCount,
             int maxResultCount,

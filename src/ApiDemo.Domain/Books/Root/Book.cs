@@ -6,7 +6,8 @@ namespace ApiDemo.Books
 {
     public class Book : FullAuditedAggregateRoot<Guid>
     {
-        public string Name { get; set; }
+        public string Title { get; set; }
+        public string Subtitle { get; set; }
         public int NumberOfPages { get; set; }
         public string EpubLink { get; set; }
         public string ImageLink { get; set; }
@@ -22,7 +23,8 @@ namespace ApiDemo.Books
 
         internal Book(
             Guid id,
-            string name,
+            string title,
+            string subtitle,
             int numberOfPages,
             string epubLink,
             string imageLink,
@@ -30,7 +32,8 @@ namespace ApiDemo.Books
         )
             : base(id)
         {
-            Name = name;
+            Title = title;
+            Subtitle = subtitle;
             NumberOfPages = numberOfPages;
             EpubLink = epubLink;
             ImageLink = imageLink;

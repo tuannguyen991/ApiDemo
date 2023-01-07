@@ -7,6 +7,8 @@ namespace ApiDemo.Books
 {
     public interface IBookRepository : IRepository<Book, Guid>
     {
+        Task<Book> FindByTitleAsync(string title);
+
         Task<List<Book>> GetListAsync(
             int skipCount,
             int maxResultCount,

@@ -5,6 +5,7 @@ Prerequisite:
 - Download Docker: https://docs.docker.com/desktop/install/windows-install/
 - To install tye, run command in terminal: dotnet tool install -g Microsoft.Tye --version "0.11.0-alpha.22111.1"
 - Git bash: https://github.com/git-for-windows/git/releases/download/v2.37.3.windows.1/Git-2.37.3-64-bit.exe
+- ngrok (for development): https://ngrok.com/download
 
 Perform the following steps to run the application:
 - Open git bash at directory build
@@ -13,3 +14,6 @@ Perform the following steps to run the application:
 - Run: bash 1.3.run-tye.sh (run solution)
 
 Note: Just run files 1.1 and 1.2 the first time to configure the base of the application. From the 2nd time onwards, to run the application just run 1.3
+
+To forward to an https server: 
+- Type command: ngrok http https://localhost:44393

@@ -23,8 +23,6 @@ namespace ApiDemo
         private readonly ICategoryRepository _categoryRepository;
         private readonly IBookRepository _bookRepository;
 
-        private readonly Option _option = Option.InitialPrimary;
-
         public ApiDemoDataSeedContributor(
             IGuidGenerator guidGenerator,
             IReadingPackageRepository readingPackageRepository,
@@ -44,7 +42,8 @@ namespace ApiDemo
 
         public async Task SeedAsync(DataSeedContext context)
         {
-            switch (_option)
+            var option = context.Properties["option"];
+            switch (option)
             {
                 case Option.InitialPrimary:
                     await SeedReadingPackageAsync();

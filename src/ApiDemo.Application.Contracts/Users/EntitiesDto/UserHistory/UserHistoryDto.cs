@@ -3,7 +3,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace ApiDemo.Users
 {
-    public class UserHistoryDto : EntityDto<Guid>
+    public class UserHistoryDto
     {
         /// <summary>
         /// Date.

@@ -11,11 +11,10 @@ namespace ApiDemo.Users
 
         Task<User> FindAsync(Guid id);
 
-        // Task<List<User>> GetListAsync(
-        //     int skipCount,
-        //     int maxResultCount,
-        //     string sorting,
-        //     string filter = null
-        // );
+        Task<List<Highlight>> FindHighlightsAsync(Guid userId, Guid bookId);
+
+        Task<List<UserLibrary>> GetReadingBooksAsync(Guid id);
+
+        Task<List<UserLibrary>> GetFavoriteBooksAsync(Guid id);
     }
 }

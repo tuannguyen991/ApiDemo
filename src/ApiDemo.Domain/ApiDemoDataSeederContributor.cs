@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiDemo.Authors;
@@ -73,7 +74,8 @@ namespace ApiDemo
                 _guidGenerator.Create(),
                 UserBac.USERNAME,
                 "123456",
-                "Ngô Thị Hà Bắc",
+                "Thị Hà Bắc",
+                "Ngô",
                 "bac.ngo.bker2019@hcmut.edu.vn",
                 new DateTime(2001, 07, 27),
                 "https://www.dropbox.com/s/6k4hbbwr4r705p4/avatarBac.jpg?raw=1"
@@ -287,16 +289,16 @@ namespace ApiDemo
 
         public async Task SeedUserHistoriesAsync()
         {
+            Random random = new Random();
+
             var user = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
 
-            var readingTimes = new int[] { 45, 12, 31, 04, 17, 55, 23, 40 };
-
-            var userHistories = Enumerable.Range(1, 8).Select(
-                (x, idx) => new UserHistory(
+            var userHistories = Enumerable.Range(1, 10).Select(
+                x => new UserHistory(
                     _guidGenerator.Create(),
                     user.Id,
-                    new DateTime(2023, 01, x),
-                    new TimeSpan(0, readingTimes[idx], 0)
+                    DateTime.Now.Subtract(TimeSpan.FromDays(x)),
+                    new TimeSpan(0, random.Next(5, 59), 0)
                 )
             ).ToList();
 
@@ -309,38 +311,80 @@ namespace ApiDemo
         {
             var user = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
 
-            var book = await _bookRepository.FindByTitleAsync(BookTitle.STONE);
+            var bookStone = await _bookRepository.FindByTitleAsync(BookTitle.STONE);
 
-            var userLibrary = new UserLibrary(
-                _guidGenerator.Create(),
-                user.Id,
-                book.Id,
-                true,
-                true
-            );
+            var bookGates = await _bookRepository.FindByTitleAsync(BookTitle.GATES);
 
-            user.UserLibraries.Add(userLibrary);
+            var bookPrince = await _bookRepository.FindByTitleAsync(BookTitle.PRINCE);
+
+            user.UserLibraries.AddRange(new List<UserLibrary> {
+                new UserLibrary(
+                    _guidGenerator.Create(),
+                    user.Id,
+                    bookStone.Id,
+                    true,
+                    true,
+                    10,
+                    DateTime.Now
+                ),
+                new UserLibrary(
+                    _guidGenerator.Create(),
+                    user.Id,
+                    bookGates.Id,
+                    false,
+                    true,
+                    29,
+                    DateTime.Now
+                ),
+                new UserLibrary(
+                    _guidGenerator.Create(),
+                    user.Id,
+                    bookPrince.Id,
+                    true,
+                    false,
+                    0,
+                    null
+                )
+            });
 
             await _userRepository.UpdateAsync(user);
         }
 
         public async Task SeedHighlightsAsync()
         {
+
+            // var user = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
+
+            // var userHistories = Enumerable.Range(1, 10).Select(
+            //     (x, idx) => new UserHistory(
+            //         _guidGenerator.Create(),
+            //         user.Id,
+            //         DateTime.Now.Subtract(TimeSpan.FromDays(x)),
+            //         new TimeSpan(0, random.Next(5, 59), 0)
+            //     )
+            // ).ToList();
+
+            // user.Histories.AddRange(userHistories);
+
+            // await _userRepository.UpdateAsync(user);
+
             var user = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
 
             var book = await _bookRepository.FindByTitleAsync(BookTitle.STONE);
 
-            var highlight = new Highlight(
-                _guidGenerator.Create(),
-                user.Id,
-                book.Id,
-                new DateTime(2023, 01, 03),
-                "",
-                "",
-                "this is a note"
-            );
+            var highlights = Enumerable.Range(1, 2).Select(
+                x => new Highlight(
+                    _guidGenerator.Create(),
+                    user.Id,
+                    book.Id,
+                    DateTime.Now.Subtract(TimeSpan.FromDays(x)),
+                    "",
+                    "",
+                    "this is a note"
+                    )
+            ).ToList();
 
-            user.Highlights.Add(highlight);
+            user.Highlights.AddRange(highlights);
 
             await _userRepository.UpdateAsync(user);
         }
@@ -365,7 +409,7 @@ namespace ApiDemo
             var authorDuflo = await _authorRepository.FindByNameAsync(AuthorName.DUFLO);
 
             //
-            bookStone.Authors.AddRange(new []
+            bookStone.Authors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),
@@ -375,7 +419,7 @@ namespace ApiDemo
                 }
             );
 
-            bookPrince.Authors.AddRange(new []
+            bookPrince.Authors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),
@@ -385,7 +429,7 @@ namespace ApiDemo
                 }
             );
 
-            bookGates.Authors.AddRange(new []
+            bookGates.Authors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),
@@ -395,7 +439,7 @@ namespace ApiDemo
                 }
             );
 
-            bookWage.Authors.AddRange(new []
+            bookWage.Authors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),
@@ -411,7 +455,7 @@ namespace ApiDemo
                 }
             );
 
-            bookThings.Authors.AddRange(new []
+            bookThings.Authors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),
@@ -421,7 +465,7 @@ namespace ApiDemo
                 }
             );
 
-            bookTimes.Authors.AddRange(new []
+            bookTimes.Authors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),

@@ -12,7 +12,8 @@ namespace ApiDemo.Users
         public bool IsReading { get; set; }
         public int NumberOfReadPages { get; set; }
         public double Rating { get; set; }
-        
+        public DateTime? LastRead { get; set; }
+
         private UserLibrary()
         {
             /* This constructor is for deserialization / ORM purpose */
@@ -23,7 +24,9 @@ namespace ApiDemo.Users
             Guid userId,
             Guid bookId,
             bool isFavorite,
-            bool isReading
+            bool isReading,
+            int numberOfReadPages,
+            DateTime? lastRead
         )
             : base(id)
         {
@@ -31,8 +34,9 @@ namespace ApiDemo.Users
             BookId = bookId;
             IsFavorite = isFavorite;
             IsReading = isReading;
-            NumberOfReadPages = 0;
+            NumberOfReadPages = numberOfReadPages;
             Rating = 0;
+            LastRead = lastRead;
         }
     }
 }

@@ -7,10 +7,15 @@ namespace ApiDemo.Users
     public class UserDto : EntityDto<Guid>
     {
         /// <summary>
-        /// Full name.
+        /// First name.
         /// </summary>
-        /// <example>Nguyễn Kiều Anh Tuấn</example>
-        public string Name { get; set; }
+        /// <example>Anh Tuấn</example>
+        public string FirstName { get; set; }
+        /// <summary>
+        /// Last name.
+        /// </summary>
+        /// <example>Nguyễn Kiều</example>
+        public string LastName { get; set; }
         /// <summary>
         /// Email.
         /// </summary>
@@ -32,24 +37,24 @@ namespace ApiDemo.Users
         /// <example>0</example>
         public long TotalReadingTime { get; set; }
         /// <summary>
-        /// Current Package.
+        /// Ranking.
         /// </summary>
-        /// <example></example>
-        public UserReadingPackageDto CurrentPackage  { get; set; }
+        /// <example>0</example>
+        public Ranking Ranking { get; set; }
         /// <summary>
         /// Current Package.
         /// </summary>
         /// <example></example>
-        public List<UserHistoryDto> RecentlyHistories  { get; set; }
+        public UserReadingPackageDto CurrentPackage { get; set; }
         /// <summary>
-        ///  Library.
+        /// Current Package.
         /// </summary>
         /// <example></example>
-        public List<UserLibraryDto> UserLibraries  { get; set; } // will be removed
+        public List<UserHistoryDto> RecentlyHistories { get; set; }
         /// <summary>
-        ///  Highlights.
+        ///  Total Reading Books.
         /// </summary>
-        /// <example></example>
-        public List<HighlightDto> Highlights  { get; set; } // will be removed
+        /// <example>2</example>
+        public int TotalReadingBooks { get; set; }
     }
 }

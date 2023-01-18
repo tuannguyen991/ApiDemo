@@ -145,8 +145,14 @@ public class ApiDemoDbContext :
                 .HasForeignKey(p => p.UserId);
 
             b.Ignore(p => p.CurrentPackage);
-
+            
             b.Ignore(p => p.RecentlyHistories);
+
+            b.Ignore(p => p.TotalReadingTime);
+
+            b.Ignore(p => p.TotalReadingBooks);
+
+            b.Ignore(p => p.Ranking);
         });
 
         builder.Entity<UserReadingPackage>(b =>
@@ -179,7 +185,7 @@ public class ApiDemoDbContext :
             b.HasIndex(x => x.Name);
 
             b.HasMany<BookWithAuthor>()
-                .WithOne()
+                .WithOne(u => u.Author)
                 .HasForeignKey(p => p.AuthorId);
         });
 
@@ -191,7 +197,7 @@ public class ApiDemoDbContext :
             b.ConfigureByConvention();
 
             b.HasMany<BookWithCategory>()
-                .WithOne()
+                .WithOne(u => u.Category)
                 .HasForeignKey(p => p.CategoryId);
         });
 
@@ -225,6 +231,8 @@ public class ApiDemoDbContext :
                 ApiDemoConsts.DbSchema);
 
             b.ConfigureByConvention();
+
+            b.Ignore(p => p.AuthorName);
         });
 
         builder.Entity<BookWithCategory>(b =>
@@ -233,6 +241,8 @@ public class ApiDemoDbContext :
                 ApiDemoConsts.DbSchema);
 
             b.ConfigureByConvention();
+
+            b.Ignore(p => p.CategoryName);
         });
 
         builder.Entity<UserLibrary>(b =>

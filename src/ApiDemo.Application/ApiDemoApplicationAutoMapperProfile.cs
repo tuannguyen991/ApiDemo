@@ -23,7 +23,6 @@ public class ApiDemoApplicationAutoMapperProfile : Profile
         CreateMap<UserHistory, UserHistoryDto>();
         CreateMap<BookWithAuthor, BookWithAuthorDto>();
         CreateMap<BookWithCategory, BookWithCategoryDto>();
-        CreateMap<UserLibrary, UserLibraryDto>();
         CreateMap<Highlight, HighlightDto>();
     }
 }

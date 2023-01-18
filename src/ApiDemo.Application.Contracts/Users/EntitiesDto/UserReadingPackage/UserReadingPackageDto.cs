@@ -3,7 +3,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace ApiDemo.Users
 {
-    public class UserReadingPackageDto : EntityDto<Guid>
+    public class UserReadingPackageDto
     {
         /// <summary>
         /// Reading Package Id.

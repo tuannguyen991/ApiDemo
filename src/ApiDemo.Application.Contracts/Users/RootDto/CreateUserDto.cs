@@ -16,10 +16,15 @@ namespace ApiDemo.Users
         /// <example>123456</example>
         public string Password { get; set; }
         /// <summary>
-        /// Full name.
+        /// First name.
         /// </summary>
-        /// <example>Nguyễn Kiều Anh Tuấn</example>
-        public string Name { get; set; }
+        /// <example>Anh Tuấn</example>
+        public string FirstName { get; set; }
+        /// <summary>
+        /// Last name.
+        /// </summary>
+        /// <example>Nguyễn Kiều</example>
+        public string LastName { get; set; }
         /// <summary>
         /// Email.
         /// </summary>

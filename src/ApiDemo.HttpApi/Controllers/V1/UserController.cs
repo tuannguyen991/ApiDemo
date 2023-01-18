@@ -1,6 +1,7 @@
 using ApiDemo.Users;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
@@ -62,7 +63,7 @@ namespace ApiDemo.Controllers
         /// </remarks>
         /// <param name="input">Package Infomation</param>
         [HttpPost]
-        [Route("add-reading-package")]
+        [Route("reading-package")]
         public async Task<UserDto> AddPackageAsync([FromBody] CreateUserReadingPackageDto input)
         {
             return await _userService.AddPackageAsync(input);
@@ -75,10 +76,65 @@ namespace ApiDemo.Controllers
         /// </remarks>
         /// <param name="input">History Infomation</param>
         [HttpPost]
-        [Route("add-history")]
+        [Route("history")]
         public async Task<UserDto> AddHistoryAsync([FromBody] CreateUserHistoryDto input)
         {
             return await _userService.AddHistoryAsync(input);
         }
+        #region User library
+        /// <summary>
+        /// Get Reading Books.
+        /// </summary>
+        /// <remarks>
+        /// Get Reading Books.
+        /// </remarks>
+        /// <param name="id">User ID</param>
+        [HttpGet]
+        [Route("reading-books/{id}")]
+        public async Task<List<UserLibraryDto>> GetReadingBooksAsync([FromRoute] Guid id)
+        {
+            return await _userService.GetReadingBooksAsync(id);
+        }
+        /// <summary>
+        /// Create Reading Books.
+        /// </summary>
+        /// <remarks>
+        /// Create Reading Books.
+        /// </remarks>
+        /// <param name="input">Reading Book Info</param>
+        [HttpPost]
+        [Route("reading-books")]
+        public async Task AddReadingBookAsync([FromBody] CreateUserLibraryDto input)
+        {
+            await _userService.AddReadingBookAsync(input);
+        }
+        /// <summary>
+        /// Get Favorite Books.
+        /// </summary>
+        /// <remarks>
+        /// Get Favorite Books.
+        /// </remarks>
+        /// <param name="id">User ID</param>
+        [HttpGet]
+        [Route("favorite-books/{id}")]
+        public async Task<List<UserLibraryDto>> GetFavoriteBooksAsync([FromRoute] Guid id)
+        {
+            return await _userService.GetFavoriteBooksAsync(id);
+        }
+        /// <summary>
+        /// Create Favorite Books.
+        /// </summary>
+        /// <remarks>
+        /// Create Favorite Books.
+        /// </remarks>
+        /// <param name="input">Favorite Book Info</param>
+        [HttpPost]
+        [Route("favorite-books")]
+        public async Task AddFavoriteBookAsync([FromBody] CreateUserLibraryDto input)
+        {
+            await _userService.AddFavoriteBookAsync(input);
+        }
+        #endregion
+  
     }
 }

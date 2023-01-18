@@ -10,17 +10,38 @@ namespace ApiDemo.Users
     {
         public string Username { get; set; }
         public string Password { get; set; }
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
         public string ImageLink { get; set; }
-        public long TotalReadingTime { get; set; }
+        public long TotalReadingTime
+            => Histories.Sum(userHistory => userHistory.ReadingTime.Minutes);
+        public Ranking Ranking
+        {
+            get
+            {
+                switch (TotalReadingTime)
+                {
+                    case < 50:
+                        return Ranking.Bronze;
+                    case < 500:
+                        return Ranking.Silver;
+                    default:
+                        return Ranking.Gold;
+                }
+            }
+        }
         public List<UserReadingPackage> Packages { get; set; }
-        public UserReadingPackage CurrentPackage => Packages.Count == 0 ? null : Packages.Last();
+        public UserReadingPackage CurrentPackage
+            => Packages.Count == 0 ? null : Packages.Last();
         public List<UserHistory> Histories { get; set; }
-        public List<UserHistory> RecentlyHistories => Histories.Count == 0 ? new List<UserHistory>() : Histories.TakeLast(30).ToList();
-        public List<UserLibrary> UserLibraries { get; set; } // will be removed
-        public List<Highlight> Highlights { get; set; } // will be removed
+        public List<UserHistory> RecentlyHistories
+            => Histories.Where(new RecentlyUserHistorySpecification().ToExpression()).ToList();
+        public List<UserLibrary> UserLibraries { get; set; }
+        public int TotalReadingBooks
+            => UserLibraries.Count(a => a.IsReading);
+        public List<Highlight> Highlights { get; set; }
 
         private User()
         {
@@ -31,7 +52,8 @@ namespace ApiDemo.Users
             Guid id,
             string username,
             string password,
-            string name,
+            string firstName,
+            string lastName,
             string email,
             DateTime birthDate,
             string imageLink
@@ -40,11 +62,11 @@ namespace ApiDemo.Users
         {
             Username = username;
             Password = password;
-            Name = name;
+            FirstName = firstName;
+            LastName = lastName;
             Email = email;
             BirthDate = birthDate;
             ImageLink = imageLink;
-            TotalReadingTime = 0;
             Packages = new List<UserReadingPackage>();
             Histories = new List<UserHistory>();
             UserLibraries = new List<UserLibrary>();

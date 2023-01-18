@@ -17,7 +17,8 @@ namespace ApiDemo.Users
         public Task<User> CreateAsync(
             string username,
             string password,
-            string name,
+            string firstName,
+            string lastName,
             string email,
             DateTime birthDate,
             string imageLink
@@ -28,7 +29,8 @@ namespace ApiDemo.Users
                 GuidGenerator.Create(),
                 username,
                 password,
-                name,
+                firstName,
+                lastName,
                 email,
                 birthDate,
                 imageLink
@@ -88,25 +90,90 @@ namespace ApiDemo.Users
             return Task.CompletedTask;
         }
 
-        // public async Task<UserReadingPackage> AddUserReadingPackageAsync(
-        //     Guid userId,
-        //     Guid readingPackageId
-        // )
-        // {
-        //     var user = await _userRepository.FindAsync(userId);
+        #region Highlight
+        public Task AddHighlightAsync(
+            User user, 
+            Guid bookId,
+            DateTime date,
+            string location,
+            string color,
+            string note
+        )
+        {
+            var highlight = new Highlight(
+                GuidGenerator.Create(),
+                user.Id,
+                bookId,
+                date,
+                location,
+                color,
+                note
+            );
 
-        //     var duration = new TimeSpan(1, 0, 0, 0);
+            user.Highlights.Add(highlight);
+            return Task.CompletedTask;
+        }
 
-        //     var userReadingPackage = new UserReadingPackage(
-        //         GuidGenerator.Create(),
-        //         userId,
-        //         readingPackageId,
-        //         duration
-        //     );
+        public Task DeleteHighlightAsync(
+            User user, 
+            Guid id
+        )
+        {
+            var index = user.Highlights.FindIndex(highlight => highlight.Id == id);
 
-        //     user.CurrentPackage = userReadingPackage;
+            user.Highlights.RemoveAt(index);
 
-        //     return userReadingPackage;
-        // }
+            return Task.CompletedTask;
+        }
+        #endregion
+
+        #region User Library
+        public Task AddReadingBookAsync(
+            User user, 
+            Guid bookId,
+            int numberOfReadPages
+        )
+        {
+            var isReading = true;
+            var isFavorite = false;
+
+            var readingBook = new UserLibrary(
+                GuidGenerator.Create(),
+                user.Id,
+                bookId,
+                isFavorite,
+                isReading,
+                numberOfReadPages,
+                DateTime.Now
+            );
+
+            user.UserLibraries.Add(readingBook);
+            return Task.CompletedTask;
+        }
+
+        public Task AddFavoriteBookAsync(
+            User user, 
+            Guid bookId
+        )
+        {
+            var numberOfReadPages = 0;
+            
+            var isReading = false;
+            var isFavorite = true;
+
+            var favoriteBook = new UserLibrary(
+                GuidGenerator.Create(),
+                user.Id,
+                bookId,
+                isFavorite,
+                isReading,
+                numberOfReadPages,
+                null
+            );
+
+            user.UserLibraries.Add(favoriteBook);
+            return Task.CompletedTask;
+        }
+        #endregion
     }
 }

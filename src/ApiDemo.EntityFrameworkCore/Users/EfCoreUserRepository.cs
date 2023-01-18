@@ -39,27 +39,41 @@ namespace ApiDemo.Users
             return await AsyncExecuter.FirstOrDefaultAsync(query);
         }
 
-        // public async Task<List<User>> GetListAsync(
-        //     int skipCount,
-        //     int maxResultCount,
-        //     string sorting,
-        //     string filter = null)
-        // {
-        //     var dbSet = await GetDbSetAsync();
-        //     return await dbSet
-        //         .WhereIf(
-        //             !filter.IsNullOrWhiteSpace(),
-        //             user => user.Name.Contains(filter)
-        //          )
-        //         .OrderBy(sorting)
-        //         .Skip(skipCount)
-        //         .Take(maxResultCount)
-        //         .ToListAsync();
-        // }
+        public async Task<List<Highlight>> FindHighlightsAsync(Guid userId, Guid bookId)
+        {
+            var user = await FindAsync(userId);
 
-        // protected override IQueryable<User> CreateFilteredQuery( input)
-        // {
-        //     // return Repository.GetAllIncluding(x => x.Categories, x => x.ThumbnailImage, x => x.ProductGroup);
-        // }
+            var highlights = user.Highlights;
+
+            var result = from highlight in highlights
+                         where highlight.BookId == bookId
+                         select highlight;
+
+            return result.ToList();
+        }
+
+        public async Task<List<UserLibrary>> GetReadingBooksAsync(Guid id)
+        {
+            var user = await FindAsync(id);
+            var userLibraries = user.UserLibraries;
+
+            var result = from book in userLibraries
+                         where book.IsReading == true
+                         select book;
+
+            return result.ToList();
+        }
+
+        public async Task<List<UserLibrary>> GetFavoriteBooksAsync(Guid id)
+        {
+            var user = await FindAsync(id);
+            var userLibraries = user.UserLibraries;
+
+            var result = from book in userLibraries
+                         where book.IsFavorite == true
+                         select book;
+
+            return result.ToList();
+        }
     }
 }

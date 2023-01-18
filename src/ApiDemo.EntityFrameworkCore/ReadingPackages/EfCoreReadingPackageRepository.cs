@@ -39,7 +39,7 @@ namespace ApiDemo.ReadingPackages
             return await dbSet
                 .WhereIf(
                     !filter.IsNullOrWhiteSpace(),
-                    readingPackage => readingPackage.Name.Contains(filter)
+                    readingPackage => readingPackage.Name.ToLower().Contains(filter.ToLower())
                  )
                 .OrderBy(sorting)
                 .Skip(skipCount)

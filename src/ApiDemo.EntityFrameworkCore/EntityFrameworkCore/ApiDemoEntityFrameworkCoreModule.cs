@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ApiDemo.Books;
 using ApiDemo.Users;
 using Microsoft.EntityFrameworkCore;
@@ -60,18 +61,34 @@ public class ApiDemoEntityFrameworkCoreModule : AbpModule
         {
             options.Entity<User>(o =>
             {
+                var daysRecently = DateTime.Now.Subtract(TimeSpan.FromDays(10));
+
                 o.DefaultWithDetailsFunc = query => query
-                                            .Include(o => o.Packages)
-                                            .Include(o => o.Histories)
-                                            .Include(o => o.UserLibraries) // will be removed
-                                            .Include(o => o.Highlights); // will be removed
+                                            .Include(
+                                                o => o.Packages
+                                                    .OrderBy(package => package.StartDate)
+                                            )
+                                            .Include(
+                                                o => o.Histories
+                                                    .OrderBy(userHistory => userHistory.Date)
+                                            )
+                                            .Include(
+                                                o => o.UserLibraries
+                                                    .OrderBy(userLibrary => userLibrary.LastRead)
+                                            )
+                                            .Include(
+                                                o => o.Highlights
+                                                    .OrderByDescending(highlight => highlight.Date)
+                                            );
             });
 
             options.Entity<Book>(o =>
             {
                 o.DefaultWithDetailsFunc = query => query
                                             .Include(o => o.Authors)
-                                            .Include(o => o.Categories);
+                                                .ThenInclude(e => e.Author)
+                                            .Include(o => o.Categories)
+                                                .ThenInclude(e => e.Category);
             });
         });
     }

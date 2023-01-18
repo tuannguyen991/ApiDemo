@@ -40,15 +40,35 @@ namespace ApiDemo.Books
 
             var query = queryable.WhereIf(
                             !filter.IsNullOrWhiteSpace(),
-                            author => author.Title.Contains(filter)
+                            book => book.Title.ToLower().Contains(filter.ToLower())
                         )
                         .OrderBy(sorting)
                         .Skip(skipCount)
                         .Take(maxResultCount);
 
-
-            // var dbSet = await GetDbSetAsync();
             return await query.ToListAsync();
+        }
+
+        public async Task<List<Book>> GetListByAuthorIdAsync(Guid authorId)
+        {
+            var queryable = await WithDetailsAsync();
+
+            var query = queryable.Where(
+                            book => book.Authors.Any(author => author.AuthorId == authorId)
+                        );
+
+            return await query.ToListAsync();        
+        }
+
+        public async Task<List<Book>> GetListByCategoryIdAsync(Guid categoryId)
+        {
+            var queryable = await WithDetailsAsync();
+
+            var query = queryable.Where(
+                            book => book.Categories.Any(category => category.CategoryId == categoryId)
+                        );
+
+            return await query.ToListAsync(); 
         }
     }
 }

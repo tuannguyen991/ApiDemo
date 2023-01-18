@@ -30,6 +30,34 @@ namespace ApiDemo.Controllers
             return await _bookService.GetListAsync(input);
         }
         /// <summary>
+        /// Get categories list by Category Id.
+        /// </summary>
+        /// <remarks>
+        /// Get categories list by Category Id.
+        /// </remarks>
+        /// <param name="cagoryId">Category Id</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("by-category/{cagoryId}")]
+        public async Task<List<BookDto>> GetListByCategoryIdAsync([FromRoute] Guid cagoryId)
+        {
+            return await _bookService.GetListByCategoryIdAsync(cagoryId);
+        }
+        /// <summary>
+        /// Get categories list by Author Id.
+        /// </summary>
+        /// <remarks>
+        /// Get categories list by Author Id.
+        /// </remarks>
+        /// <param name="authorId">Author Id</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("by-author/{authorId}")]
+        public async Task<List<BookDto>> GetListByAuthorIdAsync([FromRoute] Guid authorId)
+        {
+            return await _bookService.GetListByAuthorIdAsync(authorId);
+        }
+        /// <summary>
         /// Get book by Id.
         /// </summary>
         /// <remarks>

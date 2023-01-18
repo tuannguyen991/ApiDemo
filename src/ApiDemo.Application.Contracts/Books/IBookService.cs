@@ -12,6 +12,10 @@ namespace ApiDemo.Books
 
         Task<List<BookDto>> GetListAsync(GetBookListDto input);
 
+        Task<List<BookDto>> GetListByCategoryIdAsync(Guid categoryId);
+
+        Task<List<BookDto>> GetListByAuthorIdAsync(Guid authorId);
+
         Task<BookDto> CreateAsync(CreateBookDto input);
 
         Task UpdateAsync(Guid id, UpdateBookDto input);

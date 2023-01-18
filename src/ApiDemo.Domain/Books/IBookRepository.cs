@@ -15,5 +15,9 @@ namespace ApiDemo.Books
             string sorting,
             string filter = null
         );
+
+        Task<List<Book>> GetListByCategoryIdAsync(Guid categoryId);
+
+        Task<List<Book>> GetListByAuthorIdAsync(Guid authorId);
     }
 }

@@ -41,12 +41,19 @@ namespace ApiDemo.Books
                 input.Filter
             );
 
-            var totalCount = input.Filter == null
-                ? await _bookRepository.CountAsync()
-                : await _bookRepository.CountAsync(
-                    book => book.Title.Contains(input.Filter));
-
             return ObjectMapper.Map<List<Book>, List<BookDto>>(books);
+        }
+
+        public async Task<List<BookDto>> GetListByCategoryIdAsync(Guid categoryId)
+        {
+            var books = await _bookRepository.GetListByCategoryIdAsync(categoryId);
+            return ObjectMapper.Map<List<Book>, List<BookDto>>(books);
+        }
+
+        public async Task<List<BookDto>> GetListByAuthorIdAsync(Guid authorId)
+        {
+            var books = await _bookRepository.GetListByAuthorIdAsync(authorId);
+            return ObjectMapper.Map<List<Book>, List<BookDto>>(books);        
         }
 
         public async Task<BookDto> CreateAsync(CreateBookDto input)
@@ -68,11 +75,6 @@ namespace ApiDemo.Books
         public async Task UpdateAsync(Guid id, UpdateBookDto input)
         {
             var book = await _bookRepository.GetAsync(id);
-
-            // if (book.Name != input.Name)
-            // {
-            //     await _bookManager.ChangeNameAsync(book, input.Name);
-            // }
 
             book.Title = input.Title;
 

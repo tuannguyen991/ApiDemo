@@ -40,7 +40,7 @@ namespace ApiDemo.Categories
             return await dbSet
                 .WhereIf(
                     !filter.IsNullOrWhiteSpace(),
-                    author => author.Name.Contains(filter)
+                    author => author.Name.ToLower().Contains(filter.ToLower())
                  )
                 .OrderBy(sorting)
                 .Skip(skipCount)

@@ -48,13 +48,19 @@ namespace ApiDemo.Users
             return ObjectMapper.Map<User, UserDto>(user);
         }
 
-        public async Task<UserDto> VerifyAsync(VerifyUserDto input)
+        public async Task<Guid> VerifyAsync(VerifyUserDto input)
         {
             var user = await _userManager.VerifyAsync(
                 input.Username,
                 input.Password
             );
 
+            return user.Id;
+        }
+
+        public async Task<UserDto> GetAsync(Guid id)
+        {
+            var user = await _userRepository.GetAsync(id);
             return ObjectMapper.Map<User, UserDto>(user);
         }
 

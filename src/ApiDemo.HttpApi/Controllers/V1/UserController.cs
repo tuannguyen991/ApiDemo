@@ -37,9 +37,22 @@ namespace ApiDemo.Controllers
         /// <param name="input">Verify User Infomation</param>
         [HttpPost]
         [Route("verify")]
-        public async Task<UserDto> VerifyAsync([FromBody] VerifyUserDto input)
+        public async Task<Guid> VerifyAsync([FromBody] VerifyUserDto input)
         {
             return await _userService.VerifyAsync(input);
+        }
+        /// <summary>
+        /// Get user information.
+        /// </summary>
+        /// <remarks>
+        /// Get user information.
+        /// </remarks>
+        /// <param name="id">User Id</param>
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<UserDto> GetAsync([FromRoute] Guid id)
+        {
+            return await _userService.GetAsync(id);
         }
         /// <summary>
         /// Update information user.

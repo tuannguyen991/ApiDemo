@@ -10,7 +10,9 @@ namespace ApiDemo.Users
     {
         Task<UserDto> CreateAsync(CreateUserDto input);
 
-        Task <UserDto> VerifyAsync(VerifyUserDto input);
+        Task <Guid> VerifyAsync(VerifyUserDto input);
+
+        Task <UserDto> GetAsync(Guid id);
 
         Task UpdateAsync(Guid id, UpdateUserDto input);
 

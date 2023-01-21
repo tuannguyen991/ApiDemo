@@ -8,7 +8,8 @@ namespace ApiDemo.Users
     {
         public Func<UserHistory, bool> ToExpression()
         {
-            var daysRecently = DateTime.Now.Subtract(TimeSpan.FromDays(5));
+            int days = 5;
+            var daysRecently = DateTime.Now.Subtract(TimeSpan.FromDays(days));
             return (userHistory) => (userHistory.Date >= daysRecently);
         }
     }

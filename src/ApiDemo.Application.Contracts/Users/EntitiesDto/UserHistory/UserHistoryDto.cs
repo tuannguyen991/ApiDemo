@@ -14,6 +14,6 @@ namespace ApiDemo.Users
         /// Reading Time.
         /// </summary>
         /// <example>00:45:00</example>
-        public TimeSpan ReadingTime { get; set; }
+        public double ReadingTime { get; set; }
     }
 }

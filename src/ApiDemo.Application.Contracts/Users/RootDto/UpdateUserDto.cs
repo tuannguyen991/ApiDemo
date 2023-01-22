@@ -12,12 +12,12 @@ namespace ApiDemo.Users
         /// <summary>
         /// First name.
         /// </summary>
-        /// <example>Anh Tuấn</example>
+        /// <example>Tuấn</example>
         public string FirstName { get; set; }
         /// <summary>
         /// Last name.
         /// </summary>
-        /// <example>Nguyễn Kiều</example>
+        /// <example>Nguyễn Kiều Anh</example>
         public string LastName { get; set; }
         /// <summary>
         /// Email.

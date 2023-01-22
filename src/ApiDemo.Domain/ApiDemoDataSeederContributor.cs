@@ -74,8 +74,8 @@ namespace ApiDemo
                 _guidGenerator.Create(),
                 UserBac.USERNAME,
                 "123456",
-                "Thị Hà Bắc",
-                "Ngô",
+                "Bắc",
+                "Ngô Thị Hà",
                 "bac.ngo.bker2019@hcmut.edu.vn",
                 new DateTime(2001, 07, 27),
                 "https://www.dropbox.com/s/6k4hbbwr4r705p4/avatarBac.jpg?raw=1"

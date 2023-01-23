@@ -9,8 +9,6 @@ namespace ApiDemo.Books
     {
         public Guid BookId { get; set; }
         public Guid CategoryId { get; set; }
-        public Category Category { get; set; }
-        public string CategoryName => Category.Name;
 
         private BookWithCategory()
         {

@@ -145,7 +145,7 @@ public class ApiDemoDbContext :
                 .HasForeignKey(p => p.UserId);
 
             b.Ignore(p => p.CurrentPackage);
-            
+
             b.Ignore(p => p.RecentlyHistories);
 
             b.Ignore(p => p.TotalReadingTime);
@@ -185,7 +185,7 @@ public class ApiDemoDbContext :
             b.HasIndex(x => x.Name);
 
             b.HasMany<BookWithAuthor>()
-                .WithOne(u => u.Author)
+                .WithOne()
                 .HasForeignKey(p => p.AuthorId);
         });
 
@@ -197,7 +197,7 @@ public class ApiDemoDbContext :
             b.ConfigureByConvention();
 
             b.HasMany<BookWithCategory>()
-                .WithOne(u => u.Category)
+                .WithOne()
                 .HasForeignKey(p => p.CategoryId);
         });
 
@@ -208,11 +208,12 @@ public class ApiDemoDbContext :
 
             b.ConfigureByConvention();
 
-            b.HasMany<BookWithAuthor>(u => u.Authors)
+            b.HasMany<BookWithAuthor>(u => u.BookWithAuthors)
                 .WithOne()
                 .HasForeignKey(p => p.BookId);
 
-            b.HasMany<BookWithCategory>(u => u.Categories)
+            b.HasMany<BookWithCategory>(u => u.BookWithCategories
+            )
                 .WithOne()
                 .HasForeignKey(p => p.BookId);
 
@@ -223,6 +224,10 @@ public class ApiDemoDbContext :
             b.HasMany<Highlight>()
                 .WithOne()
                 .HasForeignKey(p => p.BookId);
+            
+            b.Ignore(b => b.Authors);
+
+            b.Ignore(b => b.Categories);
         });
 
         builder.Entity<BookWithAuthor>(b =>
@@ -231,8 +236,6 @@ public class ApiDemoDbContext :
                 ApiDemoConsts.DbSchema);
 
             b.ConfigureByConvention();
-
-            b.Ignore(p => p.AuthorName);
         });
 
         builder.Entity<BookWithCategory>(b =>
@@ -241,8 +244,6 @@ public class ApiDemoDbContext :
                 ApiDemoConsts.DbSchema);
 
             b.ConfigureByConvention();
-
-            b.Ignore(p => p.CategoryName);
         });
 
         builder.Entity<UserLibrary>(b =>

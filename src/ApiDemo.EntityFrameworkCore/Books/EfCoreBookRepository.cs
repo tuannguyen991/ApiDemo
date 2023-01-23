@@ -54,7 +54,7 @@ namespace ApiDemo.Books
             var queryable = await WithDetailsAsync();
 
             var query = queryable.Where(
-                            book => book.Authors.Any(author => author.AuthorId == authorId)
+                            book => book.BookWithAuthors.Any(author => author.AuthorId == authorId)
                         );
 
             return await query.ToListAsync();        
@@ -65,7 +65,7 @@ namespace ApiDemo.Books
             var queryable = await WithDetailsAsync();
 
             var query = queryable.Where(
-                            book => book.Categories.Any(category => category.CategoryId == categoryId)
+                            book => book.BookWithCategories.Any(category => category.CategoryId == categoryId)
                         );
 
             return await query.ToListAsync(); 

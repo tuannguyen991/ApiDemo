@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using ApiDemo.Authors;
+using ApiDemo.Categories;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace ApiDemo.Books
@@ -13,8 +16,10 @@ namespace ApiDemo.Books
         public string ImageLink { get; set; }
         public double AverageRating { get; set; }
         public string Description { get; set; }
-        public List<BookWithAuthor> Authors { get; set; }
-        public List<BookWithCategory> Categories { get; set; }
+        public List<BookWithAuthor> BookWithAuthors { get; set; }
+        public List<BookWithCategory> BookWithCategories { get; set; }
+        public List<Author> Authors { get; set; }
+        public List<Category> Categories { get; set; }
 
         private Book()
         {
@@ -39,8 +44,8 @@ namespace ApiDemo.Books
             ImageLink = imageLink;
             AverageRating = 0;
             Description = description;
-            Authors = new List<BookWithAuthor>();
-            Categories = new List<BookWithCategory>();
+            BookWithAuthors = new List<BookWithAuthor>();
+            BookWithCategories = new List<BookWithCategory>();
         }
     }
 }

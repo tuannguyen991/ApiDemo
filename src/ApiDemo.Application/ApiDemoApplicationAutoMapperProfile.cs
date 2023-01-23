@@ -1,4 +1,8 @@
-﻿using ApiDemo.Authors;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ApiDemo.Authors;
 using ApiDemo.Books;
 using ApiDemo.Categories;
 using ApiDemo.ReadingPackages;
@@ -21,7 +25,7 @@ public class ApiDemoApplicationAutoMapperProfile : Profile
         CreateMap<Book, BookDto>();
         CreateMap<UserReadingPackage, UserReadingPackageDto>();
         CreateMap<UserHistory, UserHistoryDto>()
-            .ForMember(d => d.ReadingTime, act => act.MapFrom(src => src.ReadingTime.TotalMinutes));
+            .ForMember(dest => dest.ReadingTime, act => act.MapFrom(src => src.ReadingTime.TotalMinutes));
         CreateMap<BookWithAuthor, BookWithAuthorDto>();
         CreateMap<BookWithCategory, BookWithCategoryDto>();
         CreateMap<Highlight, HighlightDto>();

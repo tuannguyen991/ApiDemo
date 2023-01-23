@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ApiDemo.Authors;
 using ApiDemo.Books;
+using ApiDemo.Categories;
 using ApiDemo.ReadingPackages;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -16,18 +18,24 @@ namespace ApiDemo.Users
         private readonly IUserRepository _userRepository;
         private readonly IReadingPackageRepository _readingPackageRepository;
         private readonly IBookRepository _bookRepository;
+        private readonly IAuthorRepository _authorRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager _userManager;
 
         public UserService(
             IUserRepository userRepository,
             IReadingPackageRepository readingPackageRepository,
             IBookRepository bookRepository,
+            IAuthorRepository authorRepository,
+            ICategoryRepository categoryRepository,
             UserManager userManager
         )
         {
             _userRepository = userRepository;
             _readingPackageRepository = readingPackageRepository;
             _bookRepository = bookRepository;
+            _authorRepository = authorRepository;
+            _categoryRepository = categoryRepository;
             _userManager = userManager;
         }
 
@@ -154,8 +162,8 @@ namespace ApiDemo.Users
                         ImageLink = book.ImageLink,
                         AverageRating = book.AverageRating,
                         Description = book.Description,
-                        Authors = ObjectMapper.Map<List<BookWithAuthor>, List<BookWithAuthorDto>>(book.Authors),
-                        Categories = ObjectMapper.Map<List<BookWithCategory>, List<BookWithCategoryDto>>(book.Categories)
+                        Authors = ObjectMapper.Map<List<Author>, List<AuthorDto>>(book.BookWithAuthors.Select(author => _authorRepository.GetAsync(author.AuthorId).Result).ToList()),
+                        Categories = ObjectMapper.Map<List<Category>, List<CategoryDto>>(book.BookWithCategories.Select(author => _categoryRepository.GetAsync(author.CategoryId).Result).ToList())
                     }
                 );
             }
@@ -182,8 +190,8 @@ namespace ApiDemo.Users
                         ImageLink = book.ImageLink,
                         AverageRating = book.AverageRating,
                         Description = book.Description,
-                        Authors = ObjectMapper.Map<List<BookWithAuthor>, List<BookWithAuthorDto>>(book.Authors),
-                        Categories = ObjectMapper.Map<List<BookWithCategory>, List<BookWithCategoryDto>>(book.Categories)
+                        Authors = ObjectMapper.Map<List<Author>, List<AuthorDto>>(book.BookWithAuthors.Select(author => _authorRepository.GetAsync(author.AuthorId).Result).ToList()),
+                        Categories = ObjectMapper.Map<List<Category>, List<CategoryDto>>(book.BookWithCategories.Select(author => _categoryRepository.GetAsync(author.CategoryId).Result).ToList())
                     }
                 );
             }

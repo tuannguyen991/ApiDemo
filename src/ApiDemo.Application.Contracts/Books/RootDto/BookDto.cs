@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using ApiDemo.Authors;
+using ApiDemo.Categories;
 using Volo.Abp.Application.Dtos;
 
 namespace ApiDemo.Books
@@ -45,11 +47,11 @@ namespace ApiDemo.Books
         /// Author List.
         /// </summary>
         /// <example></example>
-        public List<BookWithAuthorDto> Authors { get; set; }
+        public List<AuthorDto> Authors { get; set; }
         /// <summary>
         /// Category List.
         /// </summary>
         /// <example></example>
-        public List<BookWithCategoryDto> Categories { get; set; }
+        public List<CategoryDto> Categories { get; set; }
     }
 }

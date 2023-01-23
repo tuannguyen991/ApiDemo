@@ -409,7 +409,7 @@ namespace ApiDemo
             var authorDuflo = await _authorRepository.FindByNameAsync(AuthorName.DUFLO);
 
             //
-            bookStone.Authors.AddRange(new[]
+            bookStone.BookWithAuthors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),
@@ -419,7 +419,7 @@ namespace ApiDemo
                 }
             );
 
-            bookPrince.Authors.AddRange(new[]
+            bookPrince.BookWithAuthors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),
@@ -429,7 +429,7 @@ namespace ApiDemo
                 }
             );
 
-            bookGates.Authors.AddRange(new[]
+            bookGates.BookWithAuthors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),
@@ -439,7 +439,7 @@ namespace ApiDemo
                 }
             );
 
-            bookWage.Authors.AddRange(new[]
+            bookWage.BookWithAuthors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),
@@ -455,7 +455,7 @@ namespace ApiDemo
                 }
             );
 
-            bookThings.Authors.AddRange(new[]
+            bookThings.BookWithAuthors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),
@@ -465,7 +465,7 @@ namespace ApiDemo
                 }
             );
 
-            bookTimes.Authors.AddRange(new[]
+            bookTimes.BookWithAuthors.AddRange(new[]
                 {
                     new BookWithAuthor(
                         _guidGenerator.Create(),
@@ -506,7 +506,7 @@ namespace ApiDemo
             var categoryEconomy = await _categoryRepository.FindByNameAsync(CategoryName.ECONOMY);
 
             //
-            bookStone.Categories.AddRange(new[]
+            bookStone.BookWithCategories.AddRange(new[]
                 {
                     new BookWithCategory(
                         _guidGenerator.Create(),
@@ -521,7 +521,7 @@ namespace ApiDemo
                 }
             );
 
-            bookPrince.Categories.AddRange(new[]
+            bookPrince.BookWithCategories.AddRange(new[]
                 {
                     new BookWithCategory(
                         _guidGenerator.Create(),
@@ -536,7 +536,7 @@ namespace ApiDemo
                 }
             );
 
-            bookGates.Categories.AddRange(new[]
+            bookGates.BookWithCategories.AddRange(new[]
                 {
                     new BookWithCategory(
                         _guidGenerator.Create(),
@@ -546,7 +546,7 @@ namespace ApiDemo
                 }
             );
 
-            bookWage.Categories.AddRange(new[]
+            bookWage.BookWithCategories.AddRange(new[]
                 {
                     new BookWithCategory(
                         _guidGenerator.Create(),
@@ -561,7 +561,7 @@ namespace ApiDemo
                 }
             );
 
-            bookThings.Categories.AddRange(new[]
+            bookThings.BookWithCategories.AddRange(new[]
                 {
                     new BookWithCategory(
                         _guidGenerator.Create(),
@@ -571,7 +571,7 @@ namespace ApiDemo
                 }
             );
 
-            bookTimes.Categories.AddRange(new[]
+            bookTimes.BookWithCategories.AddRange(new[]
                 {
                     new BookWithCategory(
                         _guidGenerator.Create(),

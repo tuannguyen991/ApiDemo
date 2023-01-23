@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using ApiDemo.Authors;
+using ApiDemo.Categories;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
@@ -11,19 +14,30 @@ namespace ApiDemo.Books
     public class BookService : ApiDemoAppService, IBookService
     {
         private readonly IBookRepository _bookRepository;
+        private readonly IAuthorRepository _authorRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly BookManager _bookManager;
 
         public BookService(
             IBookRepository bookRepository,
-            BookManager bookManager)
+            IAuthorRepository authorRepository,
+            ICategoryRepository categoryRepository,
+            BookManager bookManager
+        )
         {
             _bookRepository = bookRepository;
+            _authorRepository = authorRepository;
+            _categoryRepository = categoryRepository;
             _bookManager = bookManager;
         }
 
         public async Task<BookDto> GetAsync(Guid id)
         {
             var book = await _bookRepository.GetAsync(id);
+
+            book.Authors = book.BookWithAuthors.Select(author => _authorRepository.GetAsync(author.AuthorId).Result).ToList();
+            book.Categories = book.BookWithCategories.Select(author => _categoryRepository.GetAsync(author.CategoryId).Result).ToList();
+
             return ObjectMapper.Map<Book, BookDto>(book);
         }
 
@@ -41,19 +55,39 @@ namespace ApiDemo.Books
                 input.Filter
             );
 
+            foreach (var book in books)
+            {
+                book.Authors = book.BookWithAuthors.Select(author => _authorRepository.GetAsync(author.AuthorId).Result).ToList();
+                book.Categories = book.BookWithCategories.Select(author => _categoryRepository.GetAsync(author.CategoryId).Result).ToList();
+            }
+
             return ObjectMapper.Map<List<Book>, List<BookDto>>(books);
         }
 
         public async Task<List<BookDto>> GetListByCategoryIdAsync(Guid categoryId)
         {
             var books = await _bookRepository.GetListByCategoryIdAsync(categoryId);
+
+            foreach (var book in books)
+            {
+                book.Authors = book.BookWithAuthors.Select(author => _authorRepository.GetAsync(author.AuthorId).Result).ToList();
+                book.Categories = book.BookWithCategories.Select(author => _categoryRepository.GetAsync(author.CategoryId).Result).ToList();
+            }
+
             return ObjectMapper.Map<List<Book>, List<BookDto>>(books);
         }
 
         public async Task<List<BookDto>> GetListByAuthorIdAsync(Guid authorId)
         {
             var books = await _bookRepository.GetListByAuthorIdAsync(authorId);
-            return ObjectMapper.Map<List<Book>, List<BookDto>>(books);        
+
+            foreach (var book in books)
+            {
+                book.Authors = book.BookWithAuthors.Select(author => _authorRepository.GetAsync(author.AuthorId).Result).ToList();
+                book.Categories = book.BookWithCategories.Select(author => _categoryRepository.GetAsync(author.CategoryId).Result).ToList();
+            }
+
+            return ObjectMapper.Map<List<Book>, List<BookDto>>(books);
         }
 
         public async Task<BookDto> CreateAsync(CreateBookDto input)
@@ -68,6 +102,9 @@ namespace ApiDemo.Books
             );
 
             await _bookRepository.InsertAsync(book);
+
+            book.Authors = book.BookWithAuthors.Select(author => _authorRepository.GetAsync(author.AuthorId).Result).ToList();
+            book.Categories = book.BookWithCategories.Select(author => _categoryRepository.GetAsync(author.CategoryId).Result).ToList();
 
             return ObjectMapper.Map<Book, BookDto>(book);
         }

@@ -9,8 +9,6 @@ namespace ApiDemo.Books
     {
         public Guid BookId { get; set; }
         public Guid AuthorId { get; set; }
-        public Author Author { get; set; }
-        public string AuthorName => Author.Name;
 
         private BookWithAuthor()
         {

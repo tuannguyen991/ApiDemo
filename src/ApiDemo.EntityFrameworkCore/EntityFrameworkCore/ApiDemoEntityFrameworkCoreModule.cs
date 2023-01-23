@@ -85,10 +85,8 @@ public class ApiDemoEntityFrameworkCoreModule : AbpModule
             options.Entity<Book>(o =>
             {
                 o.DefaultWithDetailsFunc = query => query
-                                            .Include(o => o.Authors)
-                                                .ThenInclude(e => e.Author)
-                                            .Include(o => o.Categories)
-                                                .ThenInclude(e => e.Category);
+                                            .Include(o => o.BookWithAuthors)
+                                            .Include(o => o.BookWithCategories);
             });
         });
     }

@@ -28,7 +28,7 @@ namespace ApiDemo.Users
         /// Last Read.
         /// </summary>
         /// <example></example>
-        public DateTime? lastRead { get; set; }
+        public DateTime? LastRead { get; set; }
         /// <summary>
         /// User Rating.
         /// </summary>

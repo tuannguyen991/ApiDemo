@@ -153,7 +153,7 @@ namespace ApiDemo.Users
                         UserId = readingBook.UserId,
                         BookId = readingBook.BookId,
                         NumberOfReadPages = readingBook.NumberOfReadPages,
-                        lastRead = readingBook.LastRead,
+                        LastRead = readingBook.LastRead,
                         Rating = readingBook.Rating,
                         Title = book.Title,
                         Subtitle = book.Subtitle,

@@ -81,7 +81,20 @@ namespace ApiDemo
                 "https://www.dropbox.com/s/6k4hbbwr4r705p4/avatarBac.jpg?raw=1"
             );
 
-            await _userRepository.InsertAsync(userBac);
+            var userTuan = new User(
+                _guidGenerator.Create(),
+                UserTuan.USERNAME,
+                "123456",
+                "Tuấn",
+                "Nguyễn Kiều Anh",
+                "tuan.nguyen991@hcmut.edu.vn",
+                new DateTime(2001, 02, 28),
+                "https://www.dropbox.com/s/jseijks3wxb1jmp/avatarTuan.jpg?raw=1"
+            );
+
+            await _userRepository.InsertManyAsync(
+                new[] { userBac, userTuan }
+            );
         }
 
         public async Task SeedReadingPackageAsync()
@@ -271,45 +284,69 @@ namespace ApiDemo
 
         public async Task SeedUserReadingPackagesAsync()
         {
-            var user = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
+            var userBac = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
+            var userTuan = await _userRepository.FindByUsernameAsync(UserTuan.USERNAME);
 
             var readingPackageBasic = await _readingPackageRepository.FindByNameAsync(ReadingPackageName.BASIC);
+            var readingPackageStandard = await _readingPackageRepository.FindByNameAsync(ReadingPackageName.STANDARD);
 
-            var userReadingPackage = new UserReadingPackage(
+            var userBacReadingPackage = new UserReadingPackage(
                 _guidGenerator.Create(),
-                user.Id,
+                userBac.Id,
                 readingPackageBasic.Id,
                 readingPackageBasic.Duration
             );
 
-            user.Packages.Add(userReadingPackage);
+            var userTuanReadingPackage = new UserReadingPackage(
+                _guidGenerator.Create(),
+                userTuan.Id,
+                readingPackageStandard.Id,
+                readingPackageStandard.Duration
+            );
 
-            await _userRepository.UpdateAsync(user);
+            userBac.Packages.Add(userBacReadingPackage);
+            userTuan.Packages.Add(userTuanReadingPackage);
+
+            await _userRepository.UpdateAsync(userBac);
+            await _userRepository.UpdateAsync(userTuan);
         }
 
         public async Task SeedUserHistoriesAsync()
         {
             Random random = new Random();
 
-            var user = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
+            var userBac = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
+            var userTuan = await _userRepository.FindByUsernameAsync(UserTuan.USERNAME);
 
-            var userHistories = Enumerable.Range(1, 30).Select(
+            var userBacHistories = Enumerable.Range(1, 30).Select(
                 x => new UserHistory(
                     _guidGenerator.Create(),
-                    user.Id,
+                    userBac.Id,
                     DateTime.Now.Subtract(TimeSpan.FromDays(x)),
                     new TimeSpan(0, random.Next(5, 59), 0)
                 )
             ).ToList();
 
-            user.Histories.AddRange(userHistories);
+            var userTuanHistories = Enumerable.Range(1, 30).Select(
+                x => new UserHistory(
+                    _guidGenerator.Create(),
+                    userTuan.Id,
+                    DateTime.Now.Subtract(TimeSpan.FromDays(x)),
+                    new TimeSpan(0, random.Next(5, 59), 0)
+                )
+            ).ToList();
 
-            await _userRepository.UpdateAsync(user);
+            userBac.Histories.AddRange(userBacHistories);
+            userTuan.Histories.AddRange(userTuanHistories);
+
+            await _userRepository.UpdateAsync(userBac);
+            await _userRepository.UpdateAsync(userTuan);
         }
 
         public async Task SeedUserLibrariesAsync()
         {
-            var user = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
+            var userBac = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
+            var userTuan = await _userRepository.FindByUsernameAsync(UserTuan.USERNAME);
 
             var bookStone = await _bookRepository.FindByTitleAsync(BookTitle.STONE);
 
@@ -317,10 +354,10 @@ namespace ApiDemo
 
             var bookPrince = await _bookRepository.FindByTitleAsync(BookTitle.PRINCE);
 
-            user.UserLibraries.AddRange(new List<UserLibrary> {
+            userBac.UserLibraries.AddRange(new List<UserLibrary> {
                 new UserLibrary(
                     _guidGenerator.Create(),
-                    user.Id,
+                    userBac.Id,
                     bookStone.Id,
                     true,
                     true,
@@ -329,7 +366,7 @@ namespace ApiDemo
                 ),
                 new UserLibrary(
                     _guidGenerator.Create(),
-                    user.Id,
+                    userBac.Id,
                     bookGates.Id,
                     false,
                     true,
@@ -338,7 +375,7 @@ namespace ApiDemo
                 ),
                 new UserLibrary(
                     _guidGenerator.Create(),
-                    user.Id,
+                    userBac.Id,
                     bookPrince.Id,
                     true,
                     false,
@@ -347,27 +384,42 @@ namespace ApiDemo
                 )
             });
 
-            await _userRepository.UpdateAsync(user);
+            userTuan.UserLibraries.AddRange(new List<UserLibrary> {
+                new UserLibrary(
+                    _guidGenerator.Create(),
+                    userTuan.Id,
+                    bookStone.Id,
+                    true,
+                    true,
+                    10,
+                    DateTime.Now
+                ),
+                new UserLibrary(
+                    _guidGenerator.Create(),
+                    userTuan.Id,
+                    bookGates.Id,
+                    false,
+                    true,
+                    29,
+                    DateTime.Now
+                ),
+                new UserLibrary(
+                    _guidGenerator.Create(),
+                    userTuan.Id,
+                    bookPrince.Id,
+                    true,
+                    false,
+                    0,
+                    null
+                )
+            });
+
+            await _userRepository.UpdateAsync(userBac);
+            await _userRepository.UpdateAsync(userTuan);
         }
 
         public async Task SeedHighlightsAsync()
         {
-
-            // var user = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
-
-            // var userHistories = Enumerable.Range(1, 10).Select(
-            //     (x, idx) => new UserHistory(
-            //         _guidGenerator.Create(),
-            //         user.Id,
-            //         DateTime.Now.Subtract(TimeSpan.FromDays(x)),
-            //         new TimeSpan(0, random.Next(5, 59), 0)
-            //     )
-            // ).ToList();
-
-            // user.Histories.AddRange(userHistories);
-
-            // await _userRepository.UpdateAsync(user);
-
             var user = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
 
             var book = await _bookRepository.FindByTitleAsync(BookTitle.STONE);
@@ -601,6 +653,11 @@ public enum Option
 public class UserBac
 {
     public static readonly string USERNAME = "bac_nth";
+}
+
+public class UserTuan
+{
+    public static readonly string USERNAME = "tuan_nka";
 }
 
 public class ReadingPackageName

@@ -293,7 +293,7 @@ namespace ApiDemo
 
             var user = await _userRepository.FindByUsernameAsync(UserBac.USERNAME);
 
-            var userHistories = Enumerable.Range(1, 10).Select(
+            var userHistories = Enumerable.Range(1, 30).Select(
                 x => new UserHistory(
                     _guidGenerator.Create(),
                     user.Id,

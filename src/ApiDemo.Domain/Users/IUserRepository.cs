@@ -11,7 +11,7 @@ namespace ApiDemo.Users
 
         Task<User> FindAsync(Guid id);
 
-        Task<List<Highlight>> FindHighlightsAsync(Guid userId, Guid bookId);
+        Task<List<Highlight>> FindHighlightsAsync(Guid userId);
 
         Task<List<UserLibrary>> GetReadingBooksAsync(Guid id);
 

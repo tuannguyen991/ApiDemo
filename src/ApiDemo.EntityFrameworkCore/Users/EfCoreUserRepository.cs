@@ -39,14 +39,13 @@ namespace ApiDemo.Users
             return await AsyncExecuter.FirstOrDefaultAsync(query);
         }
 
-        public async Task<List<Highlight>> FindHighlightsAsync(Guid userId, Guid bookId)
+        public async Task<List<Highlight>> FindHighlightsAsync(Guid userId)
         {
             var user = await FindAsync(userId);
 
             var highlights = user.Highlights;
 
             var result = from highlight in highlights
-                         where highlight.BookId == bookId
                          select highlight;
 
             return result.ToList();

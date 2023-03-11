@@ -114,7 +114,7 @@ namespace ApiDemo.Users
         #region Highlights
         public async Task<List<HighlightDto>> GetHighlightsAsync(GetHighlightDto input)
         {
-            var highlights = await _userRepository.FindHighlightsAsync(input.UserId, input.BookId);
+            var highlights = await _userRepository.FindHighlightsAsync(input.UserId);
 
             return ObjectMapper.Map<List<Highlight>, List<HighlightDto>>(highlights);
         }
@@ -123,7 +123,7 @@ namespace ApiDemo.Users
         {
             var user = await _userRepository.FindAsync(input.UserId);
 
-            await _userManager.AddHighlightAsync(user, input.BookId, input.Date, input.Location, input.Color, input.Note);
+            await _userManager.AddHighlightAsync(user, input.BookId, input.Content, input.Date, input.Type, input.PageNumber, input.PageId, input.Rangy, input.Uuid, input.Note);
 
             await _userRepository.UpdateAsync(user);
 

@@ -429,9 +429,13 @@ namespace ApiDemo
                     _guidGenerator.Create(),
                     user.Id,
                     book.Id,
+                    "",
                     DateTime.Now.Subtract(TimeSpan.FromDays(x)),
+                    "highlight_blue",
+                    0,
                     "",
                     "",
+                    "123",
                     "this is a note"
                     )
             ).ToList();

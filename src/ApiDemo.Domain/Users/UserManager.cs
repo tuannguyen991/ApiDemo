@@ -94,9 +94,13 @@ namespace ApiDemo.Users
         public Task AddHighlightAsync(
             User user, 
             Guid bookId,
+            string content,
             DateTime date,
-            string location,
-            string color,
+            string type,
+            int pageNumber,
+            string pageId,
+            string rangy,
+            string uuid,
             string note
         )
         {
@@ -104,9 +108,13 @@ namespace ApiDemo.Users
                 GuidGenerator.Create(),
                 user.Id,
                 bookId,
+                content,
                 date,
-                location,
-                color,
+                type,
+                pageNumber,
+                pageId,
+                rangy,
+                uuid,
                 note
             );
 

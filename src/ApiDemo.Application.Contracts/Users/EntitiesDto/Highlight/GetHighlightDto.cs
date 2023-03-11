@@ -8,12 +8,7 @@ namespace ApiDemo.Users
         /// <summary>
         /// User Id.
         /// </summary>
-        /// <example>3a089812-bc9a-d45b-59bd-2ca5e566ff64</example>
+        /// <example>3a09e3c3-550e-55d0-3119-d25e4980de56</example>
         public Guid UserId { get; set; }
-        /// <summary>
-        /// User Id.
-        /// </summary>
-        /// <example>3a089812-bc9a-d45b-59bd-2ca5e566ff61</example>
-        public Guid BookId { get; set; }
     }
 }

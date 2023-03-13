@@ -105,7 +105,6 @@ namespace ApiDemo.Users
         )
         {
             var highlight = new Highlight(
-                GuidGenerator.Create(),
                 user.Id,
                 bookId,
                 content,

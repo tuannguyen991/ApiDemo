@@ -426,7 +426,6 @@ namespace ApiDemo
 
             var highlights = Enumerable.Range(1, 2).Select(
                 x => new Highlight(
-                    _guidGenerator.Create(),
                     user.Id,
                     book.Id,
                     "",
@@ -435,7 +434,7 @@ namespace ApiDemo
                     0,
                     "",
                     "",
-                    "123",
+                    _guidGenerator.Create().ToString(),
                     "this is a note"
                     )
             ).ToList();

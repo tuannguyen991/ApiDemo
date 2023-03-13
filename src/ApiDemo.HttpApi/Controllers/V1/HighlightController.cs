@@ -17,10 +17,10 @@ namespace ApiDemo.Controllers
             _userService = userService;
         }
         /// <summary>
-        /// Get Highlight.
+        /// Get Highlights.
         /// </summary>
         /// <remarks>
-        /// Get Highlight.
+        /// Get Highlights.
         /// </remarks>
         /// <param name="input">Highlight Infomation</param>
         [HttpGet]

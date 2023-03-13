@@ -8,45 +8,45 @@ namespace ApiDemo.Users
         /// <summary>
         /// User Id.
         /// </summary>
-        /// <example>3a089812-bc9a-d45b-59bd-2ca5e566ff64</example>
+        /// <example>3a09e3c3-550e-55d0-3119-d25e4980de56</example>
         public Guid UserId { get; set; }
         /// <summary>
-        /// User Id.
+        /// Book Id.
         /// </summary>
-        /// <example>3a089812-bc9a-d45b-59bd-2ca5e566ff61</example>
+        /// <example>3a09e3c3-5549-740a-4a42-84397e5c0063</example>
         public Guid BookId { get; set; }
         /// <summary>
-        /// User Id.
+        /// Content.
         /// </summary>
-        /// <example>3a089812-bc9a-d45b-59bd-2ca5e566ff61</example>
+        /// <example></example>
         public string Content { get; set; }
         /// <summary>
-        /// IsFavorite.
+        /// Date.
         /// </summary>
         /// <example>2023-01-06T23:32:58.273816</example>
         public DateTime Date { get; set; }
         /// <summary>
-        /// IsFavorite.
+        /// Type.
         /// </summary>
-        /// <example>2023-01-06T23:32:58.273816</example>
+        /// <example>highlight_underline</example>
         public string Type { get; set; }
         /// <summary>
-        /// IsFavorite.
+        /// PageNumber.
         /// </summary>
-        /// <example>2023-01-06T23:32:58.273816</example>
+        /// <example>0</example>
         public int PageNumber { get; set; }
         /// <summary>
-        /// IsFavorite.
+        /// PageId.
         /// </summary>
         /// <example>2023-01-06T23:32:58.273816</example>
         public string PageId { get; set; }
         /// <summary>
-        /// IsFavorite.
+        /// Rangy.
         /// </summary>
-        /// <example>2023-01-06T23:32:58.273816</example>
+        /// <example></example>
         public string Rangy { get; set; }
         /// <summary>
-        /// IsFavorite.
+        /// Uuid.
         /// </summary>
         /// <example>2023-01-06T23:32:58.273816</example>
         public string Uuid { get; set; }

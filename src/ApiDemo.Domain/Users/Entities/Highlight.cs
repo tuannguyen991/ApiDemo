@@ -23,7 +23,6 @@ namespace ApiDemo.Users
         }
 
         internal Highlight(
-            Guid id,
             Guid userId,
             Guid bookId,
             string content,
@@ -34,8 +33,7 @@ namespace ApiDemo.Users
             string rangy,
             string uuid,
             string note
-        )
-            : base(id)
+        ): base(new Guid(uuid))
         {
             UserId = userId;
             BookId = bookId;

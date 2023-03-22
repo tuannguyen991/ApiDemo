@@ -9,9 +9,9 @@ namespace ApiDemo.ReadingPackages
     {
         public string Name { get; set; }
         public TimeSpan Duration { get; set; }
-        public string Description { get; set; }
         public double Price { get; set; }
         public Currency Currency { get; set; }
+        public int DiscountPercentage { get; set; }
 
         private ReadingPackage()
         {
@@ -22,17 +22,17 @@ namespace ApiDemo.ReadingPackages
             Guid id,
             string name,
             TimeSpan duration,
-            string description,
             double price,
-            Currency currency
+            Currency currency,
+            int discountPercentage
         )
             : base(id)
         {
             Name = name;
             Duration = duration;
-            Description = description;
             Price = price;
             Currency = currency;
+            DiscountPercentage = discountPercentage;
         }
     }
 }

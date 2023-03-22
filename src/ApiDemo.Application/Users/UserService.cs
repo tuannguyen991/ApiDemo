@@ -100,6 +100,23 @@ namespace ApiDemo.Users
             return ObjectMapper.Map<User, UserDto>(user);
         }
 
+        public async Task<UserReadingPackageDto> GetUserReadingPackageAsync(Guid userId)
+        {
+            var user = await _userRepository.FindAsync(userId);
+            var readingPackage = await _readingPackageRepository.GetAsync(user.CurrentPackage.ReadingPackageId);
+            return new UserReadingPackageDto
+            {
+                ReadingPackageId = readingPackage.Id,
+                Name = readingPackage.Name,
+                Duration = readingPackage.Duration,
+                Price = readingPackage.Price,
+                Currency = readingPackage.Currency,
+                DiscountPercentage = readingPackage.DiscountPercentage,
+                StartDate = user.CurrentPackage.StartDate,
+                EndDate = user.CurrentPackage.EndDate
+            };
+        }
+
         public async Task<UserDto> AddHistoryAsync(CreateUserHistoryDto input)
         {
             var user = await _userRepository.FindAsync(input.UserId);

@@ -18,9 +18,9 @@ namespace ApiDemo.ReadingPackages
         public Task<ReadingPackage> CreateAsync(
             string name,
             TimeSpan duration,
-            string description,
             double price,
-            Currency currency
+            Currency currency,
+            int discountPercentage
         )
         {
             return Task.FromResult(
@@ -28,9 +28,9 @@ namespace ApiDemo.ReadingPackages
                     GuidGenerator.Create(),
                     name,
                     duration,
-                    description,
                     price,
-                    currency
+                    currency,
+                    discountPercentage
                 )
             );
         }

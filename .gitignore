@@ -270,5 +270,4 @@ src/ApiDemo.Blazor.Server.Tiered/Logs/*
 # Ignore .xml file generated from ReDoc
 src/*/*.xml
 build/tye/.tye/process_store
-src/ApiDemo.EntityFrameworkCore/Migrations
-ApiDemo.sln
+src/ApiDemo.EntityFrameworkCore/Migration

@@ -100,11 +100,11 @@ namespace ApiDemo.Users
             return ObjectMapper.Map<User, UserDto>(user);
         }
 
-        public async Task<UserReadingPackageDto> GetUserReadingPackageAsync(Guid userId)
+        public async Task<DetailUserReadingPackageDto> GetUserReadingPackageAsync(Guid userId)
         {
             var user = await _userRepository.FindAsync(userId);
             var readingPackage = await _readingPackageRepository.GetAsync(user.CurrentPackage.ReadingPackageId);
-            return new UserReadingPackageDto
+            return new DetailUserReadingPackageDto
             {
                 ReadingPackageId = readingPackage.Id,
                 Name = readingPackage.Name,

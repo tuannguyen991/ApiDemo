@@ -23,6 +23,7 @@ public class ApiDemoApplicationAutoMapperProfile : Profile
         CreateMap<ReadingPackage, ReadingPackageDto>();
         CreateMap<Category, CategoryDto>();
         CreateMap<Book, BookDto>();
+        CreateMap<UserReadingPackage, UserReadingPackageDto>();
         CreateMap<UserHistory, UserHistoryDto>()
             .ForMember(dest => dest.ReadingTime, act => act.MapFrom(src => src.ReadingTime.TotalMinutes));
         CreateMap<BookWithAuthor, BookWithAuthorDto>();

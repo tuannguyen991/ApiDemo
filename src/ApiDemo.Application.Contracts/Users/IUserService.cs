@@ -17,7 +17,7 @@ namespace ApiDemo.Users
         Task UpdateAsync(Guid id, UpdateUserDto input);
 
         Task<UserDto> AddPackageAsync(CreateUserReadingPackageDto input);
-        Task<UserReadingPackageDto> GetUserReadingPackageAsync(Guid userId);
+        Task<DetailUserReadingPackageDto> GetUserReadingPackageAsync(Guid userId);
 
         Task<UserDto> AddHistoryAsync(CreateUserHistoryDto input);
 

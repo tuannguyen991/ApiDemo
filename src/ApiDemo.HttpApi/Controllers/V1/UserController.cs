@@ -90,7 +90,7 @@ namespace ApiDemo.Controllers
         /// <param name="userId">User ID</param>
         [HttpGet]
         [Route("reading-package/{userId}")]
-        public async Task<UserReadingPackageDto> GetUserReadingPackageAsync([FromRoute] Guid userId)
+        public async Task<DetailUserReadingPackageDto> GetUserReadingPackageAsync([FromRoute] Guid userId)
         {
             return await _userService.GetUserReadingPackageAsync(userId);
         }

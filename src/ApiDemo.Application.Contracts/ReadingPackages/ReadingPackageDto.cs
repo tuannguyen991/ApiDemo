@@ -16,11 +16,6 @@ namespace ApiDemo.ReadingPackages
         /// <example>365.00:00:00</example>
         public TimeSpan Duration { get; set; }
         /// <summary>
-        /// Description.
-        /// </summary>
-        /// <example>Premium package using all features with 1 year validity</example>
-        public string Description { get; set; }
-        /// <summary>
         /// Price of ReadingPackage.
         /// </summary>
         /// <example>125000</example>
@@ -30,5 +25,10 @@ namespace ApiDemo.ReadingPackages
         /// </summary>
         /// <example>1</example>
         public Currency Currency { get; set; }
+        /// <summary>
+        /// DiscountPercentage.
+        /// </summary>
+        /// <example>0</example>
+        public int DiscountPercentage { get; set; }
     }
 }

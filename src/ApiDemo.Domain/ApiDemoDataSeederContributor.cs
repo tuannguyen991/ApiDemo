@@ -103,22 +103,31 @@ namespace ApiDemo
                 _guidGenerator.Create(),
                 ReadingPackageName.BASIC,
                 new TimeSpan(30, 0, 0, 0),
-                "Basic package using all features with 1 month validity",
-                20000,
-                Currency.VND
+                50000,
+                Currency.VND,
+                0
             );
 
             var packageStandard = new ReadingPackage(
                 _guidGenerator.Create(),
                 ReadingPackageName.STANDARD,
-                new TimeSpan(30 * 6, 0, 0, 0),
-                "Standard package using all features with 6 months validity",
-                80000,
-                Currency.VND
+                new TimeSpan(30 * 3, 0, 0, 0),
+                150000,
+                Currency.VND,
+                16
+            );
+
+            var packageEconomics = new ReadingPackage(
+                _guidGenerator.Create(),
+                ReadingPackageName.ECONOMICS,
+                new TimeSpan(365, 0, 0, 0),
+                600000,
+                Currency.VND,
+                25
             );
 
             await _readingPackageRepository.InsertManyAsync(
-                new[] { packageBasic, packageStandard }
+                new[] { packageBasic, packageStandard, packageEconomics }
             );
         }
         public async Task SeedAuthorAsync()
@@ -665,8 +674,9 @@ public class UserTuan
 
 public class ReadingPackageName
 {
-    public static readonly string BASIC = "Basic";
-    public static readonly string STANDARD = "Standard";
+    public static readonly string BASIC = "Gói Đọc Sách Tháng";
+    public static readonly string STANDARD = "Gói Đọc Sách 3 Tháng";
+    public static readonly string ECONOMICS = "Gói Đọc Sách Năm";
 }
 
 public class AuthorName

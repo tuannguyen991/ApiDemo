@@ -54,9 +54,9 @@ namespace ApiDemo.ReadingPackages
             var readingPackage = await _readingPackageManager.CreateAsync(
                 input.Name,
                 input.Duration,
-                input.Description,
                 input.Price,
-                input.Currency
+                input.Currency,
+                input.DiscountPercentage
             );
 
             await _readingPackageRepository.InsertAsync(readingPackage);
@@ -75,9 +75,9 @@ namespace ApiDemo.ReadingPackages
 
             readingPackage.Name = input.Name;
             readingPackage.Duration = input.Duration;
-            readingPackage.Description = input.Description;
             readingPackage.Price = input.Price;
             readingPackage.Currency = input.Currency;
+            readingPackage.DiscountPercentage = input.DiscountPercentage;
 
             await _readingPackageRepository.UpdateAsync(readingPackage);
         }

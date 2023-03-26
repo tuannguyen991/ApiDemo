@@ -82,19 +82,6 @@ namespace ApiDemo.Controllers
             return await _userService.AddPackageAsync(input);
         }
         /// <summary>
-        /// Get Current Reading Package.
-        /// </summary>
-        /// <remarks>
-        /// Get Current Reading Package.
-        /// </remarks>
-        /// <param name="userId">User ID</param>
-        [HttpGet]
-        [Route("reading-package/{userId}")]
-        public async Task<DetailUserReadingPackageDto> GetUserReadingPackageAsync([FromRoute] Guid userId)
-        {
-            return await _userService.GetUserReadingPackageAsync(userId);
-        }
-        /// <summary>
         /// Add History User.
         /// </summary>
         /// <remarks>

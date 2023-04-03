@@ -74,7 +74,7 @@ namespace ApiDemo.ReadingPackages
             // }
 
             readingPackage.Name = input.Name;
-            readingPackage.Duration = input.Duration;
+            readingPackage.Duration = input.Duration.ToString("c");
             readingPackage.Price = input.Price;
             readingPackage.Currency = input.Currency;
             readingPackage.DiscountPercentage = input.DiscountPercentage;

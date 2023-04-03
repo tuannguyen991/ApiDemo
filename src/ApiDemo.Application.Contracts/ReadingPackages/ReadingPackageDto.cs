@@ -14,7 +14,7 @@ namespace ApiDemo.ReadingPackages
         /// Duration.
         /// </summary>
         /// <example>365.00:00:00</example>
-        public TimeSpan Duration { get; set; }
+        public string Duration { get; set; }
         /// <summary>
         /// Price of ReadingPackage.
         /// </summary>

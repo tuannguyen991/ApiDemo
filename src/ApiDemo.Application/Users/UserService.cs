@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiDemo.Authors;
@@ -93,7 +94,7 @@ namespace ApiDemo.Users
 
             var readingPackage = await _readingPackageRepository.GetAsync(input.ReadingPackageId);
 
-            await _userManager.AddPackageAsync(user, readingPackage.Id, readingPackage.Duration);
+            await _userManager.AddPackageAsync(user, readingPackage.Id, DateTime.Parse(input.StartDate, null, DateTimeStyles.RoundtripKind), TimeSpan.Parse(readingPackage.Duration));
 
             await _userRepository.UpdateAsync(user);
 

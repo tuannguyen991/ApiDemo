@@ -59,6 +59,7 @@ namespace ApiDemo.Users
         public Task AddPackageAsync(
             User user, 
             Guid readingPackageId,
+            DateTime startDate,
             TimeSpan duration
         )
         {
@@ -66,6 +67,7 @@ namespace ApiDemo.Users
                 GuidGenerator.Create(),
                 user.Id,
                 readingPackageId,
+                startDate,
                 duration
             );
 

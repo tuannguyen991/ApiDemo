@@ -102,7 +102,7 @@ namespace ApiDemo
             var packageBasic = new ReadingPackage(
                 _guidGenerator.Create(),
                 ReadingPackageName.BASIC,
-                new TimeSpan(30, 0, 0, 0),
+                (new TimeSpan(30, 0, 0, 0)).ToString("c"),
                 50000,
                 Currency.VND,
                 0
@@ -111,7 +111,7 @@ namespace ApiDemo
             var packageStandard = new ReadingPackage(
                 _guidGenerator.Create(),
                 ReadingPackageName.STANDARD,
-                new TimeSpan(30 * 3, 0, 0, 0),
+                (new TimeSpan(30 * 3, 0, 0, 0)).ToString("c"),
                 150000,
                 Currency.VND,
                 16
@@ -120,7 +120,7 @@ namespace ApiDemo
             var packageEconomics = new ReadingPackage(
                 _guidGenerator.Create(),
                 ReadingPackageName.ECONOMICS,
-                new TimeSpan(365, 0, 0, 0),
+                (new TimeSpan(365, 0, 0, 0)).ToString("c"),
                 600000,
                 Currency.VND,
                 25
@@ -303,14 +303,16 @@ namespace ApiDemo
                 _guidGenerator.Create(),
                 userBac.Id,
                 readingPackageBasic.Id,
-                readingPackageBasic.Duration
+                DateTime.Now,
+                TimeSpan.Parse(readingPackageBasic.Duration)
             );
 
             var userTuanReadingPackage = new UserReadingPackage(
                 _guidGenerator.Create(),
                 userTuan.Id,
                 readingPackageStandard.Id,
-                readingPackageStandard.Duration
+                DateTime.Now,
+                TimeSpan.Parse(readingPackageBasic.Duration)
             );
 
             userBac.Packages.Add(userBacReadingPackage);

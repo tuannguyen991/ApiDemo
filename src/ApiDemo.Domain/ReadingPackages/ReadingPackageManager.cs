@@ -27,7 +27,7 @@ namespace ApiDemo.ReadingPackages
                 new ReadingPackage(
                     GuidGenerator.Create(),
                     name,
-                    duration,
+                    duration.ToString(),
                     price,
                     currency,
                     discountPercentage

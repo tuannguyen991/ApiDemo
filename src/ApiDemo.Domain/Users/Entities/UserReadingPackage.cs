@@ -20,13 +20,14 @@ namespace ApiDemo.Users
             Guid id,
             Guid userId,
             Guid readingPackageId,
+            DateTime startDate,
             TimeSpan duration
         )
             : base(id)
         {
             UserId = userId;
             ReadingPackageId = readingPackageId;
-            StartDate = DateTime.Now;
+            StartDate = startDate;
             EndDate = StartDate + duration;
         }
     }

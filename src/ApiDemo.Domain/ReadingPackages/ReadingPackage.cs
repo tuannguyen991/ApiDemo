@@ -8,7 +8,7 @@ namespace ApiDemo.ReadingPackages
     public class ReadingPackage : FullAuditedAggregateRoot<Guid>
     {
         public string Name { get; set; }
-        public TimeSpan Duration { get; set; }
+        public string Duration { get; set; }
         public double Price { get; set; }
         public Currency Currency { get; set; }
         public int DiscountPercentage { get; set; }
@@ -21,7 +21,7 @@ namespace ApiDemo.ReadingPackages
         internal ReadingPackage(
             Guid id,
             string name,
-            TimeSpan duration,
+            string duration,
             double price,
             Currency currency,
             int discountPercentage

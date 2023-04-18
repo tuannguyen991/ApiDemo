@@ -4,7 +4,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace ApiDemo.Users
 {
-    public class UserDto : EntityDto<Guid>
+    public class UserDto : EntityDto<string>
     {
         /// <summary>
         /// First name.
@@ -29,13 +29,13 @@ namespace ApiDemo.Users
         /// <summary>
         /// Avatar.
         /// </summary>
-        /// <example>https://www.dropbox.com/s/jseijks3wxb1jmp/avatarTuan.jpg?raw=1</example>
+        /// <example>Content\Images\6h38NGTh5lPZMTB0U83Rv0WUE1A2\input.png</example>
         public string ImageLink { get; set; }
         /// <summary>
         /// Total Reading Time.
         /// </summary>
         /// <example>0</example>
-        public long TotalReadingTime { get; set; }
+        public double TotalReadingTime { get; set; }
         /// <summary>
         /// Ranking.
         /// </summary>

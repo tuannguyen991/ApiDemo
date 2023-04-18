@@ -66,7 +66,7 @@ namespace ApiDemo.Controllers
         /// <param name="id">Book Id</param>
         [HttpGet]
         [Route("{id}")]
-        public async Task<BookDto> GetAsync([FromRoute] Guid id)
+        public async Task<BookDto> GetAsync([FromRoute] string id)
         {
             return await _bookService.GetAsync(id);
         }
@@ -79,7 +79,7 @@ namespace ApiDemo.Controllers
         /// <param name="id">Book Id</param>
         [HttpDelete]
         [Route("{id}")]
-        public async Task DeleteAsync([FromRoute] Guid id)
+        public async Task DeleteAsync([FromRoute] string id)
         {
             await _bookService.DeleteAsync(id);
         }
@@ -105,7 +105,7 @@ namespace ApiDemo.Controllers
         /// <param name="input">Book Infomation</param>
         [HttpPut]
         [Route("{id}")]
-        public async Task UpdateAsync([FromRoute] Guid id, [FromBody] UpdateBookDto input)
+        public async Task UpdateAsync([FromRoute] string id, [FromBody] UpdateBookDto input)
         {
             await _bookService.UpdateAsync(id, input);
         }

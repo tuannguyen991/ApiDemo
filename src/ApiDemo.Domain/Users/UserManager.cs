@@ -15,45 +15,21 @@ namespace ApiDemo.Users
         }
 
         public Task<User> CreateAsync(
-            string username,
-            string password,
+            string id,
             string firstName,
             string lastName,
             string email,
-            DateTime birthDate,
-            string imageLink
+            DateTime birthDate
         )
         {
             return Task.FromResult(
                 new User(
-                GuidGenerator.Create(),
-                username,
-                password,
+                id,
                 firstName,
                 lastName,
                 email,
-                birthDate,
-                imageLink
+                birthDate
             ));
-        }
-
-        public async Task<User> VerifyAsync(
-            string username,
-            string password
-        )
-        {
-            var existingUser = await _userRepository.FindByUsernameAsync(username);
-            if (existingUser == null)
-            {
-                throw new AbpValidationException();  
-            }
-
-            if (existingUser.Password != password)
-            {
-                throw new AbpValidationException();
-            }
-
-            return existingUser;
         }
 
         public Task AddPackageAsync(
@@ -93,7 +69,7 @@ namespace ApiDemo.Users
         #region Highlight
         public Task AddHighlightAsync(
             User user, 
-            Guid bookId,
+            string bookId,
             string content,
             DateTime date,
             string type,
@@ -137,8 +113,10 @@ namespace ApiDemo.Users
         #region User Library
         public Task AddReadingBookAsync(
             User user, 
-            Guid bookId,
-            int numberOfReadPages
+            string bookId,
+            int numberOfReadPages,
+            string lastLocator,
+            string href
         )
         {
             var isReading = true;
@@ -151,7 +129,9 @@ namespace ApiDemo.Users
                 isFavorite,
                 isReading,
                 numberOfReadPages,
-                DateTime.Now
+                DateTime.Now,
+                lastLocator,
+                href
             );
 
             user.UserLibraries.Add(readingBook);
@@ -160,7 +140,7 @@ namespace ApiDemo.Users
 
         public Task AddFavoriteBookAsync(
             User user, 
-            Guid bookId
+            string bookId
         )
         {
             var numberOfReadPages = 0;
@@ -175,6 +155,8 @@ namespace ApiDemo.Users
                 isFavorite,
                 isReading,
                 numberOfReadPages,
+                null,
+                null,
                 null
             );
 

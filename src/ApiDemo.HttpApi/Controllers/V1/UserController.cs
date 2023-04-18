@@ -1,9 +1,11 @@
 using ApiDemo.Users;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
-using Volo.Abp.Application.Dtos;
 
 namespace ApiDemo.Controllers
 {
@@ -29,19 +31,6 @@ namespace ApiDemo.Controllers
             return await _userService.CreateAsync(input);
         }
         /// <summary>
-        /// Verify user.
-        /// </summary>
-        /// <remarks>
-        /// Verify user.
-        /// </remarks>
-        /// <param name="input">Verify User Infomation</param>
-        [HttpPost]
-        [Route("verify")]
-        public async Task<Guid> VerifyAsync([FromBody] VerifyUserDto input)
-        {
-            return await _userService.VerifyAsync(input);
-        }
-        /// <summary>
         /// Get user information.
         /// </summary>
         /// <remarks>
@@ -50,7 +39,7 @@ namespace ApiDemo.Controllers
         /// <param name="id">User Id</param>
         [HttpGet]
         [Route("{id}")]
-        public async Task<UserDto> GetAsync([FromRoute] Guid id)
+        public async Task<UserDto> GetAsync([FromRoute] string id)
         {
             return await _userService.GetAsync(id);
         }
@@ -64,7 +53,7 @@ namespace ApiDemo.Controllers
         /// <param name="input">Update User Infomation</param>
         [HttpPut]
         [Route("{id}")]
-        public async Task UpdateAsync([FromRoute] Guid id, [FromBody] UpdateUserDto input)
+        public async Task UpdateAsync([FromRoute] string id, [FromBody] UpdateUserDto input)
         {
             await _userService.UpdateAsync(id, input);
         }
@@ -104,7 +93,7 @@ namespace ApiDemo.Controllers
         /// <param name="id">User ID</param>
         [HttpGet]
         [Route("reading-books/{id}")]
-        public async Task<List<UserLibraryDto>> GetReadingBooksAsync([FromRoute] Guid id)
+        public async Task<List<UserLibraryDto>> GetReadingBooksAsync([FromRoute] string id)
         {
             return await _userService.GetReadingBooksAsync(id);
         }
@@ -130,9 +119,23 @@ namespace ApiDemo.Controllers
         /// <param name="id">User ID</param>
         [HttpGet]
         [Route("favorite-books/{id}")]
-        public async Task<List<UserLibraryDto>> GetFavoriteBooksAsync([FromRoute] Guid id)
+        public async Task<List<UserLibraryDto>> GetFavoriteBooksAsync([FromRoute] string id)
         {
             return await _userService.GetFavoriteBooksAsync(id);
+        }
+        /// <summary>
+        /// Get is Favorite.
+        /// </summary>
+        /// <remarks>
+        /// Get is Favorite.
+        /// </remarks>
+        /// <param name="id">User ID</param>
+        /// <param name="bookId">Book ID</param>
+        [HttpGet]
+        [Route("favorite/{id}/{bookId}")]
+        public async Task<bool> GetIsFavoriteAsync([FromRoute] string id, [FromRoute] string bookId)
+        {
+            return await _userService.GetIsFavoriteAsync(id, bookId);
         }
         /// <summary>
         /// Create Favorite Books.
@@ -147,7 +150,85 @@ namespace ApiDemo.Controllers
         {
             await _userService.AddFavoriteBookAsync(input);
         }
+        /// <summary>
+        /// Delete Favorite Books.
+        /// </summary>
+        /// <remarks>
+        /// Delete Favorite Books.
+        /// </remarks>
+        /// <param name="userId">User Id</param>
+        /// <param name="bookId">Book Id</param>
+        [HttpDelete]
+        [Route("favorite-books/{userId}/{bookId}")]
+        public async Task DeleteFavoriteBookAsync([FromRoute] string userId, [FromRoute] string bookId)
+        {
+            await _userService.DeleteFavoriteBookAsync(userId, bookId);
+        }
         #endregion
-  
+
+        /// <summary>
+        /// Upload image.
+        /// </summary>
+        /// <remarks>
+        /// Upload image.
+        /// </remarks>
+        /// <param name="id">Id User</param>
+        /// <param name="file">Image File</param>
+        [HttpPost]
+        [Route("{id}/image")]
+        public async Task<IActionResult> UploadImage([FromRoute] string id, IFormFile file)
+        {
+            // Save the image file to the file system
+            var filename = Path.GetFileName(file.FileName);
+            var directory = Path.Combine("Content", $"Images\\{id}");
+            var path = Path.Combine(directory, filename);
+
+            // Create the directory if it does not exist
+            Directory.CreateDirectory(directory);
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // var user = await _userService.GetAsync(userId);
+            await _userService.UploadImageAsync(id, path);
+
+            return Ok("Image uploaded successfully.");
+        }
+
+        [HttpGet]
+        [Route("images/{path}")]
+        public IActionResult GetImage(string path)
+        {
+            // Check if the requested file exists on the file system
+            var filePath = Path.Combine(path);
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound("Image not found.");
+            }
+
+            // Set the content type of the response to the MIME type of the image file
+            var contentType = GetContentType(filePath);
+            if (contentType == null)
+            {
+                return StatusCode(500, "Failed to determine content type of the image file.");
+            }
+            HttpContext.Response.ContentType = contentType;
+
+            // Return the image file as a stream in the response body
+            var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return new FileStreamResult(stream, contentType);
+        }
+
+        private string GetContentType(string filePath)
+        {
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filePath, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+            return contentType;
+        }
     }
 }

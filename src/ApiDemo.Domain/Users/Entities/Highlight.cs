@@ -6,8 +6,8 @@ namespace ApiDemo.Users
 {
     public class Highlight : Entity<Guid>
     {
-        public Guid UserId { get; set; }
-        public Guid BookId { get; set; }
+        public string UserId { get; set; }
+        public string BookId { get; set; }
         public string Content { get; set; }
         public DateTime Date { get; set; }
         public string Type { get; set; }
@@ -23,8 +23,8 @@ namespace ApiDemo.Users
         }
 
         internal Highlight(
-            Guid userId,
-            Guid bookId,
+            string userId,
+            string bookId,
             string content,
             DateTime date,
             string type,

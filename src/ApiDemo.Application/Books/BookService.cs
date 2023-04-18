@@ -7,6 +7,7 @@ using ApiDemo.Categories;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Guids;
 
 namespace ApiDemo.Books
 {
@@ -17,21 +18,24 @@ namespace ApiDemo.Books
         private readonly IAuthorRepository _authorRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly BookManager _bookManager;
+        private readonly IGuidGenerator _guidGenerator;
 
         public BookService(
             IBookRepository bookRepository,
             IAuthorRepository authorRepository,
             ICategoryRepository categoryRepository,
-            BookManager bookManager
+            BookManager bookManager,
+            IGuidGenerator guidGenerator
         )
         {
             _bookRepository = bookRepository;
             _authorRepository = authorRepository;
             _categoryRepository = categoryRepository;
             _bookManager = bookManager;
+            _guidGenerator = guidGenerator;
         }
 
-        public async Task<BookDto> GetAsync(Guid id)
+        public async Task<BookDto> GetAsync(string id)
         {
             var book = await _bookRepository.GetAsync(id);
 
@@ -93,6 +97,7 @@ namespace ApiDemo.Books
         public async Task<BookDto> CreateAsync(CreateBookDto input)
         {
             var book = await _bookManager.CreateAsync(
+                _guidGenerator.Create().ToString(),
                 input.Title,
                 input.Subtitle,
                 input.NumberOfPages,
@@ -109,7 +114,7 @@ namespace ApiDemo.Books
             return ObjectMapper.Map<Book, BookDto>(book);
         }
 
-        public async Task UpdateAsync(Guid id, UpdateBookDto input)
+        public async Task UpdateAsync(string id, UpdateBookDto input)
         {
             var book = await _bookRepository.GetAsync(id);
 
@@ -128,7 +133,7 @@ namespace ApiDemo.Books
             await _bookRepository.UpdateAsync(book);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(string id)
         {
             await _bookRepository.DeleteAsync(id);
         }

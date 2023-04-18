@@ -7,7 +7,7 @@ namespace ApiDemo.Books
 {
     public class BookWithCategory : Entity<Guid>
     {
-        public Guid BookId { get; set; }
+        public string BookId { get; set; }
         public Guid CategoryId { get; set; }
 
         private BookWithCategory()
@@ -17,7 +17,7 @@ namespace ApiDemo.Books
 
         internal BookWithCategory(
             Guid id,
-            Guid bookId,
+            string bookId,
             Guid categoryId
         )
             : base(id)

@@ -8,8 +8,8 @@ namespace ApiDemo.Users
         /// <summary>
         /// User Id.
         /// </summary>
-        /// <example>3a0894a1-a47d-fd52-338c-87a4eec61580</example>
-        public Guid UserId { get; set; }
+        /// <example>6h38NGTh5lPZMTB0U83Rv0WUE1A2</example>
+        public string UserId { get; set; }
         /// <summary>
         /// Date.
         /// </summary>

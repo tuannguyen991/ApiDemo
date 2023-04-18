@@ -152,7 +152,7 @@ public class ApiDemoDbContext :
 
             b.Ignore(p => p.TotalReadingBooks);
 
-            b.Ignore(p => p.Ranking);
+        b.Ignore(p => p.Ranking);
         });
 
         builder.Entity<UserReadingPackage>(b =>

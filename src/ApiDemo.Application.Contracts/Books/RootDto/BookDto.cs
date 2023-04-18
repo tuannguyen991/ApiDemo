@@ -6,7 +6,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace ApiDemo.Books
 {
-    public class BookDto : EntityDto<Guid>
+    public class BookDto : EntityDto<string>
     {
         /// <summary>
         /// Book Title.

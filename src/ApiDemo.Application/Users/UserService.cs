@@ -7,8 +7,6 @@ using ApiDemo.Books;
 using ApiDemo.Categories;
 using ApiDemo.ReadingPackages;
 using Volo.Abp;
-using Volo.Abp.Application.Dtos;
-using Volo.Abp.Domain.Repositories;
 
 namespace ApiDemo.Users
 {
@@ -42,13 +40,11 @@ namespace ApiDemo.Users
         public async Task<UserDto> CreateAsync(CreateUserDto input)
         {
             var user = await _userManager.CreateAsync(
-                input.Username,
-                input.Password,
+                input.Id,
                 input.FirstName,
                 input.LastName,
                 input.Email,
-                input.BirthDate,
-                input.ImageLink
+                input.BirthDate
             );
 
             await _userRepository.InsertAsync(user);
@@ -56,33 +52,20 @@ namespace ApiDemo.Users
             return ObjectMapper.Map<User, UserDto>(user);
         }
 
-        public async Task<Guid> VerifyAsync(VerifyUserDto input)
-        {
-            var user = await _userManager.VerifyAsync(
-                input.Username,
-                input.Password
-            );
-
-            return user.Id;
-        }
-
-        public async Task<UserDto> GetAsync(Guid id)
+        public async Task<UserDto> GetAsync(string id)
         {
             var user = await _userRepository.GetAsync(id);
             return ObjectMapper.Map<User, UserDto>(user);
         }
 
-        public async Task UpdateAsync(Guid id, UpdateUserDto input)
+        public async Task UpdateAsync(string id, UpdateUserDto input)
         {
             var user = await _userRepository.GetAsync(id);
 
-            user.Password = input.Password;
             user.FirstName = input.FirstName;
             user.LastName = input.LastName;
             user.Email = input.Email;
             user.BirthDate = input.BirthDate;
-            user.ImageLink = input.ImageLink;
-
 
             await _userRepository.UpdateAsync(user);
         }
@@ -104,7 +87,16 @@ namespace ApiDemo.Users
         {
             var user = await _userRepository.FindAsync(input.UserId);
 
-            await _userManager.AddHistoryAsync(user, input.Date, input.ReadingTime);
+            var history = user.Histories.Find(x => x.Date.Date == input.Date.Date);
+
+            if (history != null)
+            {
+                history.ReadingTime += input.ReadingTime;
+            }
+            else
+            {
+                await _userManager.AddHistoryAsync(user, input.Date, input.ReadingTime);
+            }
 
             await _userRepository.UpdateAsync(user);
 
@@ -140,7 +132,7 @@ namespace ApiDemo.Users
         }
         #endregion
         #region User Library
-        public async Task<List<UserLibraryDto>> GetReadingBooksAsync(Guid id)
+        public async Task<List<UserLibraryDto>> GetReadingBooksAsync(string id)
         {
             var readingBooks = await _userRepository.GetReadingBooksAsync(id);
             var result = new List<UserLibraryDto>();
@@ -154,6 +146,8 @@ namespace ApiDemo.Users
                         BookId = readingBook.BookId,
                         NumberOfReadPages = readingBook.NumberOfReadPages,
                         LastRead = readingBook.LastRead,
+                        LastLocator = readingBook.LastLocator,
+                        Href = readingBook.Href,
                         Rating = readingBook.Rating,
                         Title = book.Title,
                         Subtitle = book.Subtitle,
@@ -169,7 +163,7 @@ namespace ApiDemo.Users
             }
             return result;
         }
-        public async Task<List<UserLibraryDto>> GetFavoriteBooksAsync(Guid id)
+        public async Task<List<UserLibraryDto>> GetFavoriteBooksAsync(string id)
         {
             var favoriteBooks = await _userRepository.GetFavoriteBooksAsync(id);
             var result = new List<UserLibraryDto>();
@@ -182,6 +176,9 @@ namespace ApiDemo.Users
                         UserId = favoriteBook.UserId,
                         BookId = favoriteBook.BookId,
                         NumberOfReadPages = favoriteBook.NumberOfReadPages,
+                        LastRead = favoriteBook.LastRead,
+                        Href = favoriteBook.Href,
+                        LastLocator = favoriteBook.LastLocator,
                         Rating = favoriteBook.Rating,
                         Title = book.Title,
                         Subtitle = book.Subtitle,
@@ -198,6 +195,13 @@ namespace ApiDemo.Users
             return result;
         }
 
+        public async Task<bool> GetIsFavoriteAsync(string id, string bookId)
+        {
+            var favoriteBooks = await _userRepository.GetFavoriteBooksAsync(id);
+            var result = favoriteBooks.Exists(x => x.BookId == bookId);
+            return result;
+        }
+
         public async Task AddReadingBookAsync(CreateUserLibraryDto input)
         {
             var user = await _userRepository.FindAsync(input.UserId);
@@ -207,12 +211,14 @@ namespace ApiDemo.Users
             if (userLibrary != null)
             {
                 userLibrary.IsReading = true;
-                userLibrary.NumberOfReadPages = input.NumberOfReadPages;
+                userLibrary.NumberOfReadPages += input.NumberOfReadPages;
                 userLibrary.LastRead = DateTime.Now;
+                userLibrary.LastLocator = input.LastLocator;
+                userLibrary.Href = input.Href;
             }
             else
             {
-                await _userManager.AddReadingBookAsync(user, input.BookId, input.NumberOfReadPages);
+                await _userManager.AddReadingBookAsync(user, input.BookId, input.NumberOfReadPages, input.LastLocator, input.Href);
             }
             await _userRepository.UpdateAsync(user);
         }
@@ -231,6 +237,33 @@ namespace ApiDemo.Users
             {
                 await _userManager.AddFavoriteBookAsync(user, input.BookId);
             }
+            await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task DeleteFavoriteBookAsync(string userId, string bookId)
+        {
+            var user = await _userRepository.FindAsync(userId);
+            var userLibraries = user.UserLibraries;
+
+            var userLibrary = userLibraries.Find(userLibrary => userLibrary.BookId == bookId);
+
+            if (userLibrary.IsReading)
+            {
+                userLibrary.IsFavorite = false;
+            }
+            else
+            {
+                userLibraries.RemoveAll(userLibrary => userLibrary.BookId == bookId);
+            }
+            await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task UploadImageAsync(string id, string path)
+        {
+            var user = await _userRepository.FindAsync(id);
+
+            user.ImageLink = path;
+
             await _userRepository.UpdateAsync(user);
         }
         #endregion

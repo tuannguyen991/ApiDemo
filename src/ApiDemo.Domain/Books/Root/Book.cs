@@ -7,7 +7,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace ApiDemo.Books
 {
-    public class Book : FullAuditedAggregateRoot<Guid>
+    public class Book : FullAuditedAggregateRoot<string>
     {
         public string Title { get; set; }
         public string Subtitle { get; set; }
@@ -27,7 +27,7 @@ namespace ApiDemo.Books
         }
 
         internal Book(
-            Guid id,
+            string id,
             string title,
             string subtitle,
             int numberOfPages,

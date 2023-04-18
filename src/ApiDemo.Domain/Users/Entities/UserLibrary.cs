@@ -6,13 +6,15 @@ namespace ApiDemo.Users
 {
     public class UserLibrary : Entity<Guid>
     {
-        public Guid UserId { get; set; }
-        public Guid BookId { get; set; }
+        public string UserId { get; set; }
+        public string BookId { get; set; }
         public bool IsFavorite { get; set; }
         public bool IsReading { get; set; }
         public int NumberOfReadPages { get; set; }
         public double Rating { get; set; }
         public DateTime? LastRead { get; set; }
+        public string LastLocator { get; set; }
+        public string Href { get; set; }
 
         private UserLibrary()
         {
@@ -21,12 +23,14 @@ namespace ApiDemo.Users
 
         internal UserLibrary(
             Guid id,
-            Guid userId,
-            Guid bookId,
+            string userId,
+            string bookId,
             bool isFavorite,
             bool isReading,
             int numberOfReadPages,
-            DateTime? lastRead
+            DateTime? lastRead,
+            string lastLocator,
+            string href
         )
             : base(id)
         {
@@ -37,6 +41,8 @@ namespace ApiDemo.Users
             NumberOfReadPages = numberOfReadPages;
             Rating = 0;
             LastRead = lastRead;
+            LastLocator = lastLocator;
+            Href = href;
         }
     }
 }

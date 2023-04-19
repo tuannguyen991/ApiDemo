@@ -10,11 +10,9 @@ namespace ApiDemo.Users
     {
         Task<UserDto> CreateAsync(CreateUserDto input);
 
-        Task <Guid> VerifyAsync(VerifyUserDto input);
+        Task <UserDto> GetAsync(string id);
 
-        Task <UserDto> GetAsync(Guid id);
-
-        Task UpdateAsync(Guid id, UpdateUserDto input);
+        Task UpdateAsync(string id, UpdateUserDto input);
 
         Task<UserDto> AddPackageAsync(CreateUserReadingPackageDto input);
 
@@ -26,12 +24,17 @@ namespace ApiDemo.Users
 
         Task DeleteHighlightAsync(DeleteHighlightDto input);
 
-        Task<List<UserLibraryDto>> GetReadingBooksAsync(Guid id);
+        Task<List<UserLibraryDto>> GetReadingBooksAsync(string id);
 
-        Task<List<UserLibraryDto>> GetFavoriteBooksAsync(Guid id);
+        Task<List<UserLibraryDto>> GetFavoriteBooksAsync(string id);
+        Task<bool> GetIsFavoriteAsync(string id, string bookId);
 
         Task AddReadingBookAsync(CreateUserLibraryDto input);
         
         Task AddFavoriteBookAsync(CreateUserLibraryDto input);
+
+        Task DeleteFavoriteBookAsync(string userId, string bookId);
+
+        Task UploadImageAsync(string id, string path);
     }
 }

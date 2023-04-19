@@ -7,7 +7,7 @@ namespace ApiDemo.Books
 {
     public class BookWithAuthor : Entity<Guid>
     {
-        public Guid BookId { get; set; }
+        public string BookId { get; set; }
         public Guid AuthorId { get; set; }
 
         private BookWithAuthor()
@@ -17,7 +17,7 @@ namespace ApiDemo.Books
 
         internal BookWithAuthor(
             Guid id,
-            Guid bookId,
+            string bookId,
             Guid authorId
         )
             : base(id)

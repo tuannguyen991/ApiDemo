@@ -5,11 +5,6 @@ namespace ApiDemo.Users
     public class UpdateUserDto
     {
         /// <summary>
-        /// Password.
-        /// </summary>
-        /// <example>123456</example>
-        public string Password { get; set; }
-        /// <summary>
         /// First name.
         /// </summary>
         /// <example>Tuấn</example>
@@ -29,10 +24,5 @@ namespace ApiDemo.Users
         /// </summary>
         /// <example>2001-02-28</example>
         public DateTime BirthDate { get; set; }
-        /// <summary>
-        /// Avatar.
-        /// </summary>
-        /// <example>https://www.dropbox.com/s/jseijks3wxb1jmp/avatarTuan.jpg?raw=1</example>
-        public string ImageLink { get; set; }
     }
 }

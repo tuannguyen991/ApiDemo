@@ -19,13 +19,14 @@ public class ApiDemoApplicationAutoMapperProfile : Profile
          * Alternatively, you can split your mapping configurations
          * into multiple profile classes for a better organization. */
         CreateMap<Author, AuthorDto>();
-        CreateMap<User, UserDto>();
+        CreateMap<User, UserDto>()
+            .ForMember(dest => dest.TotalReadingTime, act => act.MapFrom(src => Math.Ceiling(src.TotalReadingTime)));;
         CreateMap<ReadingPackage, ReadingPackageDto>();
         CreateMap<Category, CategoryDto>();
         CreateMap<Book, BookDto>();
         CreateMap<UserReadingPackage, UserReadingPackageDto>();
         CreateMap<UserHistory, UserHistoryDto>()
-            .ForMember(dest => dest.ReadingTime, act => act.MapFrom(src => src.ReadingTime.TotalMinutes));
+            .ForMember(dest => dest.ReadingTime, act => act.MapFrom(src => Math.Ceiling(src.ReadingTime.TotalMinutes)));
         CreateMap<BookWithAuthor, BookWithAuthorDto>();
         CreateMap<BookWithCategory, BookWithCategoryDto>();
         CreateMap<Highlight, HighlightDto>();

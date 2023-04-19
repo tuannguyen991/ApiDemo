@@ -8,7 +8,7 @@ namespace ApiDemo.Books
 {
     public interface IBookService : IApplicationService
     {
-        Task<BookDto> GetAsync(Guid id);
+        Task<BookDto> GetAsync(string id);
 
         Task<List<BookDto>> GetListAsync(GetBookListDto input);
 
@@ -18,8 +18,8 @@ namespace ApiDemo.Books
 
         Task<BookDto> CreateAsync(CreateBookDto input);
 
-        Task UpdateAsync(Guid id, UpdateBookDto input);
+        Task UpdateAsync(string id, UpdateBookDto input);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(string id);
     }
 }

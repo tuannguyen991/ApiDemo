@@ -6,31 +6,19 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace ApiDemo.Users
 {
-    public class User : FullAuditedAggregateRoot<Guid>
+    public class User : FullAuditedAggregateRoot<string>
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
         public string ImageLink { get; set; }
-        public long TotalReadingTime
-            => Histories.Sum(userHistory => userHistory.ReadingTime.Minutes);
+        public double TotalReadingTime
+            => Histories.Sum(userHistory => userHistory.ReadingTime.TotalMinutes);
         public Ranking Ranking
         {
             get
-            {
-                switch (TotalReadingTime)
-                {
-                    case < 50:
-                        return Ranking.Bronze;
-                    case < 500:
-                        return Ranking.Silver;
-                    default:
-                        return Ranking.Gold;
-                }
-            }
+                => (new RankSpecification().ToExpression()).Invoke(TotalReadingTime);
         }
         public List<UserReadingPackage> Packages { get; set; }
         public UserReadingPackage CurrentPackage
@@ -49,24 +37,18 @@ namespace ApiDemo.Users
         }
 
         internal User(
-            Guid id,
-            string username,
-            string password,
+            string id,
             string firstName,
             string lastName,
             string email,
-            DateTime birthDate,
-            string imageLink
+            DateTime birthDate
         )
             : base(id)
         {
-            Username = username;
-            Password = password;
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             BirthDate = birthDate;
-            ImageLink = imageLink;
             Packages = new List<UserReadingPackage>();
             Histories = new List<UserHistory>();
             UserLibraries = new List<UserLibrary>();

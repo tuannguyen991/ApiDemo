@@ -5,7 +5,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace ApiDemo.Books
 {
-    public interface IBookRepository : IRepository<Book, Guid>
+    public interface IBookRepository : IRepository<Book, string>
     {
         Task<Book> FindByTitleAsync(string title);
 

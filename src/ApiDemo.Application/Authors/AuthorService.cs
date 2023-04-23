@@ -56,11 +56,11 @@ namespace ApiDemo.Authors
         public async Task<AuthorDto> CreateAsync(CreateAuthorDto input)
         {
             var author = await _authorManager.CreateAsync(
-                input.Name,
-                input.BirthDate,
-                input.ShortBio,
-                input.ImageLink
-            );
+             input.Name,
+             input.BirthDate,
+             input.ShortBio,
+             input.ImageLink
+         );
 
             await _authorRepository.InsertAsync(author);
 

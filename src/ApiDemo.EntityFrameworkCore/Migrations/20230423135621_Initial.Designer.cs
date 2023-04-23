@@ -13,7 +13,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ApiDemo.Migrations
 {
     [DbContext(typeof(ApiDemoDbContext))]
-    [Migration("20230419035927_Initial")]
+    [Migration("20230423135621_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

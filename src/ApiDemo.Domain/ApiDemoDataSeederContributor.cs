@@ -78,7 +78,7 @@ namespace ApiDemo
                 new DateTime(2001, 07, 27)
             );
 
-            userBac.ImageLink = "Content\\Images\\Qi1E1fpvakhGcTPjc4m3nU5bLXx2\\avatarBac.jpg";
+            userBac.ImageLink = $"Content\\Images\\{UserBac.ID}\\avatarBac.jpg";
 
 
             await _userRepository.InsertManyAsync(
@@ -655,7 +655,7 @@ public enum Option
 
 public class UserBac
 {
-    public static readonly string ID = "Qi1E1fpvakhGcTPjc4m3nU5bLXx2";
+    public static readonly string ID = "kqx9ZPD4pgM6N0rSdFAhVzOJTs83";
 }
 
 public class UserTuan

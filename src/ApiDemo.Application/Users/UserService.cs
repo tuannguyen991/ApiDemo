@@ -8,6 +8,7 @@ using ApiDemo.Books;
 using ApiDemo.Categories;
 using ApiDemo.ReadingPackages;
 using Volo.Abp;
+using Volo.Abp.Domain.Entities;
 
 namespace ApiDemo.Users
 {
@@ -105,11 +106,28 @@ namespace ApiDemo.Users
         }
 
         #region Highlights
-        public async Task<List<HighlightDto>> GetHighlightsAsync(GetHighlightDto input)
+        public async Task<List<HighlightDto>> GetHighlightsAsync(string userId, string bookId)
         {
-            var highlights = await _userRepository.FindHighlightsAsync(input.UserId);
+            var highlights = await _userRepository.FindHighlightsAsync(userId, bookId);
+
+            foreach (var highlight in highlights)
+            {
+                highlight.Note = highlight.Note == "null" ? null : highlight.Note;
+            }
 
             return ObjectMapper.Map<List<Highlight>, List<HighlightDto>>(highlights);
+        }
+
+        public async Task<HighlightNotificationDto> GetHighlightNotificationAsync(string userId)
+        {
+            var highlights = await _userRepository.FindHighlightsByUserIdAsync(userId);
+
+            if (highlights.Count == 0)
+                throw new EntityNotFoundException();
+
+            Random rand = new Random();
+            int index = rand.Next(highlights.Count);
+            return ObjectMapper.Map<Highlight, HighlightNotificationDto>(highlights[index]);
         }
 
         public async Task<List<HighlightDto>> AddHighlightAsync(CreateHighlightDto input)
@@ -121,6 +139,15 @@ namespace ApiDemo.Users
             await _userRepository.UpdateAsync(user);
 
             return ObjectMapper.Map<List<Highlight>, List<HighlightDto>>(user.Highlights);
+        }
+
+        public async Task UpdateHighlightAsync(Guid highLightId, UpdateHighlightDto input)
+        {
+            var user = await _userRepository.FindAsync(input.UserId);
+
+            await _userManager.UpdateHighlightAsync(user, highLightId, input.Date, input.Type, input.Rangy, input.Note);
+
+            await _userRepository.UpdateAsync(user);
         }
 
         public async Task DeleteHighlightAsync(DeleteHighlightDto input)

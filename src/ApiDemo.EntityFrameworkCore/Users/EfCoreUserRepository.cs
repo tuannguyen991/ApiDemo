@@ -24,20 +24,33 @@ namespace ApiDemo.Users
         public async Task<User> FindAsync(string id)
         {
             var queryable = await WithDetailsAsync();
-            
+
             var query = queryable.Where(user => user.Id == id);
 
             return await AsyncExecuter.FirstOrDefaultAsync(query);
         }
 
-        public async Task<List<Highlight>> FindHighlightsAsync(string userId)
+        public async Task<List<Highlight>> FindHighlightsAsync(string userId, string bookId)
         {
             var user = await FindAsync(userId);
 
             var highlights = user.Highlights;
 
-            var result = from highlight in highlights
-                         select highlight;
+            var result = highlights.Where(x => x.UserId == userId)
+                                    .Where(x => x.BookId == bookId)
+                                    .OrderBy(x => x.Date);
+
+            return result.ToList();
+        }
+
+        public async Task<List<Highlight>> FindHighlightsByUserIdAsync(string userId)
+        {
+            var user = await FindAsync(userId);
+
+            var highlights = user.Highlights;
+
+            var result = highlights.Where(x => x.UserId == userId)
+                                    .OrderBy(x => x.Date);
 
             return result.ToList();
         }

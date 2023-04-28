@@ -20,7 +20,7 @@ public class ApiDemoApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
         CreateMap<Author, AuthorDto>();
         CreateMap<User, UserDto>()
-            .ForMember(dest => dest.TotalReadingTime, act => act.MapFrom(src => Math.Ceiling(src.TotalReadingTime)));;
+            .ForMember(dest => dest.TotalReadingTime, act => act.MapFrom(src => Math.Ceiling(src.TotalReadingTime)));
         CreateMap<ReadingPackage, ReadingPackageDto>();
         CreateMap<Category, CategoryDto>();
         CreateMap<Book, BookDto>();
@@ -30,5 +30,7 @@ public class ApiDemoApplicationAutoMapperProfile : Profile
         CreateMap<BookWithAuthor, BookWithAuthorDto>();
         CreateMap<BookWithCategory, BookWithCategoryDto>();
         CreateMap<Highlight, HighlightDto>();
+        CreateMap<Highlight, HighlightNotificationDto>()
+            .ForMember(dest => dest.BookName, act => act.MapFrom(src => src.Book.Title));
     }
 }

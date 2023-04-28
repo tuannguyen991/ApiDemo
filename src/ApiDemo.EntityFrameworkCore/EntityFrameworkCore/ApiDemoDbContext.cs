@@ -222,7 +222,7 @@ public class ApiDemoDbContext :
                 .HasForeignKey(p => p.BookId);
 
             b.HasMany<Highlight>()
-                .WithOne()
+                .WithOne(h => h.Book)
                 .HasForeignKey(p => p.BookId);
             
             b.Ignore(b => b.Authors);

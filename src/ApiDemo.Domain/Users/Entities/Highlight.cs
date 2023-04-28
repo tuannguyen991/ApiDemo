@@ -1,4 +1,5 @@
 using System;
+using ApiDemo.Books;
 using ApiDemo.ReadingPackages;
 using Volo.Abp.Domain.Entities;
 
@@ -9,13 +10,14 @@ namespace ApiDemo.Users
         public string UserId { get; set; }
         public string BookId { get; set; }
         public string Content { get; set; }
-        public DateTime Date { get; set; }
+        public long Date { get; set; }
         public string Type { get; set; }
         public int PageNumber { get; set; }
         public string PageId { get; set; }
         public string Rangy { get; set; }
         public string Uuid { get; set; }
         public string Note { get; set; }
+        public Book Book { get; set; }
         
         private Highlight()
         {
@@ -26,7 +28,7 @@ namespace ApiDemo.Users
             string userId,
             string bookId,
             string content,
-            DateTime date,
+            long date,
             string type,
             int pageNumber,
             string pageId,

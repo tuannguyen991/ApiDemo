@@ -20,13 +20,18 @@ namespace ApiDemo.Users
 
         Task<List<HighlightDto>> AddHighlightAsync(CreateHighlightDto input);
 
-        Task<List<HighlightDto>> GetHighlightsAsync(GetHighlightDto input);
+        Task UpdateHighlightAsync(Guid highLightId, UpdateHighlightDto input);
+
+        Task<List<HighlightDto>> GetHighlightsAsync(string userId, string bookId);
+
+        Task<HighlightNotificationDto> GetHighlightNotificationAsync(string userId);
 
         Task DeleteHighlightAsync(DeleteHighlightDto input);
 
         Task<List<UserLibraryDto>> GetReadingBooksAsync(string id);
 
         Task<List<UserLibraryDto>> GetFavoriteBooksAsync(string id);
+
         Task<bool> GetIsFavoriteAsync(string id, string bookId);
 
         Task AddReadingBookAsync(CreateUserLibraryDto input);

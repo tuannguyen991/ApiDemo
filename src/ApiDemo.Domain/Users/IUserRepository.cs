@@ -9,7 +9,9 @@ namespace ApiDemo.Users
     {
         Task<User> FindAsync(string id);
 
-        Task<List<Highlight>> FindHighlightsAsync(string userId);
+        Task<List<Highlight>> FindHighlightsAsync(string userId, string bookId);
+
+        Task<List<Highlight>> FindHighlightsByUserIdAsync(string userId);
 
         Task<List<UserLibrary>> GetReadingBooksAsync(string id);
 

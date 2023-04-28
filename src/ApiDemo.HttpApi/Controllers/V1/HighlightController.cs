@@ -22,11 +22,26 @@ namespace ApiDemo.Controllers
         /// <remarks>
         /// Get Highlights.
         /// </remarks>
-        /// <param name="input">Highlight Infomation</param>
+        /// <param name="userId">User Id</param>
+        /// <param name="bookId">Book Id</param>
         [HttpGet]
-        public async Task<List<HighlightDto>> GetHighlightsAsync([FromQuery] GetHighlightDto input)
+        [Route("{userId}/{bookId}")]
+        public async Task<List<HighlightDto>> GetHighlightsAsync([FromRoute] string userId, [FromRoute] string bookId)
         {
-            return await _userService.GetHighlightsAsync(input);
+            return await _userService.GetHighlightsAsync(userId, bookId);
+        }
+        /// <summary>
+        /// Get Notification Highlight for User.
+        /// </summary>
+        /// <remarks>
+        /// Get Notification Highlight for User.
+        /// </remarks>
+        /// <param name="userId">User Id</param>
+        [HttpGet]
+        [Route("{userId}")]
+        public async Task<HighlightNotificationDto> GetHighlightNotificationAsync([FromRoute] string userId)
+        {
+            return await _userService.GetHighlightNotificationAsync(userId);
         }
         /// <summary>
         /// Add Highlight.
@@ -39,6 +54,20 @@ namespace ApiDemo.Controllers
         public async Task<List<HighlightDto>> AddHighlightAsync([FromBody] CreateHighlightDto input)
         {
             return await _userService.AddHighlightAsync(input);
+        }
+        /// <summary>
+        /// Update Highlight.
+        /// </summary>
+        /// <remarks>
+        /// Update Highlight.
+        /// </remarks>
+        /// <param name="input">Highlight Infomation</param>
+        /// <param name="id">Id</param>
+        [HttpPut]
+        [Route("{id}")]
+        public async Task UpdateHighlightAsync([FromRoute] Guid id, [FromBody] UpdateHighlightDto input)
+        {
+            await _userService.UpdateHighlightAsync(id, input);
         }
         /// <summary>
         /// Delete Highlight.

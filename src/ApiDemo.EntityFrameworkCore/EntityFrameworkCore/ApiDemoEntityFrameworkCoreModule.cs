@@ -79,7 +79,8 @@ public class ApiDemoEntityFrameworkCoreModule : AbpModule
                                             .Include(
                                                 o => o.Highlights
                                                     .OrderByDescending(highlight => highlight.Date)
-                                            );
+                                            )
+                                                .ThenInclude(h => h.Book);
             });
 
             options.Entity<Book>(o =>

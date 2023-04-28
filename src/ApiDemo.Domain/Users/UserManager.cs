@@ -73,7 +73,7 @@ namespace ApiDemo.Users
             User user, 
             string bookId,
             string content,
-            DateTime date,
+            long date,
             string type,
             int pageNumber,
             string pageId,
@@ -96,6 +96,25 @@ namespace ApiDemo.Users
             );
 
             user.Highlights.Add(highlight);
+            return Task.CompletedTask;
+        }
+
+        public Task UpdateHighlightAsync(
+            User user, 
+            Guid highLightId,
+            long date,
+            string type,
+            string rangy,
+            string note
+        )
+        {
+            var highlight = user.Highlights.Find(x => x.Id == highLightId);
+
+            highlight.Date = date;
+            highlight.Type = type;
+            highlight.Rangy = rangy;
+            highlight.Note = note;
+
             return Task.CompletedTask;
         }
 

@@ -872,7 +872,7 @@ namespace ApiDemo.Migrations
                     UserId = table.Column<string>(type: "text", nullable: true),
                     BookId = table.Column<string>(type: "text", nullable: true),
                     Content = table.Column<string>(type: "text", nullable: true),
-                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Date = table.Column<long>(type: "bigint", nullable: false),
                     Type = table.Column<string>(type: "text", nullable: true),
                     PageNumber = table.Column<int>(type: "integer", nullable: false),
                     PageId = table.Column<string>(type: "text", nullable: true),

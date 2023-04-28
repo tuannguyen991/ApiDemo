@@ -333,8 +333,8 @@ namespace ApiDemo.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<long>("Date")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Note")
                         .HasColumnType("text");
@@ -2478,13 +2478,15 @@ namespace ApiDemo.Migrations
 
             modelBuilder.Entity("ApiDemo.Users.Highlight", b =>
                 {
-                    b.HasOne("ApiDemo.Books.Book", null)
+                    b.HasOne("ApiDemo.Books.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId");
 
                     b.HasOne("ApiDemo.Users.User", null)
                         .WithMany("Highlights")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("ApiDemo.Users.UserHistory", b =>

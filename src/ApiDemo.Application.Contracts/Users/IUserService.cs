@@ -34,6 +34,8 @@ namespace ApiDemo.Users
 
         Task<bool> GetIsFavoriteAsync(string id, string bookId);
 
+        Task<UserLibraryDto> GetLibraryBookAsync(string id, string bookId);
+
         Task AddReadingBookAsync(CreateUserLibraryDto input);
         
         Task AddFavoriteBookAsync(CreateUserLibraryDto input);

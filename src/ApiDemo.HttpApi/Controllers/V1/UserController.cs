@@ -138,6 +138,20 @@ namespace ApiDemo.Controllers
             return await _userService.GetIsFavoriteAsync(id, bookId);
         }
         /// <summary>
+        /// Get Library Book.
+        /// </summary>
+        /// <remarks>
+        /// Get is Favorite.
+        /// </remarks>
+        /// <param name="id">User ID</param>
+        /// <param name="bookId">Book ID</param>
+        [HttpGet]
+        [Route("library-book/{id}/{bookId}")]
+        public async Task<UserLibraryDto> GetLibraryBookAsync([FromRoute] string id, [FromRoute] string bookId)
+        {
+            return await _userService.GetLibraryBookAsync(id, bookId);
+        }
+        /// <summary>
         /// Create Favorite Books.
         /// </summary>
         /// <remarks>

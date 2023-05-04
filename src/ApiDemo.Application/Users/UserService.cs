@@ -230,6 +230,36 @@ namespace ApiDemo.Users
             return result;
         }
 
+        public async Task<UserLibraryDto> GetLibraryBookAsync(string id, string bookId)
+        {
+            var favoriteBooks = await _userRepository.GetFavoriteBooksAsync(id);
+            var readingBooks = await _userRepository.GetReadingBooksAsync(id);
+            var books = favoriteBooks.Concat(readingBooks).ToList(); ;
+            var libraryBook = favoriteBooks.Find(x => x.BookId == bookId);
+
+            var book = await _bookRepository.FindAsync(libraryBook.BookId);
+
+            return new UserLibraryDto
+            {
+                UserId = libraryBook.UserId,
+                BookId = libraryBook.BookId,
+                NumberOfReadPages = libraryBook.NumberOfReadPages,
+                LastRead = libraryBook.LastRead,
+                LastLocator = libraryBook.LastLocator,
+                Href = libraryBook.Href,
+                Rating = libraryBook.Rating,
+                Title = book.Title,
+                Subtitle = book.Subtitle,
+                NumberOfPages = book.NumberOfPages,
+                EpubLink = book.EpubLink,
+                ImageLink = book.ImageLink,
+                AverageRating = book.AverageRating,
+                Description = book.Description,
+                Authors = ObjectMapper.Map<List<Author>, List<AuthorDto>>(book.BookWithAuthors.Select(author => _authorRepository.GetAsync(author.AuthorId).Result).ToList()),
+                Categories = ObjectMapper.Map<List<Category>, List<CategoryDto>>(book.BookWithCategories.Select(author => _categoryRepository.GetAsync(author.CategoryId).Result).ToList())
+            };
+        }
+
         public async Task AddReadingBookAsync(CreateUserLibraryDto input)
         {
             var user = await _userRepository.FindAsync(input.UserId);

@@ -239,7 +239,7 @@ namespace ApiDemo.Users
             if (userLibrary != null)
             {
                 userLibrary.IsReading = true;
-                userLibrary.NumberOfReadPages += input.NumberOfReadPages;
+                userLibrary.NumberOfReadPages += input.NumberOfReadPages >= 0 ? input.NumberOfReadPages : 0;
                 userLibrary.LastRead = DateTime.Now;
                 userLibrary.LastLocator = input.LastLocator;
                 userLibrary.Href = input.Href;

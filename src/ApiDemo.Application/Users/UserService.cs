@@ -235,7 +235,7 @@ namespace ApiDemo.Users
             var favoriteBooks = await _userRepository.GetFavoriteBooksAsync(id);
             var readingBooks = await _userRepository.GetReadingBooksAsync(id);
             var books = favoriteBooks.Concat(readingBooks).ToList(); ;
-            var libraryBook = favoriteBooks.Find(x => x.BookId == bookId);
+            var libraryBook = books.Find(x => x.BookId == bookId);
 
             if (libraryBook == null)
                 throw new EntityNotFoundException();

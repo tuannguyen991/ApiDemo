@@ -279,7 +279,8 @@ namespace ApiDemo.Users
             }
             else
             {
-                await _userManager.AddReadingBookAsync(user, input.BookId, input.NumberOfReadPages, input.LastLocator, input.Href);
+                if (input.NumberOfReadPages > 0)
+                    await _userManager.AddReadingBookAsync(user, input.BookId, input.NumberOfReadPages, input.LastLocator, input.Href);
             }
             await _userRepository.UpdateAsync(user);
         }

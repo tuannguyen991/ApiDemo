@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ApiDemo.Authors;
 using ApiDemo.Books;
@@ -9,7 +7,6 @@ using ApiDemo.ReadingPackages;
 using ApiDemo.Users;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Guids;
 
 namespace ApiDemo
@@ -48,14 +45,14 @@ namespace ApiDemo
             {
                 case Option.InitialPrimary:
                     await SeedReadingPackageAsync();
-                    await SeedUserAsync();
+                    // await SeedUserAsync();
                     await SeedAuthorAsync();
                     await SeedCategoryAsync();
                     await SeedBookAsync();
                     break;
 
                 case Option.InitialSecondary:
-                    await SeedUserReadingPackagesAsync();
+                    // await SeedUserReadingPackagesAsync();
                     // await SeedUserHistoriesAsync();
                     // await SeedUserLibrariesAsync();
                     // await SeedHighlightsAsync();

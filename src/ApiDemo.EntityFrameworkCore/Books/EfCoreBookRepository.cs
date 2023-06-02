@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
-using ApiDemo.Books;
 using ApiDemo.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
@@ -23,11 +22,43 @@ namespace ApiDemo.Books
 
         public async Task<Book> FindByTitleAsync(string title)
         {
-            var queryable = await WithDetailsAsync();
+            var dbSet = await GetDbSetAsync();
 
-            var query = queryable.Where(book => book.Title == title);
+            var query = dbSet.Where(book => book.Title == title);
+
+            query = query
+                        .Include(x => x.BookWithAuthors)
+                            .ThenInclude(x => x.Author)
+                        .Include(x => x.BookWithCategories)
+                            .ThenInclude(x => x.Category);
 
             return await AsyncExecuter.FirstOrDefaultAsync(query);
+        }
+
+        public async Task<Book> GetAsync(string id)
+        {
+            var dbSet = await GetDbSetAsync();
+
+            var query = dbSet.Where(book => book.Id == id);
+
+            query = query
+                        .Include(x => x.BookWithAuthors)
+                            .ThenInclude(x => x.Author)
+                        .Include(x => x.BookWithCategories)
+                            .ThenInclude(x => x.Category);
+
+            return await AsyncExecuter.FirstOrDefaultAsync(query);
+        }
+
+        public async Task<List<Book>> GetItemsAsync()
+        {
+            var dbSet = await GetDbSetAsync();
+
+            var query = dbSet
+                        .Include(x => x.BookWithCategories)
+                            .ThenInclude(x => x.Category);
+
+            return await query.ToListAsync();
         }
 
         public async Task<List<Book>> GetListAsync(
@@ -36,9 +67,9 @@ namespace ApiDemo.Books
             string sorting,
             string filter = null)
         {
-            var queryable = await WithDetailsAsync();
+            var dbSet = await GetDbSetAsync();
 
-            var query = queryable.WhereIf(
+            var query = dbSet.WhereIf(
                             !filter.IsNullOrWhiteSpace(),
                             book => book.Title.ToLower().Contains(filter.ToLower())
                         )
@@ -46,29 +77,79 @@ namespace ApiDemo.Books
                         .Skip(skipCount)
                         .Take(maxResultCount);
 
+            query = query
+                        .Include(x => x.BookWithAuthors)
+                            .ThenInclude(x => x.Author)
+                        .Include(x => x.BookWithCategories)
+                            .ThenInclude(x => x.Category);
+
             return await query.ToListAsync();
         }
 
         public async Task<List<Book>> GetListByAuthorIdAsync(Guid authorId)
         {
-            var queryable = await WithDetailsAsync();
+            var dbSet = await GetDbSetAsync();
 
-            var query = queryable.Where(
+            var query = dbSet.AsQueryable()
+                            .Include(x => x.BookWithAuthors)
+                                .ThenInclude(x => x.Author)
+                            .AsQueryable();
+
+
+            query = query.Where(
                             book => book.BookWithAuthors.Any(author => author.AuthorId == authorId)
                         );
 
-            return await query.ToListAsync();        
+            query = query
+                        .Include(x => x.BookWithCategories)
+                            .ThenInclude(x => x.Category);
+
+            return await query.ToListAsync();
         }
 
         public async Task<List<Book>> GetListByCategoryIdAsync(Guid categoryId)
         {
-            var queryable = await WithDetailsAsync();
+            var dbSet = await GetDbSetAsync();
 
-            var query = queryable.Where(
+            var query = dbSet.AsQueryable()
+                            .Include(x => x.BookWithCategories)
+                                .ThenInclude(x => x.Category)
+                            .AsQueryable();
+
+            query = query.Where(
                             book => book.BookWithCategories.Any(category => category.CategoryId == categoryId)
                         );
 
-            return await query.ToListAsync(); 
+            query = query
+                        .Include(x => x.BookWithAuthors)
+                            .ThenInclude(x => x.Author);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<string>> GetBooksForCalculateTopAsync()
+        {
+            var dbSet = await GetDbSetAsync();
+
+            var query = dbSet.AsQueryable()
+                            .Include(x => x.UserLibraries);
+
+            var books = await query.ToListAsync();
+
+            var booksWithScore = books.Select(book => new
+            {
+                Book = book,
+                Score = book.UserLibraries.Sum(library => library.ReadCount) +
+               5 * book.UserLibraries.Count(library => library.IsFavorite)
+            });
+
+            // Sort the books based on the score in descending order
+            var sortedBooks = booksWithScore.OrderByDescending(book => book.Score);
+
+            // Take the top 2 books
+            var topBooks = sortedBooks.Take(2).Select(book => book.Book);
+
+            return topBooks.Select(x => x.Id).ToList();
         }
     }
 }

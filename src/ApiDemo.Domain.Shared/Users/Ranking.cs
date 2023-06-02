@@ -9,8 +9,8 @@ namespace ApiDemo.Users
     /// </summary>
     public enum Ranking
     {
-        Gold = 1,
-        Silver = 2,
-        Bronze = 3
+        Gold = 0,
+        Silver = 1,
+        Bronze = 2
     }
 }

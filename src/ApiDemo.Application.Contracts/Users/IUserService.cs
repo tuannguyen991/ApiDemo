@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Volo.Abp.Application.Dtos;
+using ApiDemo.Users.RecommendationSystem;
 using Volo.Abp.Application.Services;
 
 namespace ApiDemo.Users
@@ -10,7 +10,11 @@ namespace ApiDemo.Users
     {
         Task<UserDto> CreateAsync(CreateUserDto input);
 
-        Task <UserDto> GetAsync(string id);
+        Task<UserDto> GetAsync(string id);
+
+        Task<UserDto> GetWithCurrentPackageAsync(string id);
+
+        Task<List<RatingDto>> GetUserRatings(string id);
 
         Task UpdateAsync(string id, UpdateUserDto input);
 
@@ -28,20 +32,23 @@ namespace ApiDemo.Users
 
         Task DeleteHighlightAsync(DeleteHighlightDto input);
 
-        Task<List<UserLibraryDto>> GetReadingBooksAsync(string id);
+        Task<List<UserBookDto>> GetReadingBooksAsync(string id);
 
-        Task<List<UserLibraryDto>> GetFavoriteBooksAsync(string id);
-
-        Task<bool> GetIsFavoriteAsync(string id, string bookId);
-
-        Task<UserLibraryDto> GetLibraryBookAsync(string id, string bookId);
+        Task<List<UserBookDto>> GetFavoriteBooksAsync(string id);
 
         Task AddReadingBookAsync(CreateUserLibraryDto input);
-        
+
         Task AddFavoriteBookAsync(CreateUserLibraryDto input);
 
         Task DeleteFavoriteBookAsync(string userId, string bookId);
 
         Task UploadImageAsync(string id, string path);
+
+        #region Reminder
+        Task<List<ReminderDto>> CreateReminderAsync(CreateReminderDto input);
+        Task<List<ReminderDto>> UpdateReminderAsync(string userId, Guid reminderId, UpdateReminderDto input);
+        Task<List<ReminderDto>> DeleteReminderAsync(string userId, Guid reminderId);
+        Task<List<ReminderDto>> GetRemindersAsync(string userId);
+        #endregion
     }
 }

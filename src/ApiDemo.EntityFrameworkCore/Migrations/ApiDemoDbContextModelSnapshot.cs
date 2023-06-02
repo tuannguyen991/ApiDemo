@@ -366,6 +366,24 @@ namespace ApiDemo.Migrations
                     b.ToTable("AppHighlights", (string)null);
                 });
 
+            modelBuilder.Entity("ApiDemo.Users.Reminder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Time")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AppReminders", (string)null);
+                });
+
             modelBuilder.Entity("ApiDemo.Users.User", b =>
                 {
                     b.Property<string>("Id")
@@ -480,6 +498,9 @@ namespace ApiDemo.Migrations
 
                     b.Property<double>("Rating")
                         .HasColumnType("double precision");
+
+                    b.Property<int>("ReadCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -2452,7 +2473,7 @@ namespace ApiDemo.Migrations
 
             modelBuilder.Entity("ApiDemo.Books.BookWithAuthor", b =>
                 {
-                    b.HasOne("ApiDemo.Authors.Author", null)
+                    b.HasOne("ApiDemo.Authors.Author", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2461,6 +2482,8 @@ namespace ApiDemo.Migrations
                     b.HasOne("ApiDemo.Books.Book", null)
                         .WithMany("BookWithAuthors")
                         .HasForeignKey("BookId");
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("ApiDemo.Books.BookWithCategory", b =>
@@ -2469,11 +2492,13 @@ namespace ApiDemo.Migrations
                         .WithMany("BookWithCategories")
                         .HasForeignKey("BookId");
 
-                    b.HasOne("ApiDemo.Categories.Category", null)
+                    b.HasOne("ApiDemo.Categories.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ApiDemo.Users.Highlight", b =>
@@ -2489,6 +2514,13 @@ namespace ApiDemo.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("ApiDemo.Users.Reminder", b =>
+                {
+                    b.HasOne("ApiDemo.Users.User", null)
+                        .WithMany("Reminders")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("ApiDemo.Users.UserHistory", b =>
                 {
                     b.HasOne("ApiDemo.Users.User", null)
@@ -2499,7 +2531,7 @@ namespace ApiDemo.Migrations
             modelBuilder.Entity("ApiDemo.Users.UserLibrary", b =>
                 {
                     b.HasOne("ApiDemo.Books.Book", null)
-                        .WithMany()
+                        .WithMany("UserLibraries")
                         .HasForeignKey("BookId");
 
                     b.HasOne("ApiDemo.Users.User", null)
@@ -2802,6 +2834,8 @@ namespace ApiDemo.Migrations
                     b.Navigation("BookWithAuthors");
 
                     b.Navigation("BookWithCategories");
+
+                    b.Navigation("UserLibraries");
                 });
 
             modelBuilder.Entity("ApiDemo.Users.User", b =>
@@ -2811,6 +2845,8 @@ namespace ApiDemo.Migrations
                     b.Navigation("Histories");
 
                     b.Navigation("Packages");
+
+                    b.Navigation("Reminders");
 
                     b.Navigation("UserLibraries");
                 });

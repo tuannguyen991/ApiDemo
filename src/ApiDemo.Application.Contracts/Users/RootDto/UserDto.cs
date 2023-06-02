@@ -39,7 +39,7 @@ namespace ApiDemo.Users
         /// <summary>
         /// Ranking.
         /// </summary>
-        /// <example>0</example>
+        /// <example>1</example>
         public Ranking Ranking { get; set; }
         /// <summary>
         /// Current Package.
@@ -56,5 +56,15 @@ namespace ApiDemo.Users
         /// </summary>
         /// <example>2</example>
         public int TotalReadingBooks { get; set; }
+        /// <summary>
+        ///  Recommend Books.
+        /// </summary>
+        /// <example></example>
+        public List<UserBookDto> RecommendBooks { get; set; }
+        /// <summary>
+        ///  Last Book.
+        /// </summary>
+        /// <example></example>
+        public UserBookDto LastBook { get; set; }
     }
 }

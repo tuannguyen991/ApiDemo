@@ -1,6 +1,5 @@
 using System;
 using ApiDemo.Authors;
-using ApiDemo.ReadingPackages;
 using Volo.Abp.Domain.Entities;
 
 namespace ApiDemo.Books
@@ -9,6 +8,7 @@ namespace ApiDemo.Books
     {
         public string BookId { get; set; }
         public Guid AuthorId { get; set; }
+        public Author Author { get; set; }
 
         private BookWithAuthor()
         {

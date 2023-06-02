@@ -1,9 +1,9 @@
 using ApiDemo.Books;
+using ApiDemo.Users;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Volo.Abp.Application.Dtos;
 
 namespace ApiDemo.Controllers
 {
@@ -16,6 +16,7 @@ namespace ApiDemo.Controllers
         {
             _bookService = bookService;
         }
+        #region CRUD
         /// <summary>
         /// Get categories list with paged result.
         /// </summary>
@@ -28,34 +29,6 @@ namespace ApiDemo.Controllers
         public async Task<List<BookDto>> GetListAsync([FromQuery] GetBookListDto input)
         {
             return await _bookService.GetListAsync(input);
-        }
-        /// <summary>
-        /// Get categories list by Category Id.
-        /// </summary>
-        /// <remarks>
-        /// Get categories list by Category Id.
-        /// </remarks>
-        /// <param name="cagoryId">Category Id</param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("by-category/{cagoryId}")]
-        public async Task<List<BookDto>> GetListByCategoryIdAsync([FromRoute] Guid cagoryId)
-        {
-            return await _bookService.GetListByCategoryIdAsync(cagoryId);
-        }
-        /// <summary>
-        /// Get categories list by Author Id.
-        /// </summary>
-        /// <remarks>
-        /// Get categories list by Author Id.
-        /// </remarks>
-        /// <param name="authorId">Author Id</param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("by-author/{authorId}")]
-        public async Task<List<BookDto>> GetListByAuthorIdAsync([FromRoute] Guid authorId)
-        {
-            return await _bookService.GetListByAuthorIdAsync(authorId);
         }
         /// <summary>
         /// Get book by Id.
@@ -109,5 +82,64 @@ namespace ApiDemo.Controllers
         {
             await _bookService.UpdateAsync(id, input);
         }
+        #endregion
+
+        #region User relevant
+        /// <summary>
+        /// GetListByCategoryId.
+        /// </summary>
+        /// <remarks>
+        /// GetListByCategoryId.
+        /// </remarks>
+        /// <param name="categoryId">Category Id</param>
+        /// <param name="userId">User Id</param>
+        [HttpGet]
+        [Route("by-category/{userId}/{categoryId}")]
+        public async Task<List<UserBookDto>> GetListByCategoryIdAsync([FromRoute] string userId, [FromRoute] Guid categoryId)
+        {
+            return await _bookService.GetListByCategoryIdAsync(userId, categoryId);
+        }
+        /// <summary>
+        /// GetListByAuthorIdAsync.
+        /// </summary>
+        /// <remarks>
+        /// GetListByAuthorIdAsync.
+        /// </remarks>
+        /// <param name="authorId">Author Id</param>
+        /// <param name="userId">User Id</param>
+        [HttpGet]
+        [Route("by-author/{userId}/{authorId}")]
+        public async Task<List<UserBookDto>> GetListByAuthorIdAsync([FromRoute] string userId, [FromRoute] Guid authorId)
+        {
+            return await _bookService.GetListByAuthorIdAsync(userId, authorId);
+        }
+        /// <summary>
+        /// GetBookByNameAsync.
+        /// </summary>
+        /// <remarks>
+        /// GetBookByNameAsync.
+        /// </remarks>
+        /// <param name="userId">User Id</param>
+        /// <param name="input">User Id</param>
+        [HttpGet]
+        [Route("by-name/{userId}")]
+        public async Task<List<UserBookDto>> GetBookByNameAsync([FromRoute] string userId, [FromQuery] GetBookListDto input)
+        {
+            return await _bookService.GetBookByNameAsync(userId, input);
+        }
+        /// <summary>
+        /// GetTopBooksAsync.
+        /// </summary>
+        /// <remarks>
+        /// GetTopBooksAsync.
+        /// </remarks>
+        /// <param name="userId">User Id</param>
+        [HttpGet]
+        [Route("top-books/{userId}")]
+        public async Task<List<UserBookDto>> GetTopBooksAsync([FromRoute] string userId)
+        {
+            return await _bookService.GetTopBooksAsync(userId);
+        }
+        #endregion
     }
 }

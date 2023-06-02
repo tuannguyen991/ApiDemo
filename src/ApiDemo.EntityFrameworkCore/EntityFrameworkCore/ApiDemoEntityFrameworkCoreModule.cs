@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using ApiDemo.Books;
 using ApiDemo.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -81,13 +80,6 @@ public class ApiDemoEntityFrameworkCoreModule : AbpModule
                                                     .OrderByDescending(highlight => highlight.Date)
                                             )
                                                 .ThenInclude(h => h.Book);
-            });
-
-            options.Entity<Book>(o =>
-            {
-                o.DefaultWithDetailsFunc = query => query
-                                            .Include(o => o.BookWithAuthors)
-                                            .Include(o => o.BookWithCategories);
             });
         });
     }

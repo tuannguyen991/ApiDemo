@@ -7,16 +7,13 @@ using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
-using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
-using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.IdentityServer.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
-using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 
 namespace ApiDemo.EntityFrameworkCore;
@@ -77,6 +74,9 @@ public class ApiDemoDbContext :
     public DbSet<BookWithCategory> BookWithCategories { get; set; }
 
     public DbSet<UserLibrary> UserLibraries { get; set; }
+
+    public DbSet<Reminder> Reminders { get; set; }
+
     public DbSet<Highlight> Highlights { get; set; }
 
     public ApiDemoDbContext(DbContextOptions<ApiDemoDbContext> options)
@@ -144,6 +144,10 @@ public class ApiDemoDbContext :
                 .WithOne()
                 .HasForeignKey(p => p.UserId);
 
+            b.HasMany<Reminder>(u => u.Reminders)
+                .WithOne()
+                .HasForeignKey(p => p.UserId);
+
             b.Ignore(p => p.CurrentPackage);
 
             b.Ignore(p => p.RecentlyHistories);
@@ -152,7 +156,7 @@ public class ApiDemoDbContext :
 
             b.Ignore(p => p.TotalReadingBooks);
 
-        b.Ignore(p => p.Ranking);
+            b.Ignore(p => p.Ranking);
         });
 
         builder.Entity<UserReadingPackage>(b =>
@@ -185,7 +189,7 @@ public class ApiDemoDbContext :
             b.HasIndex(x => x.Name);
 
             b.HasMany<BookWithAuthor>()
-                .WithOne()
+                .WithOne(p => p.Author)
                 .HasForeignKey(p => p.AuthorId);
         });
 
@@ -197,7 +201,7 @@ public class ApiDemoDbContext :
             b.ConfigureByConvention();
 
             b.HasMany<BookWithCategory>()
-                .WithOne()
+                .WithOne(p => p.Category)
                 .HasForeignKey(p => p.CategoryId);
         });
 
@@ -217,17 +221,13 @@ public class ApiDemoDbContext :
                 .WithOne()
                 .HasForeignKey(p => p.BookId);
 
-            b.HasMany<UserLibrary>()
+            b.HasMany<UserLibrary>(x => x.UserLibraries)
                 .WithOne()
                 .HasForeignKey(p => p.BookId);
 
             b.HasMany<Highlight>()
                 .WithOne(h => h.Book)
                 .HasForeignKey(p => p.BookId);
-            
-            b.Ignore(b => b.Authors);
-
-            b.Ignore(b => b.Categories);
         });
 
         builder.Entity<BookWithAuthor>(b =>
@@ -257,6 +257,14 @@ public class ApiDemoDbContext :
         builder.Entity<Highlight>(b =>
         {
             b.ToTable(ApiDemoConsts.DbTablePrefix + "Highlights",
+                ApiDemoConsts.DbSchema);
+
+            b.ConfigureByConvention();
+        });
+
+        builder.Entity<Reminder>(b =>
+        {
+            b.ToTable(ApiDemoConsts.DbTablePrefix + "Reminders",
                 ApiDemoConsts.DbSchema);
 
             b.ConfigureByConvention();

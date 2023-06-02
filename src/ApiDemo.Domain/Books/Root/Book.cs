@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using ApiDemo.Authors;
-using ApiDemo.Categories;
+using ApiDemo.Users;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace ApiDemo.Books
@@ -18,8 +15,7 @@ namespace ApiDemo.Books
         public string Description { get; set; }
         public List<BookWithAuthor> BookWithAuthors { get; set; }
         public List<BookWithCategory> BookWithCategories { get; set; }
-        public List<Author> Authors { get; set; }
-        public List<Category> Categories { get; set; }
+        public List<UserLibrary> UserLibraries { get; set; }
 
         private Book()
         {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Volo.Abp.Application.Dtos;
+using ApiDemo.Users;
 using Volo.Abp.Application.Services;
 
 namespace ApiDemo.Books
@@ -12,9 +12,13 @@ namespace ApiDemo.Books
 
         Task<List<BookDto>> GetListAsync(GetBookListDto input);
 
-        Task<List<BookDto>> GetListByCategoryIdAsync(Guid categoryId);
+        Task<List<UserBookDto>> GetListByCategoryIdAsync(string userId, Guid categoryId);
 
-        Task<List<BookDto>> GetListByAuthorIdAsync(Guid authorId);
+        Task<List<UserBookDto>> GetListByAuthorIdAsync(string userId, Guid authorId);
+
+        Task<List<UserBookDto>> GetTopBooksAsync(string userId);
+
+        Task<List<UserBookDto>> GetBookByNameAsync(string userId, GetBookListDto input);
 
         Task<BookDto> CreateAsync(CreateBookDto input);
 

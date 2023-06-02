@@ -1,6 +1,5 @@
 using System;
 using ApiDemo.Categories;
-using ApiDemo.ReadingPackages;
 using Volo.Abp.Domain.Entities;
 
 namespace ApiDemo.Books
@@ -9,6 +8,7 @@ namespace ApiDemo.Books
     {
         public string BookId { get; set; }
         public Guid CategoryId { get; set; }
+        public Category Category { get; set; }
 
         private BookWithCategory()
         {

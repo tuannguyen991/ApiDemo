@@ -18,6 +18,7 @@ namespace ApiDemo.Controllers
         {
             _userService = userService;
         }
+        #region CRUD User
         /// <summary>
         /// Create user.
         /// </summary>
@@ -44,6 +45,19 @@ namespace ApiDemo.Controllers
             return await _userService.GetAsync(id);
         }
         /// <summary>
+        /// Get user with current package information.
+        /// </summary>
+        /// <remarks>
+        /// Get user with current package information.
+        /// </remarks>
+        /// <param name="id">User Id</param>
+        [HttpGet]
+        [Route("current-package/{id}")]
+        public async Task<UserDto> GetWithCurrentPackageAsync([FromRoute] string id)
+        {
+            return await _userService.GetWithCurrentPackageAsync(id);
+        }
+        /// <summary>
         /// Update information user.
         /// </summary>
         /// <remarks>
@@ -57,129 +71,6 @@ namespace ApiDemo.Controllers
         {
             await _userService.UpdateAsync(id, input);
         }
-        /// <summary>
-        /// Add Reading Package.
-        /// </summary>
-        /// <remarks>
-        /// Add Reading Package.
-        /// </remarks>
-        /// <param name="input">Package Infomation</param>
-        [HttpPost]
-        [Route("reading-package")]
-        public async Task<UserDto> AddPackageAsync([FromBody] CreateUserReadingPackageDto input)
-        {
-            return await _userService.AddPackageAsync(input);
-        }
-        /// <summary>
-        /// Add History User.
-        /// </summary>
-        /// <remarks>
-        /// Add History User.
-        /// </remarks>
-        /// <param name="input">History Infomation</param>
-        [HttpPost]
-        [Route("history")]
-        public async Task<UserDto> AddHistoryAsync([FromBody] CreateUserHistoryDto input)
-        {
-            return await _userService.AddHistoryAsync(input);
-        }
-        #region User library
-        /// <summary>
-        /// Get Reading Books.
-        /// </summary>
-        /// <remarks>
-        /// Get Reading Books.
-        /// </remarks>
-        /// <param name="id">User ID</param>
-        [HttpGet]
-        [Route("reading-books/{id}")]
-        public async Task<List<UserLibraryDto>> GetReadingBooksAsync([FromRoute] string id)
-        {
-            return await _userService.GetReadingBooksAsync(id);
-        }
-        /// <summary>
-        /// Create Reading Books.
-        /// </summary>
-        /// <remarks>
-        /// Create Reading Books.
-        /// </remarks>
-        /// <param name="input">Reading Book Info</param>
-        [HttpPost]
-        [Route("reading-books")]
-        public async Task AddReadingBookAsync([FromBody] CreateUserLibraryDto input)
-        {
-            await _userService.AddReadingBookAsync(input);
-        }
-        /// <summary>
-        /// Get Favorite Books.
-        /// </summary>
-        /// <remarks>
-        /// Get Favorite Books.
-        /// </remarks>
-        /// <param name="id">User ID</param>
-        [HttpGet]
-        [Route("favorite-books/{id}")]
-        public async Task<List<UserLibraryDto>> GetFavoriteBooksAsync([FromRoute] string id)
-        {
-            return await _userService.GetFavoriteBooksAsync(id);
-        }
-        /// <summary>
-        /// Get is Favorite.
-        /// </summary>
-        /// <remarks>
-        /// Get is Favorite.
-        /// </remarks>
-        /// <param name="id">User ID</param>
-        /// <param name="bookId">Book ID</param>
-        [HttpGet]
-        [Route("favorite/{id}/{bookId}")]
-        public async Task<bool> GetIsFavoriteAsync([FromRoute] string id, [FromRoute] string bookId)
-        {
-            return await _userService.GetIsFavoriteAsync(id, bookId);
-        }
-        /// <summary>
-        /// Get Library Book.
-        /// </summary>
-        /// <remarks>
-        /// Get is Favorite.
-        /// </remarks>
-        /// <param name="id">User ID</param>
-        /// <param name="bookId">Book ID</param>
-        [HttpGet]
-        [Route("library-book/{id}/{bookId}")]
-        public async Task<UserLibraryDto> GetLibraryBookAsync([FromRoute] string id, [FromRoute] string bookId)
-        {
-            return await _userService.GetLibraryBookAsync(id, bookId);
-        }
-        /// <summary>
-        /// Create Favorite Books.
-        /// </summary>
-        /// <remarks>
-        /// Create Favorite Books.
-        /// </remarks>
-        /// <param name="input">Favorite Book Info</param>
-        [HttpPost]
-        [Route("favorite-books")]
-        public async Task AddFavoriteBookAsync([FromBody] CreateUserLibraryDto input)
-        {
-            await _userService.AddFavoriteBookAsync(input);
-        }
-        /// <summary>
-        /// Delete Favorite Books.
-        /// </summary>
-        /// <remarks>
-        /// Delete Favorite Books.
-        /// </remarks>
-        /// <param name="userId">User Id</param>
-        /// <param name="bookId">Book Id</param>
-        [HttpDelete]
-        [Route("favorite-books/{userId}/{bookId}")]
-        public async Task DeleteFavoriteBookAsync([FromRoute] string userId, [FromRoute] string bookId)
-        {
-            await _userService.DeleteFavoriteBookAsync(userId, bookId);
-        }
-        #endregion
-
         /// <summary>
         /// Upload image.
         /// </summary>
@@ -210,7 +101,6 @@ namespace ApiDemo.Controllers
 
             return Ok("Image uploaded successfully.");
         }
-
         [HttpGet]
         [Route("images/{path}")]
         public IActionResult GetImage(string path)
@@ -234,7 +124,163 @@ namespace ApiDemo.Controllers
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             return new FileStreamResult(stream, contentType);
         }
+        #endregion
+        #region Information User
+        /// <summary>
+        /// Add Reading Package.
+        /// </summary>
+        /// <remarks>
+        /// Add Reading Package.
+        /// </remarks>
+        /// <param name="input">Package Infomation</param>
+        [HttpPost]
+        [Route("reading-package")]
+        public async Task<UserDto> AddPackageAsync([FromBody] CreateUserReadingPackageDto input)
+        {
+            return await _userService.AddPackageAsync(input);
+        }
+        /// <summary>
+        /// Add History User.
+        /// </summary>
+        /// <remarks>
+        /// Add History User.
+        /// </remarks>
+        /// <param name="input">History Infomation</param>
+        [HttpPost]
+        [Route("history")]
+        public async Task<UserDto> AddHistoryAsync([FromBody] CreateUserHistoryDto input)
+        {
+            return await _userService.AddHistoryAsync(input);
+        }
+        #endregion
+        #region User library
+        /// <summary>
+        /// Get Reading Books.
+        /// </summary>
+        /// <remarks>
+        /// Get Reading Books.
+        /// </remarks>
+        /// <param name="id">User ID</param>
+        [HttpGet]
+        [Route("reading-books/{id}")]
+        public async Task<List<UserBookDto>> GetReadingBooksAsync([FromRoute] string id)
+        {
+            return await _userService.GetReadingBooksAsync(id);
+        }
+        /// <summary>
+        /// Get Favorite Books.
+        /// </summary>
+        /// <remarks>
+        /// Get Favorite Books.
+        /// </remarks>
+        /// <param name="id">User ID</param>
+        [HttpGet]
+        [Route("favorite-books/{id}")]
+        public async Task<List<UserBookDto>> GetFavoriteBooksAsync([FromRoute] string id)
+        {
+            return await _userService.GetFavoriteBooksAsync(id);
+        }
+        /// <summary>
+        /// Create Reading Books.
+        /// </summary>
+        /// <remarks>
+        /// Create Reading Books.
+        /// </remarks>
+        /// <param name="input">Reading Book Info</param>
+        [HttpPost]
+        [Route("reading-books")]
+        public async Task AddReadingBookAsync([FromBody] CreateUserLibraryDto input)
+        {
+            await _userService.AddReadingBookAsync(input);
+        }
+        /// <summary>
+        /// Create Favorite Books.
+        /// </summary>
+        /// <remarks>
+        /// Create Favorite Books.
+        /// </remarks>
+        /// <param name="input">Favorite Book Info</param>
+        [HttpPost]
+        [Route("favorite-books")]
+        public async Task AddFavoriteBookAsync([FromBody] CreateUserLibraryDto input)
+        {
+            await _userService.AddFavoriteBookAsync(input);
+        }
+        /// <summary>
+        /// Delete Favorite Books.
+        /// </summary>
+        /// <remarks>
+        /// Delete Favorite Books.
+        /// </remarks>
+        /// <param name="userId">User Id</param>
+        /// <param name="bookId">Book Id</param>
+        [HttpDelete]
+        [Route("favorite-books/{userId}/{bookId}")]
+        public async Task DeleteFavoriteBookAsync([FromRoute] string userId, [FromRoute] string bookId)
+        {
+            await _userService.DeleteFavoriteBookAsync(userId, bookId);
+        }
+        #endregion
 
+        #region Reminder
+        /// <summary>
+        /// Get Reminders.
+        /// </summary>
+        /// <remarks>
+        /// Get Reminders.
+        /// </remarks>
+        /// <param name="userId">User ID</param>
+        [HttpGet]
+        [Route("reminder/{userId}")]
+        public async Task<List<ReminderDto>> GetRemindersAsync([FromRoute] string userId)
+        {
+            return await _userService.GetRemindersAsync(userId);
+        }
+        /// <summary>
+        /// Create Reminders.
+        /// </summary>
+        /// <remarks>
+        /// Create Reminders.
+        /// </remarks>
+        /// <param name="input"></param>
+        [HttpPost]
+        [Route("reminder")]
+        public async Task<List<ReminderDto>> CreateReminderAsync([FromBody] CreateReminderDto input)
+        {
+            return await _userService.CreateReminderAsync(input);
+        }
+        /// <summary>
+        /// Update Reminders.
+        /// </summary>
+        /// <remarks>
+        /// Update Reminders.
+        /// </remarks>
+        /// <param name="userId">User ID</param>
+        /// <param name="input"></param>
+        /// <param name="reminderId"></param>
+        [HttpPut]
+        [Route("reminder/{userId}/{reminderId}")]
+        public async Task<List<ReminderDto>> UpdateReminderAsync([FromRoute] string userId, [FromRoute] Guid reminderId, [FromBody] UpdateReminderDto input)
+        {
+            return await _userService.UpdateReminderAsync(userId, reminderId, input);
+        }
+        /// <summary>
+        /// Delete Reminders.
+        /// </summary>
+        /// <remarks>
+        /// Delete Reminders.
+        /// </remarks>
+        /// <param name="userId">User ID</param>
+        /// <param name="reminderId"></param>
+        [HttpDelete]
+        [Route("reminder/{userId}/{reminderId}")]
+        public async Task<List<ReminderDto>> DeleteReminderAsync([FromRoute] string userId, [FromRoute] Guid reminderId)
+        {
+            return await _userService.DeleteReminderAsync(userId, reminderId);
+        }
+        #endregion
+
+        #region private method
         private string GetContentType(string filePath)
         {
             var provider = new FileExtensionContentTypeProvider();
@@ -244,5 +290,6 @@ namespace ApiDemo.Controllers
             }
             return contentType;
         }
+        #endregion
     }
 }

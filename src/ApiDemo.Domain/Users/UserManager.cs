@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Services;
-using Volo.Abp.Validation;
 
 namespace ApiDemo.Users
 {
@@ -9,7 +8,9 @@ namespace ApiDemo.Users
     {
         private readonly IUserRepository _userRepository;
 
-        public UserManager(IUserRepository userRepository)
+        public UserManager(
+            IUserRepository userRepository
+        )
         {
             _userRepository = userRepository;
         }
@@ -33,7 +34,7 @@ namespace ApiDemo.Users
         }
 
         public Task AddPackageAsync(
-            User user, 
+            User user,
             Guid readingPackageId,
             DateTime startDate,
             TimeSpan duration
@@ -52,7 +53,7 @@ namespace ApiDemo.Users
         }
 
         public Task AddHistoryAsync(
-            User user, 
+            User user,
             DateTime date,
             TimeSpan readingTime
         )
@@ -70,7 +71,7 @@ namespace ApiDemo.Users
 
         #region Highlight
         public Task AddHighlightAsync(
-            User user, 
+            User user,
             string bookId,
             string content,
             long date,
@@ -100,7 +101,7 @@ namespace ApiDemo.Users
         }
 
         public Task UpdateHighlightAsync(
-            User user, 
+            User user,
             Guid highLightId,
             long date,
             string type,
@@ -119,7 +120,7 @@ namespace ApiDemo.Users
         }
 
         public Task DeleteHighlightAsync(
-            User user, 
+            User user,
             Guid id
         )
         {
@@ -133,7 +134,7 @@ namespace ApiDemo.Users
 
         #region User Library
         public Task AddReadingBookAsync(
-            User user, 
+            User user,
             string bookId,
             int numberOfReadPages,
             string lastLocator,
@@ -155,17 +156,19 @@ namespace ApiDemo.Users
                 href
             );
 
+            readingBook.ReadCount = 1;
+
             user.UserLibraries.Add(readingBook);
             return Task.CompletedTask;
         }
 
         public Task AddFavoriteBookAsync(
-            User user, 
+            User user,
             string bookId
         )
         {
             var numberOfReadPages = 0;
-            
+
             var isReading = false;
             var isFavorite = true;
 
@@ -185,5 +188,24 @@ namespace ApiDemo.Users
             return Task.CompletedTask;
         }
         #endregion
+
+        #region Reminder
+
+        public Task AddReminderAsync(
+            User user,
+            string time
+        )
+        {
+            var reminder = new Reminder(
+                GuidGenerator.Create(),
+                user.Id,
+                time
+            );
+
+            user.Reminders.Add(reminder);
+            return Task.CompletedTask;
+        }
+
+        #endregion    
     }
 }

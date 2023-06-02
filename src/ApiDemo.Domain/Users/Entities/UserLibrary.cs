@@ -1,5 +1,4 @@
 using System;
-using ApiDemo.ReadingPackages;
 using Volo.Abp.Domain.Entities;
 
 namespace ApiDemo.Users
@@ -15,6 +14,7 @@ namespace ApiDemo.Users
         public DateTime? LastRead { get; set; }
         public string LastLocator { get; set; }
         public string Href { get; set; }
+        public int ReadCount { get; set; }
 
         private UserLibrary()
         {
@@ -43,6 +43,7 @@ namespace ApiDemo.Users
             LastRead = lastRead;
             LastLocator = lastLocator;
             Href = href;
+            ReadCount = 0;
         }
     }
 }

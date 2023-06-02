@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -26,6 +25,16 @@ namespace ApiDemo.Users
             var queryable = await WithDetailsAsync();
 
             var query = queryable.Where(user => user.Id == id);
+
+            return await AsyncExecuter.FirstOrDefaultAsync(query);
+        }
+
+        public async Task<User> GetWithRemindersAsync(string id)
+        {
+            var dbSet = await GetDbSetAsync();
+
+            var query = dbSet
+                        .Include(x => x.Reminders);
 
             return await AsyncExecuter.FirstOrDefaultAsync(query);
         }

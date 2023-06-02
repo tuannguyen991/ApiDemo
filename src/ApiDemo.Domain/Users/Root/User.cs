@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Volo.Abp.Domain.Entities.Auditing;
 
@@ -30,6 +29,7 @@ namespace ApiDemo.Users
         public int TotalReadingBooks
             => UserLibraries.Count(a => a.IsReading);
         public List<Highlight> Highlights { get; set; }
+        public List<Reminder> Reminders { get; set; }
 
         private User()
         {
@@ -53,6 +53,7 @@ namespace ApiDemo.Users
             Histories = new List<UserHistory>();
             UserLibraries = new List<UserLibrary>();
             Highlights = new List<Highlight>();
+            Reminders = new List<Reminder>();
         }
     }
 }

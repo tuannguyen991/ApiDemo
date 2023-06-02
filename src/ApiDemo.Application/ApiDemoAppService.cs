@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ApiDemo.Localization;
+﻿using ApiDemo.Localization;
 using Volo.Abp.Application.Services;
 
 namespace ApiDemo;

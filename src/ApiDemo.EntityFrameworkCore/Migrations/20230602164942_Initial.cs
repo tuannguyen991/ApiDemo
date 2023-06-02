@@ -896,6 +896,24 @@ namespace ApiDemo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AppReminders",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    Time = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppReminders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppReminders_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AppUserHistories",
                 columns: table => new
                 {
@@ -927,7 +945,8 @@ namespace ApiDemo.Migrations
                     Rating = table.Column<double>(type: "double precision", nullable: false),
                     LastRead = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastLocator = table.Column<string>(type: "text", nullable: true),
-                    Href = table.Column<string>(type: "text", nullable: true)
+                    Href = table.Column<string>(type: "text", nullable: true),
+                    ReadCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1500,6 +1519,11 @@ namespace ApiDemo.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AppReminders_UserId",
+                table: "AppReminders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AppUserHistories_UserId",
                 table: "AppUserHistories",
                 column: "UserId");
@@ -1622,6 +1646,9 @@ namespace ApiDemo.Migrations
 
             migrationBuilder.DropTable(
                 name: "AppHighlights");
+
+            migrationBuilder.DropTable(
+                name: "AppReminders");
 
             migrationBuilder.DropTable(
                 name: "AppUserHistories");

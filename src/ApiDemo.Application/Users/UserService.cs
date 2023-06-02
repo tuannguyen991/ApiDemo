@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using ApiDemo.Authors;
 using ApiDemo.Books;
-using ApiDemo.Categories;
 using ApiDemo.ReadingPackages;
+using ApiDemo.Users.RecommendationSystem;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
@@ -18,24 +17,21 @@ namespace ApiDemo.Users
         private readonly IUserRepository _userRepository;
         private readonly IReadingPackageRepository _readingPackageRepository;
         private readonly IBookRepository _bookRepository;
-        private readonly IAuthorRepository _authorRepository;
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly IBookService _bookService;
         private readonly UserManager _userManager;
 
         public UserService(
             IUserRepository userRepository,
             IReadingPackageRepository readingPackageRepository,
             IBookRepository bookRepository,
-            IAuthorRepository authorRepository,
-            ICategoryRepository categoryRepository,
+            IBookService bookService,
             UserManager userManager
         )
         {
             _userRepository = userRepository;
             _readingPackageRepository = readingPackageRepository;
             _bookRepository = bookRepository;
-            _authorRepository = authorRepository;
-            _categoryRepository = categoryRepository;
+            _bookService = bookService;
             _userManager = userManager;
         }
 
@@ -56,8 +52,80 @@ namespace ApiDemo.Users
 
         public async Task<UserDto> GetAsync(string id)
         {
+            if (id == "null")
+            {
+                List<string> idsString = await _bookRepository.GetBooksForCalculateTopAsync();
+
+                var recommendDefaultDto = new List<UserBookDto>();
+
+                foreach (var idString in idsString)
+                {
+                    var bookDto = ObjectMapper.Map<Book, UserBookDto>(await _bookRepository.GetAsync(idString));
+                    recommendDefaultDto.Add(bookDto);
+                }
+
+                var userDefaultDto = new UserDto();
+
+                userDefaultDto.FirstName = "Khách";
+                userDefaultDto.RecommendBooks = recommendDefaultDto;
+                userDefaultDto.LastBook = recommendDefaultDto.First();
+
+                return userDefaultDto;
+            }
+
+            var items = ObjectMapper.Map<List<Book>, List<ItemDto>>(await _bookRepository.GetItemsAsync());
+
+            var userRatings = await GetUserRatings(id);
+
+            List<string> ids;
+            if (userRatings.Count == 0)
+            {
+                ids = await _bookRepository.GetBooksForCalculateTopAsync();
+            }
+            else
+            {
+                var recommendationSystem = new ItemRecommendationSystem(items, userRatings);
+
+                ids = recommendationSystem.GetUserRecommendations();
+            }
+
+
             var user = await _userRepository.GetAsync(id);
-            return ObjectMapper.Map<User, UserDto>(user);
+
+            var recommendDto = new List<UserBookDto>();
+
+            foreach (var idBook in ids)
+            {
+                var bookDto = ObjectMapper.Map<Book, UserBookDto>(await _bookRepository.GetAsync(idBook));
+
+                recommendDto.Add(bookDto);
+            }
+
+            var userDto = ObjectMapper.Map<User, UserDto>(user);
+            userDto.RecommendBooks = recommendDto;
+            var readingBooks = await _userRepository.GetReadingBooksAsync(id);
+            if (readingBooks.Count > 0)
+            {
+                var book = ObjectMapper.Map<UserLibrary, UserLibraryDto>(readingBooks.Last());
+                var userBookDto = ObjectMapper.Map<Book, UserBookDto>(await _bookRepository.GetAsync(book.BookId));
+                userBookDto.UserLibrary = book;
+                userDto.LastBook = userBookDto;
+            }
+            else
+            {
+                userDto.LastBook = recommendDto.First();
+            }
+
+            return userDto;
+        }
+
+        public async Task<UserDto> GetWithCurrentPackageAsync(string id)
+        {
+            var user = await _userRepository.GetAsync(id);
+
+            var userDto = ObjectMapper.Map<User, UserDto>(user);
+
+            return userDto;
         }
 
         public async Task UpdateAsync(string id, UpdateUserDto input)
@@ -160,107 +228,18 @@ namespace ApiDemo.Users
         }
         #endregion
         #region User Library
-        public async Task<List<UserLibraryDto>> GetReadingBooksAsync(string id)
+        public async Task<List<UserBookDto>> GetReadingBooksAsync(string id)
         {
-            var readingBooks = await _userRepository.GetReadingBooksAsync(id);
-            var result = new List<UserLibraryDto>();
-            foreach (var readingBook in readingBooks)
-            {
-                var book = await _bookRepository.FindAsync(readingBook.BookId);
-                result.Add(
-                    new UserLibraryDto
-                    {
-                        UserId = readingBook.UserId,
-                        BookId = readingBook.BookId,
-                        NumberOfReadPages = readingBook.NumberOfReadPages,
-                        LastRead = readingBook.LastRead,
-                        LastLocator = readingBook.LastLocator,
-                        Href = readingBook.Href,
-                        Rating = readingBook.Rating,
-                        Title = book.Title,
-                        Subtitle = book.Subtitle,
-                        NumberOfPages = book.NumberOfPages,
-                        EpubLink = book.EpubLink,
-                        ImageLink = book.ImageLink,
-                        AverageRating = book.AverageRating,
-                        Description = book.Description,
-                        Authors = ObjectMapper.Map<List<Author>, List<AuthorDto>>(book.BookWithAuthors.Select(author => _authorRepository.GetAsync(author.AuthorId).Result).ToList()),
-                        Categories = ObjectMapper.Map<List<Category>, List<CategoryDto>>(book.BookWithCategories.Select(author => _categoryRepository.GetAsync(author.CategoryId).Result).ToList())
-                    }
-                );
-            }
-            return result;
-        }
-        public async Task<List<UserLibraryDto>> GetFavoriteBooksAsync(string id)
-        {
-            var favoriteBooks = await _userRepository.GetFavoriteBooksAsync(id);
-            var result = new List<UserLibraryDto>();
-            foreach (var favoriteBook in favoriteBooks)
-            {
-                var book = await _bookRepository.FindAsync(favoriteBook.BookId);
-                result.Add(
-                    new UserLibraryDto
-                    {
-                        UserId = favoriteBook.UserId,
-                        BookId = favoriteBook.BookId,
-                        NumberOfReadPages = favoriteBook.NumberOfReadPages,
-                        LastRead = favoriteBook.LastRead,
-                        Href = favoriteBook.Href,
-                        LastLocator = favoriteBook.LastLocator,
-                        Rating = favoriteBook.Rating,
-                        Title = book.Title,
-                        Subtitle = book.Subtitle,
-                        NumberOfPages = book.NumberOfPages,
-                        EpubLink = book.EpubLink,
-                        ImageLink = book.ImageLink,
-                        AverageRating = book.AverageRating,
-                        Description = book.Description,
-                        Authors = ObjectMapper.Map<List<Author>, List<AuthorDto>>(book.BookWithAuthors.Select(author => _authorRepository.GetAsync(author.AuthorId).Result).ToList()),
-                        Categories = ObjectMapper.Map<List<Category>, List<CategoryDto>>(book.BookWithCategories.Select(author => _categoryRepository.GetAsync(author.CategoryId).Result).ToList())
-                    }
-                );
-            }
-            return result;
+            var readingBooks = ObjectMapper.Map<List<UserLibrary>, List<UserLibraryDto>>(await _userRepository.GetReadingBooksAsync(id));
+
+            return await Convert(readingBooks);
         }
 
-        public async Task<bool> GetIsFavoriteAsync(string id, string bookId)
+        public async Task<List<UserBookDto>> GetFavoriteBooksAsync(string id)
         {
-            var favoriteBooks = await _userRepository.GetFavoriteBooksAsync(id);
-            var result = favoriteBooks.Exists(x => x.BookId == bookId);
-            return result;
-        }
+            var favoriteBooks = ObjectMapper.Map<List<UserLibrary>, List<UserLibraryDto>>(await _userRepository.GetFavoriteBooksAsync(id));
 
-        public async Task<UserLibraryDto> GetLibraryBookAsync(string id, string bookId)
-        {
-            var favoriteBooks = await _userRepository.GetFavoriteBooksAsync(id);
-            var readingBooks = await _userRepository.GetReadingBooksAsync(id);
-            var books = favoriteBooks.Concat(readingBooks).ToList(); ;
-            var libraryBook = books.Find(x => x.BookId == bookId);
-
-            if (libraryBook == null)
-                throw new EntityNotFoundException();
-
-            var book = await _bookRepository.FindAsync(libraryBook.BookId);
-
-            return new UserLibraryDto
-            {
-                UserId = libraryBook.UserId,
-                BookId = libraryBook.BookId,
-                NumberOfReadPages = libraryBook.NumberOfReadPages,
-                LastRead = libraryBook.LastRead,
-                LastLocator = libraryBook.LastLocator,
-                Href = libraryBook.Href,
-                Rating = libraryBook.Rating,
-                Title = book.Title,
-                Subtitle = book.Subtitle,
-                NumberOfPages = book.NumberOfPages,
-                EpubLink = book.EpubLink,
-                ImageLink = book.ImageLink,
-                AverageRating = book.AverageRating,
-                Description = book.Description,
-                Authors = ObjectMapper.Map<List<Author>, List<AuthorDto>>(book.BookWithAuthors.Select(author => _authorRepository.GetAsync(author.AuthorId).Result).ToList()),
-                Categories = ObjectMapper.Map<List<Category>, List<CategoryDto>>(book.BookWithCategories.Select(author => _categoryRepository.GetAsync(author.CategoryId).Result).ToList())
-            };
+            return await Convert(favoriteBooks);
         }
 
         public async Task AddReadingBookAsync(CreateUserLibraryDto input)
@@ -276,6 +255,7 @@ namespace ApiDemo.Users
                 userLibrary.LastRead = DateTime.Now;
                 userLibrary.LastLocator = input.LastLocator;
                 userLibrary.Href = input.Href;
+                userLibrary.ReadCount += 1;
             }
             else
             {
@@ -315,6 +295,7 @@ namespace ApiDemo.Users
             }
             else
             {
+                userLibrary.IsFavorite = false;
                 userLibraries.RemoveAll(userLibrary => userLibrary.BookId == bookId);
             }
             await _userRepository.UpdateAsync(user);
@@ -327,6 +308,71 @@ namespace ApiDemo.Users
             user.ImageLink = path;
 
             await _userRepository.UpdateAsync(user);
+        }
+        #endregion
+        #region private method
+        private async Task<List<UserBookDto>> Convert(List<UserLibraryDto> books)
+        {
+            var result = new List<UserBookDto>();
+            foreach (var book in books)
+            {
+                var userBookDto = ObjectMapper.Map<Book, UserBookDto>(await _bookRepository.GetAsync(book.BookId));
+                userBookDto.UserLibrary = book;
+                result.Add(userBookDto);
+            }
+
+            return result;
+        }
+
+        public async Task<List<RatingDto>> GetUserRatings(string id)
+        {
+            var user = await _userRepository.GetAsync(id);
+
+            return ObjectMapper.Map<List<UserLibrary>, List<RatingDto>>(user.UserLibraries);
+        }
+        #endregion
+
+        #region Reminder
+        public async Task<List<ReminderDto>> GetRemindersAsync(string userId)
+        {
+            var user = await _userRepository.GetWithRemindersAsync(userId);
+
+            return ObjectMapper.Map<List<Reminder>, List<ReminderDto>>(user.Reminders);
+        }
+
+        public async Task<List<ReminderDto>> CreateReminderAsync(CreateReminderDto input)
+        {
+            var user = await _userRepository.GetWithRemindersAsync(input.UserId);
+
+            await _userManager.AddReminderAsync(user, input.Time);
+
+            await _userRepository.UpdateAsync(user);
+
+            return ObjectMapper.Map<List<Reminder>, List<ReminderDto>>(user.Reminders);
+        }
+
+        public async Task<List<ReminderDto>> UpdateReminderAsync(string userId, Guid reminderId, UpdateReminderDto input)
+        {
+            var user = await _userRepository.GetWithRemindersAsync(userId);
+            var reminder = user.Reminders.Find(x => x.Id == reminderId);
+
+            reminder.Time = input.Time;
+
+            await _userRepository.UpdateAsync(user);
+
+            return ObjectMapper.Map<List<Reminder>, List<ReminderDto>>(user.Reminders);
+        }
+
+        public async Task<List<ReminderDto>> DeleteReminderAsync(string userId, Guid reminderId)
+        {
+            var user = await _userRepository.GetWithRemindersAsync(userId);
+            var reminders = user.Reminders;
+
+            reminders.RemoveAll(x => x.Id == reminderId);
+
+            await _userRepository.UpdateAsync(user);
+
+            return ObjectMapper.Map<List<Reminder>, List<ReminderDto>>(user.Reminders);
         }
         #endregion
     }

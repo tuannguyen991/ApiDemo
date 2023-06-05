@@ -6,6 +6,7 @@ namespace ApiDemo.Users
     public class Reminder : Entity<Guid>
     {
         public string UserId { get; set; }
+        public bool IsDefault { get; set; }
         public string Time { get; set; }
         
         private Reminder()
@@ -16,11 +17,14 @@ namespace ApiDemo.Users
         internal Reminder(
             Guid id,
             string userId,
-            string time
+            string time,
+            bool isDefault = false
         ): base(id)
         {
             UserId = userId;
             Time = time;
+            Time = time;
+            IsDefault = isDefault;
         }
     }
 }

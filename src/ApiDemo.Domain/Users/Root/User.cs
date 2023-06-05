@@ -12,22 +12,10 @@ namespace ApiDemo.Users
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
         public string ImageLink { get; set; }
-        public double TotalReadingTime
-            => Histories.Sum(userHistory => userHistory.ReadingTime.TotalMinutes);
-        public Ranking Ranking
-        {
-            get
-                => (new RankSpecification().ToExpression()).Invoke(TotalReadingTime);
-        }
+        public string UsageTime { get; set; }
         public List<UserReadingPackage> Packages { get; set; }
-        public UserReadingPackage CurrentPackage
-            => Packages.Count == 0 ? null : Packages.Last();
         public List<UserHistory> Histories { get; set; }
-        public List<UserHistory> RecentlyHistories
-            => Histories.Where(new RecentlyUserHistorySpecification().ToExpression()).ToList();
         public List<UserLibrary> UserLibraries { get; set; }
-        public int TotalReadingBooks
-            => UserLibraries.Count(a => a.IsReading);
         public List<Highlight> Highlights { get; set; }
         public List<Reminder> Reminders { get; set; }
 
@@ -49,6 +37,7 @@ namespace ApiDemo.Users
             LastName = lastName;
             Email = email;
             BirthDate = birthDate;
+            UsageTime = string.Join(";", Enumerable.Repeat(0, 24).ToList());
             Packages = new List<UserReadingPackage>();
             Histories = new List<UserHistory>();
             UserLibraries = new List<UserLibrary>();

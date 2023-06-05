@@ -384,6 +384,7 @@ namespace ApiDemo.Migrations
                     Email = table.Column<string>(type: "text", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     ImageLink = table.Column<string>(type: "text", nullable: true),
+                    UsageTime = table.Column<string>(type: "text", nullable: true),
                     ExtraProperties = table.Column<string>(type: "text", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
                     CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -901,6 +902,7 @@ namespace ApiDemo.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false),
                     Time = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>

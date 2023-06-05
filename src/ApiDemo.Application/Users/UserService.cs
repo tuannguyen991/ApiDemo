@@ -87,6 +87,9 @@ namespace ApiDemo.Users
                 var recommendationSystem = new ItemRecommendationSystem(items, userRatings);
 
                 ids = recommendationSystem.GetUserRecommendations();
+
+                if (ids.Count == 0)
+                    ids = await _bookRepository.GetBooksForCalculateTopAsync();
             }
 
 
@@ -155,9 +158,17 @@ namespace ApiDemo.Users
 
         public async Task<UserDto> AddHistoryAsync(CreateUserHistoryDto input)
         {
-            var user = await _userRepository.FindAsync(input.UserId);
+            var user = await _userRepository.GetAsync(input.UserId);
 
             var history = user.Histories.Find(x => x.Date.Date == input.Date.Date);
+
+            var usageTime = user.UsageTime.Split(';').Select(int.Parse).ToList();
+            usageTime[input.Date.Hour] += (int)Math.Ceiling(input.ReadingTime.TotalMinutes);
+
+            user.UsageTime = string.Join(";", usageTime);
+
+            var reminder = user.Reminders.Find(x => x.IsDefault);
+            reminder.Time = TimeSpan.FromHours(usageTime.IndexOf(usageTime.Max())).ToString(@"hh\:mm");
 
             if (history != null)
             {

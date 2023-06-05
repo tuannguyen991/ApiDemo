@@ -72,6 +72,9 @@ public class ApiDemoEntityFrameworkCoreModule : AbpModule
                                                     .OrderBy(userHistory => userHistory.Date)
                                             )
                                             .Include(
+                                                o => o.Reminders
+                                            )
+                                            .Include(
                                                 o => o.UserLibraries
                                                     .OrderBy(userLibrary => userLibrary.LastRead)
                                             )

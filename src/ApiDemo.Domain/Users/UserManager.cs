@@ -23,14 +23,17 @@ namespace ApiDemo.Users
             DateTime birthDate
         )
         {
-            return Task.FromResult(
-                new User(
+            var user = new User(
                 id,
                 firstName,
                 lastName,
                 email,
                 birthDate
-            ));
+            );
+
+            AddReminderAsync(user, "00:00", true);
+
+            return Task.FromResult(user);
         }
 
         public Task AddPackageAsync(
@@ -193,13 +196,15 @@ namespace ApiDemo.Users
 
         public Task AddReminderAsync(
             User user,
-            string time
+            string time,
+            bool isDefault = false
         )
         {
             var reminder = new Reminder(
                 GuidGenerator.Create(),
                 user.Id,
-                time
+                time,
+                isDefault
             );
 
             user.Reminders.Add(reminder);

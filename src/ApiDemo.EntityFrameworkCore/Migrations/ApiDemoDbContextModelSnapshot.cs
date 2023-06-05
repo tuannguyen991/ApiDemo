@@ -371,6 +371,9 @@ namespace ApiDemo.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Time")
                         .HasColumnType("text");
 
@@ -442,6 +445,9 @@ namespace ApiDemo.Migrations
                         .HasColumnName("LastModifierId");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UsageTime")
                         .HasColumnType("text");
 
                     b.HasKey("Id");

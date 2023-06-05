@@ -13,7 +13,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ApiDemo.Migrations
 {
     [DbContext(typeof(ApiDemoDbContext))]
-    [Migration("20230602164942_Initial")]
+    [Migration("20230605092906_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -373,6 +373,9 @@ namespace ApiDemo.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Time")
                         .HasColumnType("text");
 
@@ -444,6 +447,9 @@ namespace ApiDemo.Migrations
                         .HasColumnName("LastModifierId");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UsageTime")
                         .HasColumnType("text");
 
                     b.HasKey("Id");

@@ -10,5 +10,10 @@ namespace ApiDemo.Users
         /// </summary>
         /// <example></example>
         public string Time { get; set; }
+        /// <summary>
+        /// Is Default.
+        /// </summary>
+        /// <example></example>
+        public bool IsDefault { get; set; }
     }
 }

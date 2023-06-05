@@ -147,16 +147,6 @@ public class ApiDemoDbContext :
             b.HasMany<Reminder>(u => u.Reminders)
                 .WithOne()
                 .HasForeignKey(p => p.UserId);
-
-            b.Ignore(p => p.CurrentPackage);
-
-            b.Ignore(p => p.RecentlyHistories);
-
-            b.Ignore(p => p.TotalReadingTime);
-
-            b.Ignore(p => p.TotalReadingBooks);
-
-            b.Ignore(p => p.Ranking);
         });
 
         builder.Entity<UserReadingPackage>(b =>

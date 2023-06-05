@@ -19,7 +19,11 @@ public class ApiDemoApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
         CreateMap<Author, AuthorDto>();
         CreateMap<User, UserDto>()
-            .ForMember(dest => dest.TotalReadingTime, act => act.MapFrom(src => Math.Ceiling(src.TotalReadingTime)));
+            .ForMember(dest => dest.TotalReadingTime, act => act.MapFrom(src => Math.Ceiling(src.Histories.Sum(userHistory => userHistory.ReadingTime.TotalMinutes))))
+            .ForMember(dest => dest.Ranking, act => act.MapFrom(src => (new RankSpecification().ToExpression()).Invoke(Math.Ceiling(src.Histories.Sum(userHistory => userHistory.ReadingTime.TotalMinutes)))))
+            .ForMember(dest => dest.CurrentPackage, act => act.MapFrom(src => src.Packages.Count == 0 ? null : src.Packages.Last()))
+            .ForMember(dest => dest.TotalReadingBooks, act => act.MapFrom(src => src.UserLibraries.Count(a => a.IsReading)))
+            .ForMember(dest => dest.RecentlyHistories, act => act.MapFrom(src => src.Histories.Where(new RecentlyUserHistorySpecification().ToExpression()).ToList()));
         CreateMap<ReadingPackage, ReadingPackageDto>();
         CreateMap<Category, CategoryDto>();
         CreateMap<Book, BookDto>()

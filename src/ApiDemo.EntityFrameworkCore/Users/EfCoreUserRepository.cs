@@ -34,6 +34,7 @@ namespace ApiDemo.Users
             var dbSet = await GetDbSetAsync();
 
             var query = dbSet
+                        .Where(user => user.Id == id)
                         .Include(x => x.Reminders);
 
             return await AsyncExecuter.FirstOrDefaultAsync(query);

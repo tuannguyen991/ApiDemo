@@ -197,14 +197,16 @@ namespace ApiDemo.Users
         public Task AddReminderAsync(
             User user,
             string time,
-            bool isDefault = false
+            bool isDefault = false,
+            bool isActive = true
         )
         {
             var reminder = new Reminder(
                 GuidGenerator.Create(),
                 user.Id,
                 time,
-                isDefault
+                isDefault, 
+                isActive
             );
 
             user.Reminders.Add(reminder);

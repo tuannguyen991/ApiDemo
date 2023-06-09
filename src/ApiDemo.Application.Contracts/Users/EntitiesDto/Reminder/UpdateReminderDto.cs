@@ -7,5 +7,10 @@ namespace ApiDemo.Users
         /// </summary>
         /// <example></example>
         public string Time { get; set; }
+        /// <summary>
+        /// Is Active.
+        /// </summary>
+        /// <example></example>
+        public bool IsActive { get; set; }
     }
 }

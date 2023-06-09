@@ -903,6 +903,7 @@ namespace ApiDemo.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
                     IsDefault = table.Column<bool>(type: "boolean", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     Time = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>

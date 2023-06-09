@@ -367,9 +367,13 @@ namespace ApiDemo.Users
             var user = await _userRepository.GetWithRemindersAsync(userId);
             var reminder = user.Reminders.Find(x => x.Id == reminderId);
 
-            reminder.Time = input.Time;
+            if (!reminder.IsDefault)
+            {
+                reminder.Time = input.Time;
+                reminder.IsActive = input.IsActive;
 
-            await _userRepository.UpdateAsync(user);
+                await _userRepository.UpdateAsync(user);
+            }
 
             return ObjectMapper.Map<List<Reminder>, List<ReminderDto>>(user.Reminders);
         }
@@ -379,7 +383,7 @@ namespace ApiDemo.Users
             var user = await _userRepository.GetWithRemindersAsync(userId);
             var reminders = user.Reminders;
 
-            reminders.RemoveAll(x => x.Id == reminderId);
+            reminders.RemoveAll(x => x.Id == reminderId && !x.IsDefault);
 
             await _userRepository.UpdateAsync(user);
 

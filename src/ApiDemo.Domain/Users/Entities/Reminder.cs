@@ -7,8 +7,9 @@ namespace ApiDemo.Users
     {
         public string UserId { get; set; }
         public bool IsDefault { get; set; }
+        public bool IsActive { get; set; }
         public string Time { get; set; }
-        
+
         private Reminder()
         {
             /* This constructor is for deserialization / ORM purpose */
@@ -18,13 +19,15 @@ namespace ApiDemo.Users
             Guid id,
             string userId,
             string time,
-            bool isDefault = false
-        ): base(id)
+            bool isDefault = false,
+            bool isActive = true
+        ) : base(id)
         {
             UserId = userId;
             Time = time;
             Time = time;
             IsDefault = isDefault;
+            IsActive = isActive;
         }
     }
 }

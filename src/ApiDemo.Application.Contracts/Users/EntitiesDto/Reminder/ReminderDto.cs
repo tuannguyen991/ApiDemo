@@ -15,5 +15,10 @@ namespace ApiDemo.Users
         /// </summary>
         /// <example></example>
         public bool IsDefault { get; set; }
+        /// <summary>
+        /// Is Active.
+        /// </summary>
+        /// <example></example>
+        public bool IsActive { get; set; }
     }
 }
